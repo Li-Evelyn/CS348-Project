@@ -23,6 +23,6 @@ Note: Use `\conninfo` to see information about your database (it was useful for 
 
 ## Citations
 Tutorials used:
-https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simple-express-server-without-an-orm-10o0
-https://rapidapi.com/blog/create-react-app-express/
-https://www.educba.com/postgresql-list-tables/
+* Table creation: https://www.educba.com/postgresql-list-tables/
+* Connecting backend to database: https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simple-express-server-without-an-orm-10o0
+* Connecting frontend to backend: https://rapidapi.com/blog/create-react-app-express/
