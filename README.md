@@ -4,7 +4,7 @@ F22 C348 project
 ## Development Setup
 ### Database (PostgreSQL)
 1. Download Postgres for your platform from https://www.postgresql.org/download/. 
-2. Once installation finishes, launch your choice of SQL Shell (I used psql). 
+2. Once installation finishes, launch your choice of SQL shell (I used psql). 
 3. Create a new database using `createdb cs348`. Verify that it has been created with `\l`.
 4. Switch to your new database with `\c cs348`. There will currently be no relations (you can see by using `\dt`).
 5. Create the (currently test) table as follows: `CREATE TABLE test (id SERIAL PRIMARY KEY, content TEXT NOT NULL);`.
@@ -20,6 +20,7 @@ Note: Use `\conninfo` to see information about your database (it was useful for 
 ### Frontend (React)
 1. Navigate to `/client` and use `npm install`.
 2. You have now finished setting up the frontend (and the app). Verify that it works by running it with `npm start` and going to http://localhost:3000.
+3. To see changes from the database reflected in the frontend, you can add more entries as before from the SQL shell and refresh the page.
 
 ## Citations
 Tutorials used:
