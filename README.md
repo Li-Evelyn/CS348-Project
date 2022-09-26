@@ -27,10 +27,26 @@ Tutorials used:
 * Table creation: https://www.educba.com/postgresql-list-tables/
 * Connecting backend to database: https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simple-express-server-without-an-orm-10o0
 * Connecting frontend to backend: https://rapidapi.com/blog/create-react-app-express/
-* Making things genericaly prettier: https://react-bootstrap.github.io/components/alerts
+* Making things generically prettier: https://react-bootstrap.github.io/components/alerts
 
 ## TODO:
+### General
 - [] Database design (what tables do we need? How are they linked?)
 - [] Create said tables and build pages and methods for adding to them
 - [] Load DB from files?
 - [] Make things prettier
+
+### Functionality
+Course Staff:
+- [] Enroll students in courses
+- [] Create/delete assignments
+- [] View submitted files from student assignments
+- [] Enforce deadlines for assignments
+- [] Grade assignments
+- [] Comment on assignments
+- [] (?) View stats about assignments
+
+Students:
+- [] Upload files to assignments for their courses
+- [] View uploaded files
+- [] See assignment/course grades
