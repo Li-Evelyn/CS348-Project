@@ -31,22 +31,23 @@ Tutorials used:
 
 ## TODO:
 ### General
-- [] Database design (what tables do we need? How are they linked?)
-- [] Create said tables and build pages and methods for adding to them
-- [] Load DB from files?
-- [] Make things prettier
+- [ ] Database design (what tables do we need? How are they linked?)
+- [ ] Create said tables 
+- [ ] Build pages and methods for adding to said tables
+- [ ] Load DB from files?
+- [ ] Make things prettier
 
 ### Functionality
 Course Staff:
-- [] Enroll students in courses
-- [] Create/delete assignments
-- [] View submitted files from student assignments
-- [] Enforce deadlines for assignments
-- [] Grade assignments
-- [] Comment on assignments
-- [] (?) View stats about assignments
+- [ ] Enroll students in courses
+- [ ] Create/delete assignments
+- [ ] View submitted files from student assignments
+- [ ] Enforce deadlines for assignments
+- [ ] Grade assignments
+- [ ] Comment on assignments
+- [ ] (?) View stats about assignments
 
 Students:
-- [] Upload files to assignments for their courses
-- [] View uploaded files
-- [] See assignment/course grades
+- [ ] Upload files to assignments for their courses
+- [ ] View uploaded files
+- [ ] See assignment/course grades
