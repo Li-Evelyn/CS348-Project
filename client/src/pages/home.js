@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
-function App() {
+function Home() {
   const [content, setContent] = useState([]);
 
   function fetchData() {
-    fetch("http://localhost:8080/users")
+    fetch("http://localhost:8080/query")
+    // fetch("/query")
       .then((response) => response.json())
       .then((data) => {
         let db_content = data.rows.map((item) => item.content).join(" ");
@@ -31,4 +32,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

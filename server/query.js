@@ -1,6 +1,6 @@
 const database = require('./database');
 
-const User = {
+const Query = {
     async readAll(req, res) {
         try {
             const readAllQuery = "SELECT * FROM test";
@@ -13,4 +13,4 @@ const User = {
     }
 };
 
-module.exports = User;
+module.exports = Query;
