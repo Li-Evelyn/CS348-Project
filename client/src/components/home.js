@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
 
 function Home() {
   const [content, setContent] = useState([]);
 
   function fetchData() {
-    fetch("http://localhost:8080/query")
+    fetch("http://localhost:8080/query/all")
     // fetch("/query")
       .then((response) => response.json())
       .then((data) => {
@@ -18,8 +17,6 @@ function Home() {
     console.log(`Page loaded`);
     fetchData();
   }, [""]);
-
-  console.log(`content: ${content}`)
 
   return (
     <div className="App">

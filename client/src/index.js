@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./pages/layout";
-import Home from "./pages/home";
-import LoginPage from "./pages/login";
-import ErrorPage from "./pages/error_page";
+import Layout from "./components/layout";
+import Home from "./components/home";
+import LoginPage from "./components/login";
+import DebugPage from "./components/debug";
+import ErrorPage from "./components/error_page";
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.css';
 
 export default function App() {
   return (
@@ -15,6 +17,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />}/>
           <Route path="login" element={<LoginPage />}/>
+          <Route path="debug" element={<DebugPage />}/>
           <Route path="*" element={<ErrorPage />}/>
         </Route>
       </Routes>
