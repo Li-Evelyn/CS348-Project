@@ -15,7 +15,7 @@ Note: Use `\conninfo` to see information about your database (it was useful for 
 ### Backend (Node/Express)
 1. Navigate to `/server`, initialize Node with `npm init`, and install the required libraries with `npm install`.
 2. Create a `.env` file in `/server` with the contents `DB_USER="(your postgres user)"` and `DB_PASSWORD="(your postgres password)"` in `/server`.
-3. You have now finished setting up the backend. Verify that it works by running it with `npm start` and going to http://localhost:8080/users.
+3. You have now finished setting up the backend. Verify that it works by running it with `npm start` and going to http://localhost:8080/query/all.
 
 ### Frontend (React)
 1. Navigate to `/client` and use `npm install`.
