@@ -61,6 +61,7 @@ function DebugPage() {
     console.log(`Page loaded`);
     fetchData();
     fetchColumns();
+    document.title = "Debug";
   }, [""]);
 
   return (

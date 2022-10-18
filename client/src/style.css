@@ -1,0 +1,40 @@
+.splash {
+    font-family: Poppins-Medium;
+    width: 100%;
+    text-align: center;
+    height: 1.5em;
+}
+h1 {
+    font-size: 5em !important;
+}
+#root {
+    height: 100%;
+    background-color: #e5e1f1;
+}
+
+html, body {
+    height: 100%;
+    width: 100%
+}
+
+.homebutton {
+    background-color: white !important;
+    width: 30%;
+    border-radius: 20px !important;
+    box-shadow: 0.25em 0.5em #cac0e6;
+    font-size: 3em !important;
+    height: 2.5em;
+}
+
+.homebuttoncontainer {
+    display: flex;
+    justify-content: space-around;
+    height: 1em;
+    width: 80% !important;
+}
+
+.homepage {
+    position: relative;
+    top: 50%;
+    transform: translateY(175%);
+}

@@ -1,3 +1,20 @@
+@font-face {
+  font-family: 'Poppins-Medium';
+  src: local('Poppins-Medium'), url(./assets/Poppins-Medium.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins-Bold';
+  src: local('Poppins-Bold'), url(./assets/Poppins-Bold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins-Light';
+  src: local('Poppins-Light'), url(./assets/Poppins-Light.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'DMSans-Regular';
+  src: local('DMSans-Regular'), url(./assets/DMSans-Regular.ttf) format('truetype');
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
