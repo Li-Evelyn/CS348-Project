@@ -23,6 +23,8 @@ app.get("/", (req, res) => {
 //     console.log(req.params.option)
 //     res.json(queryMap[req.params.option])
 // });
+app.get("/query/create", Query.createTables);
+app.get("/query/drop", Query.dropTables);
 app.get("/query/all", Query.readAll);
 app.get("/query/columns", Query.columns);
 app.post("/", (req, res) => {
