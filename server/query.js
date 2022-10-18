@@ -20,6 +20,10 @@ drop_queries = [
     'GRANT ALL ON SCHEMA public TO public;'
 ]
 
+populate_queries = [
+    `COPY "User" (username, password, displayname, type) FROM '${process.env.CSV_PATH}\\user.csv' DELIMITER ','`
+]
+
 async function multiQuery(req, res, query_array) {
     data = {}
     try {
@@ -50,6 +54,9 @@ const Query = {
     },
     async dropTables(req, res) {
         await multiQuery(req, res, drop_queries);
+    },
+    async populateTables(req, res) {
+        await multiQuery(req, res, populate_queries);
     },
     async readAll(req, res, table) {
         await query(req, res, `SELECT * FROM ${table}`);    
