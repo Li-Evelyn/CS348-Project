@@ -36,10 +36,10 @@ Tutorials used:
 
 ## TODO:
 ### General
-- [ ] Database design (what tables do we need? How are they linked?)
-- [ ] Create said tables 
+- [x] Database design (what tables do we need? How are they linked?)
+- [x] Create said tables 
 - [ ] Build pages and methods for adding to said tables
-- [ ] Load DB from files?
+- [x] Load DB from files?
 - [ ] Make things prettier
 
 ### Functionality
