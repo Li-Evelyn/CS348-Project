@@ -1,5 +1,20 @@
+.medium {
+    font-family: 'Poppins-Medium' !important;
+}
+.dmsans {
+    font-family: 'DMSans-Regular' !important;
+}
+.light {
+    font-family: 'Poppins-Light' !important;
+}
+.bold {
+    font-family: 'Poppins-Bold' !important;
+}
+#root {
+    height: 100%;
+    background-color: #e5e1f1;
+}
 .splash {
-    font-family: Poppins-Medium;
     width: 100%;
     text-align: center;
     height: 1.5em;
@@ -7,11 +22,6 @@
 h1 {
     font-size: 5em !important;
 }
-#root {
-    height: 100%;
-    background-color: #e5e1f1;
-}
-
 html, body {
     height: 100%;
     width: 100%
@@ -36,4 +46,50 @@ html, body {
 .homepage {
     position: relative;
     transform: translateY(100%);
+}
+
+.sign-in {
+    width: 50%;
+    text-align: center;
+    align-items: center;
+    box-shadow: 0.75em 1.25em #cac0e6;
+    border-radius: 20px !important;
+    border-color: transparent; 
+    height: 100% !important;
+}
+
+.sign-in-button {
+    border-radius: 0px !important;
+    width: 40%;
+    padding: 30% 0;
+}
+
+.left {
+    text-align: left;
+}
+
+a {
+    color: black !important;
+}
+
+.form-label {
+    padding-left: 1em;
+    margin-bottom: 0em;
+    margin-top: 1em;
+}
+.card-body {
+    width: 60%;
+    height: 60%;
+}
+.custom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15% 0;
+    height: 100%;
+}
+
+.dropdown {
+    color: '#212529';
+    border: 1px solid #ced4da
 }
