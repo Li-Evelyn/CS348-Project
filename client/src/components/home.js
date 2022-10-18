@@ -23,9 +23,9 @@ function Home() {
 
   return (
     <div className="App">
-      <div class="container homepage">
-        <h1 class="splash">GenericMark</h1>
-        <div class="splash medium container homebuttoncontainer">
+      <div className="container homepage">
+        <h1 className="splash">GenericMark</h1>
+        <div className="splash medium container homebuttoncontainer">
           <Button variant="Light" size="lg" className="homebutton" onClick={() => {navigate('/login')}}>Login</Button>
           <Button variant="Light" size="lg" className="homebutton" onClick={() => {navigate('/register')}}>Register</Button>
         </div>

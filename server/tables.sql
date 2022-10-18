@@ -15,7 +15,7 @@ CREATE TYPE usertype AS ENUM (
 -- users entity - make sure to refer to this table using double quotes
 CREATE TABLE "User" (
     id SERIAL PRIMARY KEY, 
-    username TEXT NOT NULL UNIQUE, 
+    email TEXT NOT NULL UNIQUE, 
     password TEXT NOT NULL, 
     displayname TEXT NOT NULL, 
     type USERTYPE

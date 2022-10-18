@@ -37,6 +37,9 @@ app.post("/", (req, res) => {
     Query.add(req, res, req.body.content);
 });
 app.post("/delete", Query.deleteAll);
+app.post("/register", (req, res) => {
+    Query.register(req, res, req.body)
+})
 
 app.listen(PORT, () => {
     console.log(`Server is up and running at http://localhost:${PORT}/`);

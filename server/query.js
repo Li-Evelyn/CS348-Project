@@ -2,7 +2,7 @@ const database = require('./database');
 
 create_queries = [
     "CREATE TYPE usertype AS ENUM ('student', 'faculty', 'admin')",
-    'CREATE TABLE "User" (id SERIAL PRIMARY KEY, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, displayname TEXT NOT NULL, type USERTYPE)',
+    'CREATE TABLE "User" (id SERIAL PRIMARY KEY, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, displayname TEXT NOT NULL, type USERTYPE)',
     "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL, section INT)",
     'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (staff_id) REFERENCES "User"(id), FOREIGN KEY (course_id) REFERENCES course(id))',
     'CREATE TABLE EnrolledIn (student_id INT, course_id INT, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id) REFERENCES Course(id))',
@@ -70,6 +70,9 @@ const Query = {
     async deleteAll(req, res) {
         console.log("goodbye cruel world");
         await query(req, res, "DELETE FROM test");
+    },
+    async register(req, res, body) {
+        await query(req, res, `INSERT INTO "User" (email, password, displayname, type) VALUES ('${body.email}', '${body.password}', '${body.displayname}', '${body.type}')`)
     }
 };
 
