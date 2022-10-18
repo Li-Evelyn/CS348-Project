@@ -3,7 +3,7 @@ const database = require('./database');
 create_queries = [
     "CREATE TYPE usertype AS ENUM ('student', 'faculty', 'admin')",
     'CREATE TABLE "User" (id SERIAL PRIMARY KEY, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, displayname TEXT NOT NULL, type USERTYPE)',
-    "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL)",
+    "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL, section INT)",
     'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (course_id) REFERENCES course(id), FOREIGN KEY (staff_id) REFERENCES "User"(id))',
     'CREATE TABLE EnrolledIn (user_id INT, course_id INT, FOREIGN KEY (user_id) REFERENCES "User"(id), FOREIGN KEY (course_id) REFERENCES Course(id))',
     'CREATE TABLE Assignment (id SERIAL PRIMARY KEY, course_id INT, name TEXT NOT NULL, deadline DATE, max_grade INT CHECK (max_grade >= 0), FOREIGN KEY (course_id) REFERENCES Course(id))',

@@ -1,3 +1,5 @@
+-- ONLY FOR NOTES - these are not being read from. add any functioning queries to server/query.js in the relevant spot
+
 --delete a table
 DROP TABLE table;
 
@@ -22,7 +24,8 @@ CREATE TABLE "User" (
 -- courses entity
 CREATE TABLE Course (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    section INT
 );
 
 -- teaches relation
