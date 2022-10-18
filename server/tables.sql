@@ -32,13 +32,13 @@ CREATE TABLE Course (
 CREATE TABLE Teaches (
     course_id INT,
     staff_id INT,
-    FOREIGN KEY (course_id) REFERENCES course(id),
-    FOREIGN KEY (staff_id) REFERENCES "User"(id)
+    FOREIGN KEY (staff_id) REFERENCES "User"(id),
+    FOREIGN KEY (course_id) REFERENCES course(id)
 );
 
 -- enrolledin relation
 CREATE TABLE EnrolledIn (
-    user_id INT, 
+    student_id INT, 
     course_id INT,
     FOREIGN KEY (user_id) REFERENCES "User"(id),
     FOREIGN KEY (course_id) REFERENCES Course(id)
