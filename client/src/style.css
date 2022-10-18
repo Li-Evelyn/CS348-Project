@@ -35,6 +35,5 @@ html, body {
 
 .homepage {
     position: relative;
-    top: 50%;
-    transform: translateY(175%);
+    transform: translateY(100%);
 }

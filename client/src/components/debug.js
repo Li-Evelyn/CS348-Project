@@ -1,55 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Table } from 'react-bootstrap';
+import { Table, Dropdown, DropdownButton } from 'react-bootstrap';
+
+const tables = [
+    '"User"',
+    "Course",
+    "Teaches",
+    "EnrolledIn",
+    "Assignment",
+    "Question",
+    "File",
+    "QuestionSubmission",
+    "AssignmentSubmission",
+    "test"
+]
 
 function DebugPage() {
   const [columns, setColumns] = useState([]);
   const [content, setContent] = useState([]);
-  const [text, setText] = useState("");
-
-  const deleteData = e => {
-    e.preventDefault();
-    fetch("http://localhost:8080/delete", {
-        method: 'POST',
-        mode: 'cors',
-        body: ""
-    })
-    // .then((response) => response.json())
-    // .then((result) => {
-    //     console.log(result)
-    // })
-    window.location.reload(false);
-  }
-
-  const sendData = e => {
-    e.preventDefault();
-    const b = {'content': text};
-    fetch("http://localhost:8080/", {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        mode: 'cors',
-        body: JSON.stringify(b)
-    })
-    // .then((response) => response.json())
-    // .then((result) => {
-    //     console.log(result)
-    // })
-    window.location.reload(false);   
-  }
+  const [relation, setRelation] = useState('"User"');
 
   function fetchData() {
-    fetch("http://localhost:8080/query/all")
-    // fetch("/query")
+    console.log(`fetching data for table ${relation} with columns ${columns}`);
+    fetch(`http://localhost:8080/query/all?table=${relation}`)
         .then((response) => response.json())
         .then((data) => {
-            let db_content = data.rows.map((item) => [item.id, item.content]);
+            console.log(`data: ${JSON.stringify(data.rows)}`)
+            let db_content = data.rows.map((item) => {
+                let ret = [];
+                for (var key in columns) {
+                    // console.log(columns[key])
+                    ret.push(item[columns[key]]);
+                }
+                console.log(`ret is ${ret}`)
+                return ret;
+            });
             setContent(db_content);
         });
+    console.log(`content is ${content}`)
   }
 
   function fetchColumns() {
-    fetch("http://localhost:8080/query/columns")
+    fetch(`http://localhost:8080/query/columns?table=${relation}`)
         .then((response) => response.json())
         .then((data) => {
             let db_columns = data.rows.map((item) => item.column_name);
@@ -59,16 +50,28 @@ function DebugPage() {
 
   useEffect(() => {
     console.log(`Page loaded`);
-    fetchData();
-    fetchColumns();
+    // fetchColumns();
+    // fetchData();
     document.title = "Debug";
   }, [""]);
+
+  useEffect(() => {
+    fetchColumns();
+  }, [relation])
+
+  useEffect(() => {
+    fetchData();
+  }, [columns])
 
   return (
     <>
         <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
-            <h1 >Database</h1>
-            <Button variant="danger" style={{height: '80%'}} onClick={deleteData}>Reset Table</Button>
+            <h1>Database Viewer</h1>
+            <DropdownButton title={relation} style={{height: '80%'}}>
+                {tables.map((item, i) => {
+                    return <Dropdown.Item onClick={() => setRelation(item)}>{item}</Dropdown.Item>
+                })}
+            </DropdownButton>
         </div>
         <Table striped>
             <thead>
@@ -90,14 +93,14 @@ function DebugPage() {
                 })} 
             </tbody>
         </Table>
-        <Form onSubmit={sendData}>
+        {/* <Form onSubmit={sendData}>
             <Form.Group controlId="text">
                 <Form.Label>Content</Form.Label>
                 <Form.Control type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter content"/>
                 <Form.Text className="text-muted">Keep at it! ✨</Form.Text>
             </Form.Group>
             <Button variant="secondary" type="submit">Submit</Button>
-        </Form>
+        </Form> */}
     </>
   );
 }

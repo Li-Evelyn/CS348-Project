@@ -25,8 +25,13 @@ app.get("/", (req, res) => {
 // });
 app.get("/query/create", Query.createTables);
 app.get("/query/drop", Query.dropTables);
-app.get("/query/all", Query.readAll);
-app.get("/query/columns", Query.columns);
+app.get("/query/all", (req, res) => {
+    Query.readAll(req, res, req.query.table);
+});
+app.get("/query/columns", (req, res) => {
+    t = req.query.table == '"User"' ? 'User' : req.query.table.toLowerCase();
+    Query.columns(req, res, t);
+});
 app.post("/", (req, res) => {
     Query.add(req, res, req.body.content);
 });

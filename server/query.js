@@ -51,11 +51,11 @@ const Query = {
     async dropTables(req, res) {
         await multiQuery(req, res, drop_queries);
     },
-    async readAll(req, res) {
-        await query(req, res, "SELECT * FROM test");    
+    async readAll(req, res, table) {
+        await query(req, res, `SELECT * FROM ${table}`);    
     },
-    async columns(req, res) {
-        await query(req, res, "SELECT * FROM information_schema.columns WHERE table_name='test' AND table_catalog='cs348'");
+    async columns(req, res, table) {
+        await query(req, res, `SELECT column_name FROM information_schema.columns WHERE table_name='${table}' AND table_catalog='cs348' order by ordinal_position`);
     },
     async add(req, res, text) {
         await query(req, res, `INSERT INTO test (content) VALUES ('${text}')`);
