@@ -1,0 +1,19 @@
+user_id,course_id,assignment_name,grade,is_submitted
+21,1,Assignment 1,94,TRUE
+22,1,Assignment 1,23,TRUE
+23,2,Assignment 1,45,TRUE
+24,2,Assignment 1,45,TRUE
+25,5,A1,44,TRUE
+26,2,Assignment 1,73,TRUE
+27,4,A1,41,TRUE
+28,6,A1,33,TRUE
+29,3,Assignment 1,79,TRUE
+30,5,A1,49,TRUE
+31,6,A1,18,TRUE
+32,1,Assignment 1,35,TRUE
+33,6,A1,25,TRUE
+34,4,A1,24,TRUE
+35,5,A1,15,TRUE
+36,1,Assignment 1,5,TRUE
+37,2,Assignment 1,40,TRUE
+38,1,Assignment 1,45,TRUE
