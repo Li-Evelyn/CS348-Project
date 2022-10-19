@@ -42,6 +42,11 @@ app.post("/register", (req, res) => {
     Query.register(req, res, req.body)
 })
 
+app.get("/test/:query", (req, res) => {
+    q = req.params.query
+    Query.run(req, res, q.substring(1, q.length - 1));
+})
+
 app.listen(PORT, () => {
     console.log(`Server is up and running at http://localhost:${PORT}/`);
 });

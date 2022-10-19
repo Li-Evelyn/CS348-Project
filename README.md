@@ -46,3 +46,7 @@ Note: How to create/load the sample database is described in the development set
 * R8. View Courses, Assignments, and Submission (Faculty)
 * R9. Average Grade
 * R10. Drop Course (Student)
+
+### Developer/Admin Tools
+* Debug screen for viewing tables
+* `test` endpoint for testing arbitrary queries against the database 😱
