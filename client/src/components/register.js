@@ -57,7 +57,6 @@ function RegisterPage() {
                 <select className="dmsans light left dropdown" style={{width: '100%', 'borderRadius': '0.375em', 'borderColor': 'rgba(0, 0, 0, 0.175)', height: '2.5em', 'textIndent': '0.5em'}} value={`${dropVal}`} onChange={handleChange}>
                   <option value="student">A Student</option>
                   <option value="faculty">A Member of Faculty</option>
-                  <option value="admin">An Administrator</option>
                 </select>
               </Form.Group>
               <br></br>

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 
 function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   // TODO: add form authentication functionality
     return (
         <div className="App">
