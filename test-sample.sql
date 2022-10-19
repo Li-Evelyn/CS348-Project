@@ -3,9 +3,12 @@
 query structure is generally the same, we will have it all be one feature. */
 -- Example: Create User (after registration)
 
+SELECT * FROM "User"
+
 INSERT INTO "User" (email, password, name, type) 
 VALUES ('modell2@uwaterloo.ca', 'testpassword', 'maxodell2', '');
 
+SELECT * FROM "User"
 
 --Feature 2: Lookup/View
 /* There are also many things that can be viewed by a user, but the main one 
@@ -32,17 +35,24 @@ WHERE id IN (
 This feature is needed to add or modify a grade in case of a re-mark. */
 --Example: Add Grade
 
+SELECT * FROM AssignmentSubmission WHERE user_id=25 AND course_id=5 AND assignment_name='A1';
+
 UPDATE AssignmentSubmission
 SET grade = 100
 WHERE user_id=25 AND course_id=5 AND assignment_name='A1';
 
+SELECT * FROM AssignmentSubmission WHERE user_id=25 AND course_id=5 AND assignment_name='A1';
 
 --Feature 4: Deleting From Tables
 /* This feature can be used in a few instances, but most notably when a student drops a course. */
 --Example: Drop Course
 
+SELECT * FROM EnrolledIn;
+
 DELETE FROM EnrolledIn
-WHERE student_id = 28 AND course_id = 6
+WHERE student_id = 28 AND course_id = 6;
+
+SELECT * FROM EnrolledIn;
 
 --Feature 5: Aggregating Tables
 /* This feature will be used for many different small tidbits in the site, such as calculating
@@ -51,4 +61,4 @@ means and/or medians of questions + assignments*/
 
 SELECT AVG(AssignmentSubmission.grade) / Assignment.max_grade
 FROM (AssignmentSubmission NATURAL JOIN Assignment) as FullAssignDetails
-WHERE FullAssignDetails.name='Assignment 1' AND FullAssignDetails.course_id=1
+WHERE FullAssignDetails.name='Assignment 1' AND FullAssignDetails.course_id=1;
