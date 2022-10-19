@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+const navigate = useNavigate();
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [authenticated, setAuthenticated] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
 
   let handleSubmit = e => {
     e.preventDefault();
-    fetch(`http://localhost:8080/login`)
+    fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.rows.length > 0) {
+          setAuthenticated(true);
+          localStorage.setItem("authenticated", true)
+          localStorage.setItem("user_id", data.rows.id)
+          navigate("/dashboard");
+        }
+      })
   }
   // TODO: add form authentication functionality
     return (
