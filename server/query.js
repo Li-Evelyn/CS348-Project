@@ -1,16 +1,15 @@
 const database = require('./database');
 
-create_queries = [
+create_queries = [ // see create_tables.sql
     "CREATE TYPE usertype AS ENUM ('student', 'faculty', 'admin')",
-    'CREATE TABLE "User" (id SERIAL PRIMARY KEY, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, displayname TEXT NOT NULL, type USERTYPE)',
-    "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL, section INT)",
-    'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (staff_id) REFERENCES "User"(id), FOREIGN KEY (course_id) REFERENCES course(id))',
-    'CREATE TABLE EnrolledIn (student_id INT, course_id INT, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id) REFERENCES Course(id))',
-    'CREATE TABLE Assignment (id SERIAL PRIMARY KEY, course_id INT, name TEXT NOT NULL, deadline DATE, max_grade INT CHECK (max_grade >= 0), FOREIGN KEY (course_id) REFERENCES Course(id))',
-    'CREATE TABLE Question (assignment_id INT, num INT, description TEXT, max_grade INT CHECK (max_grade >= 0), FOREIGN KEY (assignment_id) REFERENCES Assignment(id), PRIMARY KEY (assignment_id, num))',
-    'CREATE TABLE File (id SERIAL PRIMARY KEY, fname TEXT, fpath TEXT)',
-    'CREATE TABLE QuestionSubmission (user_id INT, assignment_id INT, num INT, file_id INT DEFAULT NULL, grade INT CHECK (grade >= 0), comments TEXT DEFAULT \'\', FOREIGN KEY (user_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id, num) REFERENCES Question(assignment_id, num), FOREIGN KEY (file_id) REFERENCES File(id))',
-    'CREATE TABLE AssignmentSubmission (user_id INT, assignment_id INT, grade INT, is_submitted BOOLEAN, FOREIGN KEY (user_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id) REFERENCES Assignment(id))'
+    'CREATE TABLE "User" (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, type USERTYPE)',
+    "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL)",
+    'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (staff_id) REFERENCES "User"(id))',
+    'CREATE TABLE EnrolledIn (course_id INT, student_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (student_id) REFERENCES "User"(id))',
+    'CREATE TABLE Assignment (course_id INT, name TEXT NOT NULL, deadline DATE, max_grade INT CHECK (max_grade >= 0), FOREIGN KEY (course_id) REFERENCES Course(id), PRIMARY KEY (course_id, name))',
+    'CREATE TABLE Question (course_id INT, assignment_name TEXT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name), PRIMARY KEY (course_id, assignment_name, number))',
+    'CREATE TABLE QuestionSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name, question_number) REFERENCES Question(course_id, assignment_name, number), PRIMARY KEY (student_id, course_id, assignment_name, question_number))',
+    'CREATE TABLE AssignmentSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name))'
 ]
 
 drop_queries = [
@@ -21,7 +20,14 @@ drop_queries = [
 ]
 
 populate_queries = [
-    `COPY "User" (username, password, displayname, type) FROM '${process.env.CSV_PATH}\\user.csv' DELIMITER ','`
+    `COPY "User" (name, email, password_hash, type) FROM '${process.env.CSV_PATH}\\user.csv' DELIMITER ',' CSV HEADER`,
+    `COPY Course (name) FROM '${process.env.CSV_PATH}\\course.csv' DELIMITER ',' CSV HEADER`,
+    `COPY Teaches (course_id, staff_id) FROM '${process.env.CSV_PATH}\\teaches.csv' DELIMITER ',' CSV HEADER`,
+    `COPY EnrolledIn (course_id, student_id) FROM '${process.env.CSV_PATH}\\enrolledin.csv' DELIMITER ',' CSV HEADER`,
+    `COPY Assignment (course_id, name, deadline, max_grade) FROM '${process.env.CSV_PATH}\\assignment.csv' DELIMITER ',' CSV HEADER`,
+    `COPY Question (couse_id, assignment_name, number, max_grade) FROM '${process.env.CSV_PATH}\\question.csv' DELIMITER ',' CSV HEADER`
+    // `COPY QuestionSubmission (student_id, course_id, assignment_name, question_number, file_path, grade, staff_comments) FROM '${process.env.CSV_PATH}\\question_submission.csv' DELIMITER ',' CSV HEADER`,
+    // `COPY AssignmentSubmission (student_id, course_id, assignment_name, grade, is_submitted) FROM '${process.env.CSV_PATH}\\assignment_submission.csv' DELIMITER ',' CSV HEADER`    
 ]
 
 async function multiQuery(req, res, query_array) {
@@ -64,15 +70,8 @@ const Query = {
     async columns(req, res, table) {
         await query(req, res, `SELECT column_name FROM information_schema.columns WHERE table_name='${table}' AND table_catalog='cs348' order by ordinal_position`);
     },
-    async add(req, res, text) {
-        await query(req, res, `INSERT INTO test (content) VALUES ('${text}')`);
-    },
-    async deleteAll(req, res) {
-        console.log("goodbye cruel world");
-        await query(req, res, "DELETE FROM test");
-    },
-    async register(req, res, body) {
-        await query(req, res, `INSERT INTO "User" (email, password, displayname, type) VALUES ('${body.email}', '${body.password}', '${body.displayname}', '${body.type}')`)
+    async register(req, res, body) { // TODO: hash the password properly
+        await query(req, res, `INSERT INTO "User" (name, email, password_hash, type) VALUES ('${body.name}', '${body.email}', '${body.password}', '${body.type}')`)
     }
 };
 

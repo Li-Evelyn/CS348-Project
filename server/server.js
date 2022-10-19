@@ -33,10 +33,7 @@ app.get("/query/columns", (req, res) => {
     t = req.query.table == '"User"' ? 'User' : req.query.table.toLowerCase();
     Query.columns(req, res, t);
 });
-app.post("/", (req, res) => {
-    Query.add(req, res, req.body.content);
-});
-app.post("/delete", Query.deleteAll);
+
 app.post("/register", (req, res) => {
     Query.register(req, res, req.body)
 })

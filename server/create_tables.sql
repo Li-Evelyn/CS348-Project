@@ -1,8 +1,5 @@
 -- ONLY FOR NOTES - these are not being read from. add any functioning queries to server/query.js in the relevant spot
 
---delete a table
-DROP TABLE table;
-
 -- CREATE TABLE QUERIES
 
 -- types of users
@@ -15,17 +12,16 @@ CREATE TYPE usertype AS ENUM (
 -- users entity - make sure to refer to this table using double quotes
 CREATE TABLE "User" (
     id SERIAL PRIMARY KEY, 
+    name TEXT NOT NULL, 
     email TEXT NOT NULL UNIQUE, 
-    password TEXT NOT NULL, 
-    displayname TEXT NOT NULL, 
+    password_hash TEXT NOT NULL, 
     type USERTYPE
 );
 
 -- courses entity
 CREATE TABLE Course (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    section INT
+    name TEXT NOT NULL
 );
 
 -- teaches relation
@@ -38,60 +34,57 @@ CREATE TABLE Teaches (
 
 -- enrolledin relation
 CREATE TABLE EnrolledIn (
-    student_id INT, 
     course_id INT,
-    FOREIGN KEY (user_id) REFERENCES "User"(id),
+    student_id INT, 
+    FOREIGN KEY (student) REFERENCES "User"(id),
     FOREIGN KEY (course_id) REFERENCES Course(id)
 );
 
 -- assignment entity
 CREATE TABLE Assignment (
-    id SERIAL PRIMARY KEY,
     course_id INT,
     name TEXT NOT NULL,
     deadline DATE,
     max_grade INT CHECK (max_grade >= 0),
-    FOREIGN KEY (course_id) REFERENCES Course(id)
+    FOREIGN KEY (course_id) REFERENCES Course(id),
+    PRIMARY KEY (course_id, name)
 );
 
 -- question entity, can add an ON DELETE CASCADE to the first line
 CREATE TABLE Question (
-    assignment_id INT,
-    num INT,
-    description TEXT,
+    course_id INT,
+    assignment_name TEXT NOT NULL,
+    number INT,
     max_grade INT CHECK (max_grade >= 0),
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(id),
-    PRIMARY KEY (assignment_id, num)
-);
-
-CREATE TABLE File (
-    id SERIAL PRIMARY KEY,
-    fname TEXT,
-    fpath TEXT
+    description TEXT DEFAULT '',
+    FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name),
+    PRIMARY KEY (course_id, assignment_name, number)
 );
 
 -- questionsubmission relation
 -- note on composite keys: https://stackoverflow.com/questions/9780163/composite-key-as-foreign-key-sql
 -- maybe add another check on the grade back to the question?
 CREATE TABLE QuestionSubmission (
-    user_id INT,
-    assignment_id INT,
-    num INT,
-    file_id INT DEFAULT NULL,
+    student_id INT,
+    course_id INT,
+    assignment_name TEXT NOT NULL,
+    question_number INT,
+    file_path TEXT DEFAULT '',
     grade INT CHECK (grade >= 0),
-    comments TEXT DEFAULT '',
-    FOREIGN KEY (user_id) REFERENCES "User"(id),
-    FOREIGN KEY (assignment_id, num) REFERENCES Question(assignment_id, num),
-    FOREIGN KEY (file_id) REFERENCES File(id)
+    staff_comments TEXT DEFAULT '',
+    FOREIGN KEY (student_id) REFERENCES "User"(id),
+    FOREIGN KEY (course_id, assignment_name, question_number) REFERENCES Question(course_id, assignment_name, number),
+    PRIMARY KEY (student_id, course_id, assignment_name, question_number)
 );
 
 -- assignmentsubmission relation
 CREATE TABLE AssignmentSubmission (
-    user_id INT,
-    assignment_id INT,
+    student_id INT,
+    course_id INT,
+    assignment_name TEXT NOT NULL,
     grade INT,
     is_submitted BOOLEAN,
-    FOREIGN KEY (user_id) REFERENCES "User"(id),
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(id)
+    FOREIGN KEY (student_id) REFERENCES "User"(id),
+    FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name)
 );
 
