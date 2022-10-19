@@ -44,7 +44,7 @@ CREATE TABLE EnrolledIn (
 CREATE TABLE Assignment (
     course_id INT,
     name TEXT NOT NULL,
-    deadline DATE,
+    deadline TIMESTAMP,
     max_grade INT CHECK (max_grade >= 0),
     FOREIGN KEY (course_id) REFERENCES Course(id),
     PRIMARY KEY (course_id, name)
