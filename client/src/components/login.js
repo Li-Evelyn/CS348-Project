@@ -4,6 +4,12 @@ import { Card, Form, Button } from 'react-bootstrap';
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [authenticated, setAuthenticated] = useState("");
+
+  let handleSubmit = e => {
+    e.preventDefault();
+    fetch(`http://localhost:8080/login`)
+  }
   // TODO: add form authentication functionality
     return (
         <div className="App">
@@ -14,14 +20,14 @@ function LoginPage() {
               <Card.Body>
                 <Card.Title className="medium"><h2>Login</h2></Card.Title>
                 <Card.Subtitle className="mb-2 dmsans">Don't have an account? <a href="/register">Register here.</a></Card.Subtitle>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Form.Group className="left" controlId="email">
                     <Form.Label className="dmsans">EMAIL</Form.Label>
-                    <Form.Control type="email" className="light" placeholder="Email" />
+                    <Form.Control type="email" className="light" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
                   </Form.Group>
                   <Form.Group className="left" controlId="password">
                     <Form.Label className="dmsans">PASSWORD</Form.Label>
-                    <Form.Control type="password" className="light" placeholder="Password" />
+                    <Form.Control type="password" className="light" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
                   </Form.Group>
                   <br></br>
                   <Button type="submit" variant="dark" className="bold sign-in-button">login</Button>

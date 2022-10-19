@@ -11,12 +11,12 @@ function RegisterPage() {
     setDropVal(e.target.value);
   }
 
-  const registerUser = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     const data = {
       'email': email,
       'password': password, //this is not ok, gotta hash at some point
-      'displayname': name,
+      'name': name,
       'type': dropVal
     }
     fetch("http://localhost:8080/register", {
@@ -38,7 +38,7 @@ function RegisterPage() {
           <Card.Body>
             <Card.Title className="medium"><h2>Register</h2></Card.Title>
             <Card.Subtitle className="mb-2 dmsans">Already registered? <a href="/login">Log in.</a></Card.Subtitle>
-            <Form onSubmit={registerUser}>
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="left" controlId="name">
                 <Form.Label className="dmsans">NAME</Form.Label>
                 <Form.Control type="text" className="light" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>

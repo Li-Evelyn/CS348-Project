@@ -34,6 +34,10 @@ app.get("/query/columns", (req, res) => {
     Query.columns(req, res, t);
 });
 
+app.get("/login", (req, res) => {
+    Query.login(req, res, req.query);
+})
+
 app.post("/register", (req, res) => {
     Query.register(req, res, req.body)
 })
