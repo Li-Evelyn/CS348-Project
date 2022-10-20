@@ -1,5 +1,3 @@
--- ONLY FOR NOTES - these are not being read from. add any functioning queries to server/query.js in the relevant spot
-
 -- CREATE TABLE QUERIES
 
 -- types of users
@@ -50,7 +48,7 @@ CREATE TABLE Assignment (
     PRIMARY KEY (course_id, name)
 );
 
--- question entity, can add an ON DELETE CASCADE to the first line
+-- question entity
 CREATE TABLE Question (
     course_id INT,
     assignment_name TEXT NOT NULL,
@@ -62,8 +60,6 @@ CREATE TABLE Question (
 );
 
 -- questionsubmission relation
--- note on composite keys: https://stackoverflow.com/questions/9780163/composite-key-as-foreign-key-sql
--- maybe add another check on the grade back to the question?
 CREATE TABLE QuestionSubmission (
     student_id INT,
     course_id INT,
