@@ -1,12 +1,12 @@
 const database = require('./database');
 
 create_queries = [ // see create_tables.sql
-    "CREATE TYPE usertype AS ENUM ('student', 'faculty', 'admin')",
+    "CREATE TYPE usertype AS ENUM ('student', 'staff', 'admin')",
     'CREATE TABLE "User" (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, type USERTYPE)',
     "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL)",
     'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (staff_id) REFERENCES "User"(id))',
     'CREATE TABLE EnrolledIn (course_id INT, student_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (student_id) REFERENCES "User"(id))',
-    'CREATE TABLE Assignment (course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), FOREIGN KEY (course_id) REFERENCES Course(id), PRIMARY KEY (course_id, name))',
+    'CREATE TABLE Assignment (course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), description TEXT DEFAULT \'\', FOREIGN KEY (course_id) REFERENCES Course(id), PRIMARY KEY (course_id, name))',
     'CREATE TABLE Question (course_id INT, assignment_name TEXT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name), PRIMARY KEY (course_id, assignment_name, number))',
     'CREATE TABLE QuestionSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name, question_number) REFERENCES Question(course_id, assignment_name, number), PRIMARY KEY (student_id, course_id, assignment_name, question_number))',
     'CREATE TABLE AssignmentSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name))'
@@ -82,6 +82,11 @@ const Query = {
     async getCourses(req, res, id) {
         await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
     },
+
+    async unEnroll(req, res, uid, cid) {
+        await query(req, res, `DELETE FROM enrolledin WHERE student_id=${uid} AND course_id=${cid}`)
+    }, 
+    
     async run(req, res, q) {
         await query(req, res, q);
     }

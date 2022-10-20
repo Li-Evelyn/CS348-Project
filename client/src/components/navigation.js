@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar, Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
 
 function Navigate() {
     const [displayName, setDisplayName] = useState("")
     const [authenticated, setAuthenticated] = useState(false);
+
+    let navigate = useNavigate();
+
+    let logOut = function() {
+        localStorage.clear();
+        setAuthenticated(false);
+        navigate("/")
+    }
 
     let getDisplayName = function() {
         const isAuthed = localStorage.getItem("authenticated")
@@ -13,7 +23,6 @@ function Navigate() {
             fetch (`http://localhost:8080/user?id=${uid}`)
                 .then((response) => response.json())
                 .then ((data) => {
-                    console.log(`Found user ${data.rows["0"].name}`)
                     setDisplayName(data.rows["0"].name)
                 })
         }
@@ -21,7 +30,7 @@ function Navigate() {
     useEffect(() => {
         document.title = "GenericMark";
         getDisplayName();
-      }, []);
+    }, []);
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -38,8 +47,17 @@ function Navigate() {
                     {
                         authenticated ? 
                         <Navbar.Text>
-                            Signed in as {displayName}
+                            <Dropdown className="user-dropdown">
+                                <Dropdown.Toggle variant="light">
+                                    {displayName + "   "}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={logOut}>Log Out</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </Navbar.Text>
+                        
                         :
                         <></>
                     }

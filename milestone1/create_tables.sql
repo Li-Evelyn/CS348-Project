@@ -3,7 +3,7 @@
 -- types of users
 CREATE TYPE usertype AS ENUM (
     'student', 
-    'faculty', 
+    'staff', 
     'admin'
 );
 
@@ -44,6 +44,7 @@ CREATE TABLE Assignment (
     name TEXT NOT NULL,
     deadline TIMESTAMP,
     max_grade INT CHECK (max_grade >= 0),
+    description TEXT DEFAULT '',
     FOREIGN KEY (course_id) REFERENCES Course(id),
     PRIMARY KEY (course_id, name)
 );

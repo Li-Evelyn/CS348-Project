@@ -50,6 +50,10 @@ app.get("/courses", (req, res) => {
     Query.getCourses(req, res, req.query.uid);
 })
 
+app.get("/unenroll", (req, res) => {
+    Query.unEnroll(req, res, req.query.uid, req.query.course);
+})
+
 app.get("/test/:query", (req, res) => {
     q = req.params.query
     Query.run(req, res, q.substring(1, q.length - 1));
