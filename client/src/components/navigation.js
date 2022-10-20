@@ -1,9 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
 function Navigate() {
+    const [displayName, setDisplayName] = useState("")
+    const [authenticated, setAuthenticated] = useState(false);
+
+    let getDisplayName = function() {
+        const isAuthed = localStorage.getItem("authenticated")
+        if (isAuthed) {
+            setAuthenticated(true);
+            const uid = localStorage.getItem("user_id")
+            fetch (`http://localhost:8080/user?id=${uid}`)
+                .then((response) => response.json())
+                .then ((data) => {
+                    console.log(`Found user ${data.rows["0"].name}`)
+                    setDisplayName(data.rows["0"].name)
+                })
+        }
+    }
     useEffect(() => {
         document.title = "GenericMark";
+        getDisplayName();
       }, []);
     return (
         <Navbar bg="light" expand="lg">
@@ -11,13 +28,21 @@ function Navigate() {
                 <Navbar.Brand href="/">GenericMark</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/login">Log In</Nav.Link>
-                    <Nav.Link href="/register">Register</Nav.Link>
-                    <Nav.Link href="/debug">Debug</Nav.Link>
-                    <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-                </Nav>
+                    <Nav className="me-auto">
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/login">Log In</Nav.Link>
+                        <Nav.Link href="/register">Register</Nav.Link>
+                        <Nav.Link href="/debug">Debug</Nav.Link>
+                        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                    </Nav>
+                    {
+                        authenticated ? 
+                        <Navbar.Text>
+                            Signed in as {displayName}
+                        </Navbar.Text>
+                        :
+                        <></>
+                    }
                 </Navbar.Collapse>
             </Container>
         </Navbar>

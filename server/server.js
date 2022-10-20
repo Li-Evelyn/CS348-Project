@@ -42,6 +42,14 @@ app.post("/register", (req, res) => {
     Query.register(req, res, req.body)
 })
 
+app.get("/user", (req, res) => {
+    Query.getUser(req, res, req.query.id);
+})
+
+app.get("/courses", (req, res) => {
+    Query.getCourses(req, res, req.query.uid);
+})
+
 app.get("/test/:query", (req, res) => {
     q = req.params.query
     Query.run(req, res, q.substring(1, q.length - 1));

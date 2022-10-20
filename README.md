@@ -53,4 +53,4 @@ Note: How to create/load the sample database is described in the development set
 * `test` endpoint for testing arbitrary queries against the database
 
 ### User Interface
-* Routing; Homepage; Login/Registration pages, authentication, and queries; dashboard (with authentication gating)
+* Routing; Homepage; Login/Registration pages, authentication, and queries; dashboard (with authentication gating) displaying list of courses (TODO: individual assignment pages)

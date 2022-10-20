@@ -19,7 +19,7 @@ drop_queries = [
     'GRANT ALL ON SCHEMA public TO public;'
 ]
 
-populate_queries = [
+populate_queries = [ // see populate_tables.sql
     `COPY "User" (name, email, password_hash, type) FROM '${process.env.CSV_PATH}user.csv' DELIMITER ',' CSV HEADER`,
     `COPY Course (name) FROM '${process.env.CSV_PATH}course.csv' DELIMITER ',' CSV HEADER`,
     `COPY Teaches (course_id, staff_id) FROM '${process.env.CSV_PATH}teaches.csv' DELIMITER ',' CSV HEADER`,
@@ -75,6 +75,12 @@ const Query = {
     },
     async login(req, res, email, pw) {
         await query(req, res, `SELECT * FROM "User" WHERE email='${email}' AND password_hash='${pw}'`)
+    },
+    async getUser(req, res, id) {
+        await query(req, res, `SELECT * FROM "User" WHERE id='${id}'`)
+    },
+    async getCourses(req, res, id) {
+        await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
     },
     async run(req, res, q) {
         await query(req, res, q);

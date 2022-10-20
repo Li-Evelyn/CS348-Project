@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -7,6 +8,9 @@ function RegisterPage() {
   const [password, setPassword] = useState("");
   const [dropVal, setDropVal] = useState("student");
   const [authenticated, setAuthenticated] = useState(false)
+
+  let navigate = useNavigate();
+
   // TODO: add form authentication functionality
   let handleChange = (e) => {
     setDropVal(e.target.value);
@@ -28,7 +32,26 @@ function RegisterPage() {
       mode: 'cors',
       body: JSON.stringify(data)
     })
+    .then(() => {
+      setAuthenticated(true)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
   }
+
+  useEffect(() => {
+    if (authenticated) {
+      localStorage.setItem("authenticated", true)
+      fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.rows["0"])
+          localStorage.setItem("user_id", data.rows["0"].id)
+          navigate("/dashboard")
+        })
+    }
+  }, [authenticated])
 
   return (
     <div className="App">
