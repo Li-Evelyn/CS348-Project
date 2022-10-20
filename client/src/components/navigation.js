@@ -16,6 +16,7 @@ function Navigate() {
                     <Nav.Link href="/login">Log In</Nav.Link>
                     <Nav.Link href="/register">Register</Nav.Link>
                     <Nav.Link href="/debug">Debug</Nav.Link>
+                    <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                 </Nav>
                 </Navbar.Collapse>
             </Container>

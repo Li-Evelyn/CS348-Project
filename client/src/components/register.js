@@ -6,6 +6,7 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [dropVal, setDropVal] = useState("student");
+  const [authenticated, setAuthenticated] = useState(false)
   // TODO: add form authentication functionality
   let handleChange = (e) => {
     setDropVal(e.target.value);

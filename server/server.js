@@ -35,7 +35,7 @@ app.get("/query/columns", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    Query.login(req, res, req.query);
+    Query.login(req, res, req.query.email, req.query.pw);
 })
 
 app.post("/register", (req, res) => {

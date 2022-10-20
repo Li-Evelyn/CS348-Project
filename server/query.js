@@ -73,6 +73,9 @@ const Query = {
     async register(req, res, body) { // TODO: hash the password properly
         await query(req, res, `INSERT INTO "User" (name, email, password_hash, type) VALUES ('${body.name}', '${body.email}', '${body.password}', '${body.type}')`)
     },
+    async login(req, res, email, pw) {
+        await query(req, res, `SELECT * FROM "User" WHERE email='${email}' AND password_hash='${pw}'`)
+    },
     async run(req, res, q) {
         await query(req, res, q);
     }
