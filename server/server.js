@@ -26,6 +26,7 @@ app.get("/", (req, res) => {
 app.get("/query/create", Query.createTables);
 app.get("/query/drop", Query.dropTables);
 app.get("/query/populate", Query.populateTables);
+app.get("/query/reset", Query.resetTables);
 app.get("/query/all", (req, res) => {
     Query.readAll(req, res, req.query.table);
 });

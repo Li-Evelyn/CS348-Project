@@ -64,6 +64,10 @@ const Query = {
     async populateTables(req, res) {
         await multiQuery(req, res, populate_queries);
     },
+    async resetTables(req, res) {
+        let combined_queries = [].concat(drop_queries, create_queries, populate_queries);
+        await multiQuery(req, res, combined_queries);
+    },
     async readAll(req, res, table) {
         await query(req, res, `SELECT * FROM ${table}`);    
     },

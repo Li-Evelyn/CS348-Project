@@ -20,7 +20,7 @@ Note: Use `\conninfo` to see information about your database (it was useful for 
 5. WINDOWS ONLY - Download and store the available csv files (currently, only the "User" table gets populated) in a publicly-accessible folder (on Windows, I used C:\Users\Public\Documents, created another folder "cs348_csvs", and saved the csv files in there). Add the parent path of the csv files (for me, it was `C:\Users\Public\Documents\cs348_csvs\`) as a new environment variable: `CSV_PATH="(your csv path)"`. **Important**: For every backslash, be sure to add an additional backslash.
 FOR MAC ONLY - Navigate to your true root file (before Users) and there will be a temp shared directory called /tmp. Copy the sample_data there and add the path as a variable to your .env as such: `CSV_PATH="/tmp/sample_data"`.
 6. Navigate to http://localhost:8080/query/populate. You should see an empty row object - you can now use your SQL shell or use the frontend debug page to verify that the table(s) have been populated correctly.
-7. You have now finished setting up the backend.
+7. You have now finished setting up the backend. Note: For testing/debugging, you can visit http://localhost:8080/query/reset to call drop, create, and populate in succession.
 
 ### Frontend (React)
 1. Navigate to `/client` and use `npm install`.
@@ -49,7 +49,8 @@ Note: How to create/load the sample database is described in the development set
 
 ### Developer/Admin Tools
 * Debug screen for viewing tables
-* `test` endpoint for testing arbitrary queries against the database
+* `/test` endpoint for testing arbitrary queries against the database
+* `/query/reset` endpoing for combining drop, create, and populate table queries
 
 ### User Interface
 * Routing
