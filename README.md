@@ -34,19 +34,23 @@ Tutorials used:
 * Connecting backend to database: https://dev.to/miku86/nodejs-postgresql-how-to-connect-our-database-to-our-simple-express-server-without-an-orm-10o0
 * Connecting frontend to backend: https://rapidapi.com/blog/create-react-app-express/
 * Making things generically prettier: https://react-bootstrap.github.io/components/alerts
-
+* Basic (very insecure) authentication: https://www.makeuseof.com/redirect-user-after-login-react/
 ---
 
 ## Milestone 1
 Note: How to create/load the sample database is described in the development setup above (Backend steps 4-6). How to run the application is also described in the development setup (after setup is finished, Backend step 3 and Frontend step 2).
 
 ### Supported Features
-* R6. Registration
+**See /milestone1 for queries and output from running the queries on our sample data.**
+* R6. Registration (All Users)
 * R7. View Courses (Student)
-* R8. View Courses, Assignments, and Submission (Faculty)
-* R9. Average Grade
-* R10. Drop Course (Student)
+* R8. Update Assignment Submission Grade (Faculty)
+* R9. Drop Courses (Student)
+* R10. Average Grade
 
 ### Developer/Admin Tools
 * Debug screen for viewing tables
-* `test` endpoint for testing arbitrary queries against the database 😱
+* `test` endpoint for testing arbitrary queries against the database
+
+### User Interface
+* Routing; Homepage; Login/Registration pages, authentication, and queries; dashboard (with authentication gating) displaying list of courses (TODO: individual assignment pages)

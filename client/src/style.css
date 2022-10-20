@@ -93,3 +93,12 @@ a {
     color: '#212529';
     border: 1px solid #ced4da
 }
+
+.course-page {
+    /* background-color: white; */
+}
+
+.course-container {
+    border-radius: 20px !important;
+    box-shadow: 0.75em 1.25em #cac0e6;
+}

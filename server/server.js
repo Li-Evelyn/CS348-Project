@@ -35,11 +35,19 @@ app.get("/query/columns", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    Query.login(req, res, req.query);
+    Query.login(req, res, req.query.email, req.query.pw);
 })
 
 app.post("/register", (req, res) => {
     Query.register(req, res, req.body)
+})
+
+app.get("/user", (req, res) => {
+    Query.getUser(req, res, req.query.id);
+})
+
+app.get("/courses", (req, res) => {
+    Query.getCourses(req, res, req.query.uid);
 })
 
 app.get("/test/:query", (req, res) => {

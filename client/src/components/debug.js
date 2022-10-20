@@ -61,7 +61,7 @@ function DebugPage() {
         <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
             <h1>Database Viewer</h1>
             <DropdownButton title={relation} style={{height: '80%'}}>
-                {tables.map((item, i) => {
+                {tables.map((item) => {
                     return <Dropdown.Item onClick={() => setRelation(item)}>{item}</Dropdown.Item>
                 })}
             </DropdownButton>

@@ -3,12 +3,12 @@
 query structure is generally the same, we will have it all be one feature. */
 -- Example: Create User (after registration)
 
-SELECT * FROM "User"
+SELECT * FROM "User";
 
 INSERT INTO "User" (email, password_hash, name, type) 
 VALUES ('modell3@uwaterloo.ca', 'testpassword', 'maxodell3', 'student');
 
-SELECT * FROM "User"
+SELECT * FROM "User";
 
 --Feature 2: Lookup/View
 /* There are also many things that can be viewed by a user, but the main one 
