@@ -46,7 +46,9 @@ html, body {
 
 .homepage {
     position: relative;
-    transform: translateY(100%);
+    transform: translate(5%, 60%);
+    width: 100% !important;
+    margin: 0 0 !important; 
 }
 
 .sign-in {
@@ -86,7 +88,7 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15% 0;
+    padding: 5% 0;
     height: 100%;
 }
 
@@ -96,7 +98,10 @@ a {
 }
 
 .course-page {
-    /* background-color: white; */
+    background-color: white !important;
+    grid-area: right;
+    padding: 5% 0;
+    width: 90%;
 }
 
 .course-container {
@@ -135,4 +140,38 @@ a {
 .course-button {
     background-color: white !important;
     border: none !important;
+}
+
+.sidebar {
+    grid-area: left;
+    background-color: #cac0e6;
+}
+.sidebar-item {
+    margin: 0;
+    padding: 10% 10%;
+}
+
+.link:hover {
+    background-color: #aea0e6
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
+
+.dashboard {
+    background-color: white !important;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-areas: 'left empty right right right right right right right'; 
+}
+
+a:link {
+    text-decoration: none;
+}
+
+#root {
+    height: 100%;
 }

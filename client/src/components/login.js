@@ -19,7 +19,8 @@ function LoginPage() {
           setAuthenticated(true);
           localStorage.setItem("authenticated", true)
           localStorage.setItem("user_id", data.rows["0"].id)
-          navigate("/dashboard");
+          localStorage.setItem("user_type", data.rows["0"].type)
+          navigate(`/${data.rows["0"].type}/courses`);
         }
       })
   }

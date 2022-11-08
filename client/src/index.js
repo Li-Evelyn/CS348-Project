@@ -4,7 +4,7 @@ import Layout from "./components/layout";
 import Home from "./components/home";
 import LoginPage from "./components/login";
 import RegisterPage from "./components/register";
-import Dashboard from "./components/dashboard";
+import StudentDashboard from "./components/dashboard_s";
 import DebugPage from "./components/debug";
 import ErrorPage from "./components/error_page";
 import ReactDOM from 'react-dom/client';
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="login" element={<LoginPage />}/>
           <Route path="register" element={<RegisterPage />}/>
           <Route path="debug" element={<DebugPage />}/>
-          <Route path="dashboard" element = {<Dashboard />} />
+          <Route path="student/courses" element={<StudentDashboard />} />
           <Route path="*" element={<ErrorPage />}/>
         </Route>
       </Routes>

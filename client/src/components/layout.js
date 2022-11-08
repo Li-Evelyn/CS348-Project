@@ -7,9 +7,7 @@ function Layout() {
     return (
         <>
             <Navigate />
-            <Container>
-                <Outlet />
-            </Container>
+            <Outlet />
         </>
     )
 }
