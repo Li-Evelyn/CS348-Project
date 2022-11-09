@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Dropdown } from 'react-bootstrap';
+import Sidebar from './sidebar';
 
 function StudentDashboard() {
     const [authenticated, setAuthenticated] = useState(null);
@@ -51,23 +52,12 @@ function StudentDashboard() {
     } else {
         return (
             <div className="dashboard">
-                <div className="sidebar">
-                    <h3 className="medium sidebar-item">Courses</h3>
-                    <div>
-                        {courses.map((item, i) => 
-                            <p 
-                                key={i} 
-                                className="medium sidebar-item link clickable" 
-                                onClick={() => navigate(`${getCourseLink(item.name)}`)}>
-                                    {item.name}
-                            </p>
-                        )}
-                    </div>
-                </div>
+                <Sidebar courses={courses}/>
+                {/* change to dynamically rendered component? can also insert course/assignment page here */}
                 <div className="course-page">
                     <h2 className="medium">Courses</h2>
                     {
-                        courses.length == 0
+                        courses.length === 0
                         ? <h2>No courses to display.</h2>
                         : (
                             <div className="course-container">

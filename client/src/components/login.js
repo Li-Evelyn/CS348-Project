@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
+  // const [authenticated, setAuthenticated] = useState(false);
 
   let navigate = useNavigate();
 
@@ -16,7 +16,7 @@ function LoginPage() {
       .then((data) => {
         if (data.rows.length > 0) {
           console.log(data.rows)
-          setAuthenticated(true);
+          // setAuthenticated(true);
           localStorage.setItem("authenticated", true)
           localStorage.setItem("user_id", data.rows["0"].id)
           localStorage.setItem("user_type", data.rows["0"].type)
