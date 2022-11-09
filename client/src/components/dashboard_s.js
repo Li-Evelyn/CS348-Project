@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Dropdown } from 'react-bootstrap';
 import Sidebar from './sidebar';
+import CourseList from './courses'
 
-function StudentDashboard() {
+function StudentDashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
     const [user, setUser] = useState(null)
     const [courses, setCourses] = useState([])
@@ -52,33 +52,9 @@ function StudentDashboard() {
     } else {
         return (
             <div className="dashboard">
-                <Sidebar courses={courses}/>
+                <Sidebar courses={courses} getLink={getCourseLink}/>
                 {/* change to dynamically rendered component? can also insert course/assignment page here */}
-                <div className="course-page">
-                    <h2 className="medium">Courses</h2>
-                    {
-                        courses.length === 0
-                        ? <h2>No courses to display.</h2>
-                        : (
-                            <div className="course-container">
-                                {courses.map((item, i) => {
-                                    return (
-                                        <Card className="course-card" key={item.id}>
-                                            <Card.Body className="course-body clickable" onClick={() => navigate(`${getCourseLink(item.name)}`)}>{item.name}</Card.Body>
-                                            <Dropdown className="course-dropdown" align="end">
-                                                <Dropdown.Toggle variant="light" className="course-button">
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                    <Dropdown.Item onClick={() => setRemove(item.id)}>Drop course</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Card>
-                                    )
-                                })}
-                            </div>
-                        )
-                    }  
-                </div>
+                <CourseList courses={courses} setRemove={setRemove} getLink={getCourseLink}/>
             </div>
         );
     }

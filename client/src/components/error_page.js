@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ErrorPage() {
+function ErrorPage(props) {
     return (
         <div className="App">
           <header className="App-header container homepage">

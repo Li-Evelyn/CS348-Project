@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function LoginPage() {
+function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [authenticated, setAuthenticated] = useState(false);

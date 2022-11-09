@@ -3,7 +3,7 @@ import { Container, Nav, Navbar, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 
-function Navigate() {
+function Navigate(props) {
     const [displayName, setDisplayName] = useState("")
     const [authenticated, setAuthenticated] = useState(false);
 

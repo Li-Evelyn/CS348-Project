@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function Home() {
+function Home(props) {
   // const [content, setContent] = useState([]);
   let navigate = useNavigate();
   // grabs all data from the test database and outputs it, delimited by a space

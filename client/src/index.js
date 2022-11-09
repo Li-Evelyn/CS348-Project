@@ -14,6 +14,13 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export default function App() {
+  // since this is the parent component, we want to handle all global state here
+  // (ex. authentication, user infomation, courses lists) and pass them down to the 
+  // children components
+
+  // instead of a student dashboard, maybe have a general dashboard and 
+  // render the same kinds of elements with different onClicks?
+
   return (
     <BrowserRouter>
       <Routes>

@@ -13,7 +13,7 @@ const tables = [
     "AssignmentSubmission"
 ]
 
-function DebugPage() {
+function DebugPage(props) {
   const [columns, setColumns] = useState([]);
   const [content, setContent] = useState([]);
   const [relation, setRelation] = useState('"User"');

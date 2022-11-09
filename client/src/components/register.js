@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function RegisterPage() {
+function RegisterPage(props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

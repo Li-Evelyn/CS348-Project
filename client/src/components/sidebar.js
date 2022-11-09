@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 function Sidebar(props) {    
     let navigate = useNavigate();
 
-    // TODO: make this dynamic by user type
-    let getCourseLink = (courseName) => `/student/courses/${courseName.replace(' ', '-').toLowerCase()}`;
-    
     // TODO: if on a course page, keep active item highlighted
     return (
         <div className="sidebar">
@@ -16,7 +13,7 @@ function Sidebar(props) {
                     <p
                         key={i}
                         className="medium sidebar-item link clickable"
-                        onClick={() => navigate(`${getCourseLink(item.name)}`)}>
+                        onClick={() => navigate(`${props.getLink(item.name)}`)}>
                             {item.name}
                     </p>
                 )}
