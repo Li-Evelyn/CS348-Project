@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Card, Dropdown } from 'react-bootstrap';
 import Sidebar from './sidebar';
-import CourseList from './courses'
+// import CourseList from './courses'
 
 function StudentDashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
     const [user, setUser] = useState(null)
     const [courses, setCourses] = useState([])
     const [remove, setRemove] = useState(null)
+    const [activeCourse, setActiveCourse] = useState(null)
 
     let navigate = useNavigate();
 
@@ -26,6 +28,11 @@ function StudentDashboard(props) {
             setRemove(null);
             getCourses(user);
         }
+    }
+
+    let handleCourseSelect = (id, name) => {
+        props.setActiveCourse(id)
+        navigate(`${getCourseLink(name)}`)
     }
 
     let getCourseLink = (courseName) => `/student/courses/${courseName.replace(' ', '-').toLowerCase()}`;
@@ -52,9 +59,33 @@ function StudentDashboard(props) {
     } else {
         return (
             <div className="dashboard">
-                <Sidebar courses={courses} getLink={getCourseLink}/>
+                <Sidebar courses={courses} getLink={getCourseLink} setActiveCourse={setActiveCourse} activeCourse={activeCourse}/>
                 {/* change to dynamically rendered component? can also insert course/assignment page here */}
-                <CourseList courses={courses} setRemove={setRemove} getLink={getCourseLink}/>
+                <div className="course-page">
+                    {
+                        courses.length === 0
+                        ? <h2>No courses to display.</h2>
+                        : (
+                            <div className="course-container">
+                            <h2 className="medium">Courses</h2>
+                                {courses.map((item, i) => {
+                                    return (
+                                        <Card className="course-card" key={item.id}>
+                                            <Card.Body className="course-body clickable" onClick={() => handleCourseSelect(item.id, item.name)}>{item.name}</Card.Body>
+                                            <Dropdown className="course-dropdown" align="end">
+                                                <Dropdown.Toggle variant="light" className="course-button">
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item onClick={() => setRemove(item.id)}>Drop course</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Card>
+                                    )
+                                })}
+                            </div>
+                        )
+                    }
+                </div>
             </div>
         );
     }
