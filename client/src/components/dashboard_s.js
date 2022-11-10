@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Dropdown } from 'react-bootstrap';
 import Sidebar from './sidebar';
-import CourseList from './courses'
+import CourseList from './course_list'
+import AssignmentList from './assignment_list'
 
 function StudentDashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -10,6 +10,24 @@ function StudentDashboard(props) {
     const [courses, setCourses] = useState([])
     const [remove, setRemove] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
+    const [activeAssignment, setActiveAssignment] = useState(null)
+
+    let conditionalRender = () => {
+        switch(props.view) {
+            case 'c':
+                return <CourseList courses={courses} getLink={getCourseLink} setRemove={setRemove} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
+            case 'a':
+                return <AssignmentList course={activeCourse} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+            case 'q':
+                return <></>
+            default:
+                return <></>
+        }
+    }
+
+    useEffect(() => {
+        console.log(activeCourse)
+    }, [activeCourse])
 
     let navigate = useNavigate();
 
@@ -30,16 +48,25 @@ function StudentDashboard(props) {
         }
     }
 
-    let handleCourseSelect = (id, name) => {
-        props.setActiveCourse(id)
-        navigate(`${getCourseLink(name)}`)
+    let handleCourseSelect = (c) => {
+        setActiveCourse(c)
+        localStorage.setItem("course_name", c.name)
+        localStorage.setItem("course_id", c.id)
+        navigate(`${getCourseLink(c.name)}`)
+    }
+
+    let handleAssignmentSelect = (a) => {
+        setActiveAssignment(a);
+        localStorage.setItem("assignment_name", a.name)
+        console.log(a.name)
+        navigate(`${getAssignmentLink(a.course_id, a.name)}`)
     }
 
     let getCourseLink = (courseName) => `/student/courses/${courseName.replace(' ', '-').toLowerCase()}`;
+    let getAssignmentLink = (courseName, assignmentName) => `/student/assignment/${courseName}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
-        // console.log(isAuthed)
         if (isAuthed) {
             setAuthenticated(true);
             const uid = localStorage.getItem("user_id");
@@ -59,9 +86,9 @@ function StudentDashboard(props) {
     } else {
         return (
             <div className="dashboard">
-                <Sidebar courses={courses} getLink={getCourseLink} setActiveCourse={setActiveCourse} activeCourse={activeCourse}/>
+                <Sidebar courses={courses} handleCourseSelect={handleCourseSelect} activeCourse={activeCourse}/>
                 {/* change to dynamically rendered component? can also insert course/assignment page here */}
-                <CourseList courses={courses} getLink={getCourseLink} setActiveCourse={setActiveCourse} setRemove={setRemove}/>
+                {conditionalRender()}
             </div>
         );
     }

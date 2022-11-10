@@ -5,11 +5,6 @@ import { Card, Dropdown } from 'react-bootstrap';
 function CourseList(props) {
     let navigate = useNavigate()
 
-    let handleCourseSelect = (id, name) => {
-        props.setActiveCourse(id)
-        navigate(`${props.getLink(name)}`)
-    }
-
     useEffect(() => {
         props.setActiveCourse(null)
     }, [])
@@ -21,11 +16,11 @@ function CourseList(props) {
                 ? <h2>No courses to display.</h2>
                 : (
                     <div className="course-container">
-                    <h2 className="medium">Courses</h2>
+                        <h2 className="medium">Courses</h2>
                         {props.courses.map((item, i) => {
                             return (
                                 <Card className="course-card" key={item.id}>
-                                    <Card.Body className="course-body clickable" onClick={() => handleCourseSelect(item.id, item.name)}>{item.name}</Card.Body>
+                                    <Card.Body className="course-body clickable" onClick={() => props.handleCourseSelect(item)}>{item.name}</Card.Body>
                                     <Dropdown className="course-dropdown" align="end">
                                         <Dropdown.Toggle variant="light" className="course-button">
                                         </Dropdown.Toggle>

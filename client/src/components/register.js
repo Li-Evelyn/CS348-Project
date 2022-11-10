@@ -46,7 +46,6 @@ function RegisterPage(props) {
       fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data.rows["0"])
           localStorage.setItem("user_id", data.rows["0"].id)
           localStorage.setItem("user_type", data.rows["0"].type)
           navigate(`/${data.rows["0"].type}/courses`)

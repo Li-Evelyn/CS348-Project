@@ -42,7 +42,8 @@ function Navigate(props) {
                         <Nav.Link href="/login">Log In</Nav.Link>
                         <Nav.Link href="/register">Register</Nav.Link>
                         <Nav.Link href="/debug">Debug</Nav.Link>
-                        <Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link>
+                        {/* <Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link> */}
+                        <Nav.Link href={`/student/courses`}>Dashboard</Nav.Link>
                     </Nav>
                     {
                         authenticated ? 

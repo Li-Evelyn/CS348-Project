@@ -44,7 +44,6 @@ function DebugPage(props) {
   }
 
   useEffect(() => {
-    console.log(`Page loaded`);
     document.title = "Debug";
   }, [""]);
 

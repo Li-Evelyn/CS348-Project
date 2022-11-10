@@ -86,12 +86,14 @@ const Query = {
     async getCourses(req, res, id) {
         await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
     },
-
+    async getAssignments(req, res, id) {
+        await query(req, res, `SELECT * FROM assignment WHERE course_id=${id}`)
+    },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, `DELETE FROM enrolledin WHERE student_id=${uid} AND course_id=${cid}`)
     }, 
     
-    async run(req, res, q) {
+    async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
     }
 

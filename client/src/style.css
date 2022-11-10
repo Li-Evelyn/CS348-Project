@@ -19,7 +19,7 @@
     text-align: center;
     height: 1.5em;
 }
-h1 {
+.splash-title {
     font-size: 5em !important;
 }
 html, body {
@@ -151,9 +151,10 @@ a {
     padding: 10% 10%;
 }
 
-.link:hover {
+.link:hover, .sidebar-active {
     background-color: #aea0e6
 }
+
 
 .clickable:hover {
     cursor: pointer;
@@ -170,6 +171,10 @@ a {
 
 a:link {
     text-decoration: none;
+}
+
+.t {
+    width: 80% !important;
 }
 
 #root {

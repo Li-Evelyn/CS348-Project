@@ -29,7 +29,9 @@ export default function App() {
           <Route path="login" element={<LoginPage />}/>
           <Route path="register" element={<RegisterPage />}/>
           <Route path="debug" element={<DebugPage />}/>
-          <Route path="student/courses" element={<StudentDashboard />} />
+          <Route path="student/courses" element={<StudentDashboard view='c'/>} />
+          <Route path="student/courses/*" element={<StudentDashboard view='a'/>} />
+          <Route path="student/assignment/*" element={<StudentDashboard view='q'/>} /> 
           <Route path="*" element={<ErrorPage />}/>
         </Route>
       </Routes>

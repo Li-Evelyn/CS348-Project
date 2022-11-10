@@ -15,7 +15,6 @@ function LoginPage(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.rows.length > 0) {
-          console.log(data.rows)
           // setAuthenticated(true);
           localStorage.setItem("authenticated", true)
           localStorage.setItem("user_id", data.rows["0"].id)
