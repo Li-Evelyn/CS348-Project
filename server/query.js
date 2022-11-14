@@ -1,3 +1,4 @@
+const { unlink } = require('fs/promises');
 const database = require('./database');
 
 create_queries = [ // see create_tables.sql
@@ -83,14 +84,32 @@ const Query = {
     async getUser(req, res, id) {
         await query(req, res, `SELECT * FROM "User" WHERE id='${id}'`)
     },
-    async getCourses(req, res, id) {
-        await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
+    async getCourses(req, res, id, userType) {
+        if (userType === "student") {
+            await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
+        }
+        else if (userType === "staff") {
+            await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM teaches WHERE staff_id=${id})`)
+        }
     },
     async getAssignments(req, res, id) {
         await query(req, res, `SELECT * FROM assignment WHERE course_id=${id}`)
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, `DELETE FROM enrolledin WHERE student_id=${uid} AND course_id=${cid}`)
+    }, 
+
+    async deleteCourse(req, res, cid) {
+        await multiQuery(req, res, 
+            [`DELETE FROM teaches WHERE course_id=${cid}`,
+            `DELETE FROM enrolledin WHERE course_id=${cid}`,
+            `DELETE FROM questionsubmission WHERE course_id=${cid}`,
+            `DELETE FROM question WHERE course_id=${cid}`,
+            `DELETE FROM assignmentsubmission WHERE course_id=${cid}`,
+            `DELETE FROM assignment WHERE course_id=${cid}`,
+            `DELETE FROM course WHERE id=${cid}`
+            ]
+        )
     }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here

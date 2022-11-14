@@ -25,7 +25,8 @@ function CourseList(props) {
                                         <Dropdown.Toggle variant="light" className="course-button">
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item onClick={() => props.setRemove(item.id)}>Drop course</Dropdown.Item>
+                                            {/* assumes both staff and admin delete courses */}
+                                            <Dropdown.Item onClick={() => props.setRemove(item.id)}>{props.userType === "student" ? "Drop course" : "Delete course"}</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Card>
