@@ -6,10 +6,10 @@ create_queries = [ // see create_tables.sql
     "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL)",
     'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (staff_id) REFERENCES "User"(id))',
     'CREATE TABLE EnrolledIn (course_id INT, student_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (student_id) REFERENCES "User"(id))',
-    'CREATE TABLE Assignment (course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), description TEXT DEFAULT \'\', FOREIGN KEY (course_id) REFERENCES Course(id), PRIMARY KEY (course_id, name))',
-    'CREATE TABLE Question (course_id INT, assignment_name TEXT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name), PRIMARY KEY (course_id, assignment_name, number))',
-    'CREATE TABLE QuestionSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name, question_number) REFERENCES Question(course_id, assignment_name, number), PRIMARY KEY (student_id, course_id, assignment_name, question_number))',
-    'CREATE TABLE AssignmentSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name))'
+    'CREATE TABLE Assignment (id SERIAL PRIMARY KEY, course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), description TEXT DEFAULT \'\', FOREIGN KEY (course_id) REFERENCES Course(id))',
+    'CREATE TABLE Question (assignment_id INT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (assignment_id) REFERENCES Assignment(id), PRIMARY KEY (assignment_id, number))',
+    'CREATE TABLE QuestionSubmission (student_id INT, assignment_id INT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id, question_number) REFERENCES Question(assignment_id, number), PRIMARY KEY (student_id, assignment_id, question_number))',
+    'CREATE TABLE AssignmentSubmission (student_id INT, assignment_id INT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id) REFERENCES Assignment(id))'
 ]
 
 drop_queries = [
