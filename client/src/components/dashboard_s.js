@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './sidebar';
 import CourseList from './course_list'
 import AssignmentList from './assignment_list'
+import AssignmentView from './assignment_view';
 
 function StudentDashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -17,9 +18,9 @@ function StudentDashboard(props) {
             case 'c':
                 return <CourseList courses={courses} getLink={getCourseLink} setRemove={setRemove} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                return <AssignmentList course={activeCourse} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+                return <AssignmentList course={activeCourse} handleAssignmentSelect={handleAssignmentSelect}/>
             case 'q':
-                return <></>
+                return <AssignmentView assignment={activeAssignment}></AssignmentView>
             default:
                 return <></>
         }

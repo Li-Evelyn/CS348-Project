@@ -145,6 +145,7 @@ a {
 .sidebar {
     grid-area: left;
     background-color: #cac0e6;
+    width: 15em !important;
 }
 .sidebar-item {
     margin: 0;
@@ -166,7 +167,7 @@ a {
     width: 100%;
     margin: 0;
     display: grid;
-    grid-template-areas: 'left empty right right right right right right right'; 
+    grid-template-areas: 'left right right right right right right right'; 
 }
 
 a:link {
