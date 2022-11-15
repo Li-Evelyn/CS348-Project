@@ -111,6 +111,16 @@ const Query = {
             ]
         )
     }, 
+
+    async deleteAssignment(req, res, cid, assignment_name) {
+        await multiQuery(req, res, 
+            [`DELETE FROM questionsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
+            `DELETE FROM question WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
+            `DELETE FROM assignmentsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
+            `DELETE FROM assignment WHERE course_id=${cid} AND name='${assignment_name}'`
+            ]
+        )
+    }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);

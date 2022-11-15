@@ -63,6 +63,10 @@ app.get("/deleteCourse", (req, res) => {
     Query.deleteCourse(req, res, req.query.course);
 })
 
+app.get("/deleteAssignment", (req, res) => {
+    Query.deleteAssignment(req, res, req.query.course, req.query.assignment_name);
+})
+
 app.get("/test/:query", (req, res) => {
     q = req.params.query
     Query.run(req, res, q.substring(1, q.length - 1));

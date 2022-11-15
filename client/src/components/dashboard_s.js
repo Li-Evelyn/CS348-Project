@@ -11,17 +11,16 @@ function Dashboard(props) {
     const [courses, setCourses] = useState([])
     const [removeCourse, setRemoveCourse] = useState(null)
     const [removeAssignment, setRemoveAssignment] = useState(null)
+    const [rerenderAssignments, setRerenderAssignments] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
     const [activeAssignment, setActiveAssignment] = useState(null)
 
     let conditionalRender = () => {
         switch(props.view) {
             case 'c':
-
                 return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                // TODO: update AssignmentList for staff view
-                return <AssignmentList userType={userType} course={activeCourse} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
             case 'q':
                 return <></>
             default:
@@ -46,17 +45,22 @@ function Dashboard(props) {
     let unEnroll = function() {
         if (removeCourse != null) {
             fetch (`http://localhost:8080/unenroll?uid=${user}&course=${removeCourse}`)
-            setRemoveCourse(null);
-            getCourses(user, userType);
+            .then((response) => response.json())
+            .then(() => {
+                setRemoveCourse(null);
+                getCourses(user, userType);
+            })
         }
     }
 
-    // TODO: courses don't auto-refresh after delete? 
     let deleteCourse = function() {
         if (removeCourse != null) {
             fetch (`http://localhost:8080/deleteCourse?course=${removeCourse}`)
-            setRemoveCourse(null);
-            getCourses(user, userType);
+            .then((response) => response.json())
+            .then(() => {
+                setRemoveCourse(null);
+                getCourses(user, userType);
+            })
         }
     }
 
@@ -75,7 +79,21 @@ function Dashboard(props) {
     }
 
     let deleteAssignment = function() {
-        // TODO
+        if (removeAssignment != null) {
+            // TODO: change to assignment id
+            fetch (`http://localhost:8080/deleteAssignment?course=${removeAssignment.course_id}&assignment_name=${removeAssignment.assignment_name}`)
+            .then((response) => response.json())
+            .then(() => {
+                setRemoveAssignment(null);
+                // flips rerenderAssignments bool so child assignment_list rerenders
+                if (rerenderAssignments == null) {
+                    setRerenderAssignments(true)
+                }
+                else {
+                    setRerenderAssignments(!rerenderAssignments)
+                }
+            })
+        }
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;

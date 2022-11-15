@@ -7,6 +7,7 @@ function AssignmentList(props) {
     const [cid, setCid] = useState("")
     const [cname, setCname] = useState("")
     const [assignments, setAssignments] = useState([])
+    const [rerenderAssignments, setRerenderAssignments] = useState(null)
     let navigate = useNavigate()
 
     let getAssignments = function() {
@@ -22,6 +23,13 @@ function AssignmentList(props) {
             getAssignments();
         }
     }, [cid])
+
+    useEffect(() => {
+        if (cid) {
+            setRerenderAssignments(props.rerenderAssignments)
+            getAssignments();
+        }
+    }, [props.rerenderAssignments])
 
     useEffect(() => {
         if (!props.course) {
@@ -98,7 +106,8 @@ function AssignmentList(props) {
                                                     <Dropdown.Toggle variant="light" className="course-assignment-button">
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu>
-                                                        <Dropdown.Item onClick={() => props.setRemove(item.id)}>Delete Assignment</Dropdown.Item>
+                                                        {/* change setRemove to assignment id*/}
+                                                        <Dropdown.Item onClick={() => props.setRemove({"course_id": item.course_id, "assignment_name": item.name})}>Delete Assignment</Dropdown.Item>
                                                     </Dropdown.Menu>
                                                 </Dropdown>
                                             </Card>
