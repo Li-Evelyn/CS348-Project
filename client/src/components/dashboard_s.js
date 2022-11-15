@@ -9,17 +9,19 @@ function Dashboard(props) {
     const [user, setUser] = useState(null)
     const [userType, setUserType] = useState(null)
     const [courses, setCourses] = useState([])
-    const [remove, setRemove] = useState(null)
+    const [removeCourse, setRemoveCourse] = useState(null)
+    const [removeAssignment, setRemoveAssignment] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
     const [activeAssignment, setActiveAssignment] = useState(null)
 
     let conditionalRender = () => {
         switch(props.view) {
             case 'c':
-                return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemove} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
+
+                return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
                 // TODO: update AssignmentList for staff view
-                return <AssignmentList userType={userType} course={activeCourse} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+                return <AssignmentList userType={userType} course={activeCourse} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
             case 'q':
                 return <></>
             default:
@@ -42,18 +44,18 @@ function Dashboard(props) {
     }
 
     let unEnroll = function() {
-        if (remove != null) {
-            fetch (`http://localhost:8080/unenroll?uid=${user}&course=${remove}`)
-            setRemove(null);
+        if (removeCourse != null) {
+            fetch (`http://localhost:8080/unenroll?uid=${user}&course=${removeCourse}`)
+            setRemoveCourse(null);
             getCourses(user, userType);
         }
     }
 
     // TODO: courses don't auto-refresh after delete? 
     let deleteCourse = function() {
-        if (remove != null) {
-            fetch (`http://localhost:8080/deleteCourse?course=${remove}`)
-            setRemove(null);
+        if (removeCourse != null) {
+            fetch (`http://localhost:8080/deleteCourse?course=${removeCourse}`)
+            setRemoveCourse(null);
             getCourses(user, userType);
         }
     }
@@ -70,6 +72,10 @@ function Dashboard(props) {
         localStorage.setItem("assignment_name", a.name)
         console.log(a.name)
         navigate(`${getAssignmentLink(userType, a.course_id, a.name)}`)
+    }
+
+    let deleteAssignment = function() {
+        // TODO
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
@@ -96,7 +102,13 @@ function Dashboard(props) {
         else if (userType === "staff") {
             deleteCourse();
         }
-    }, [remove])
+    }, [removeCourse])
+
+    useEffect(() => {
+        if (userType === "staff") {
+            deleteAssignment();
+        }
+    }, [removeAssignment])
 
     if (!authenticated) {
         navigate("/login");

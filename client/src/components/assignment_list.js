@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
+import { Card, Dropdown } from 'react-bootstrap';
 
 function AssignmentList(props) {
     const [cid, setCid] = useState("")
@@ -43,38 +44,73 @@ function AssignmentList(props) {
 
 
     return (
-        <div className="course-page">
-            <h2 className="medium course-name">{cname}</h2>
+        <div className="course-assignment-page">
+            <h2 className="medium course-assignment-name">{cname}</h2>
             {
-                assignments.length === 0
-                ? <h3>No assignments to display.</h3>
-                : (
-                    <div className="course-container">
-                        <h3 className="medium">Assignments</h3>
-                        <Table className="t">
-                            <thead>
-                                <tr>
-                                    <th className="medium">Name</th>
-                                    <th className="medium">Deadline</th>
-                                    <th className="medium">Status</th>
-                                    <th className="medium">Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assignments.map((item, i) => {
-                                    return (
-                                        <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
-                                            <td className="medium">{item.name}</td>
-                                            <td className="medium">{dateString(item.deadline)}</td>
-                                            <td className="medium">CHANGE ME</td>
-                                            <td className="medium">CHANGE ME</td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </Table>
+                props.userType === "student" ?
+                    <div>
+                        {
+                            assignments.length === 0
+                            ? <h3>No assignments to display.</h3>
+                            : (
+                                <div className="course-assignment-container">
+                                    <h3 className="medium">Assignments</h3>
+                                    <Table className="t">
+                                        <thead>
+                                            <tr>
+                                                <th className="medium">Name</th>
+                                                <th className="medium">Deadline</th>
+                                                <th className="medium">Status</th>
+                                                <th className="medium">Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {assignments.map((item, i) => {
+                                                return (
+                                                    <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
+                                                        <td className="medium">{item.name}</td>
+                                                        <td className="medium">{dateString(item.deadline)}</td>
+                                                        <td className="medium">CHANGE ME</td>
+                                                        <td className="medium">CHANGE ME</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            )
+                        }
                     </div>
-                )
+                :
+                props.userType === "staff" ?
+                    <div>
+                        {
+                            assignments.length === 0
+                            ? <h2>No assignments to display.</h2>
+                            : (
+                                <div className="course-assignment-container">
+                                    <h2 className="medium">Assignments</h2>
+                                    {assignments.map((item, i) => {
+                                        return (
+                                            <Card className="course-assignment-card" key={item.id}>
+                                                <Card.Body className="course-assignment-body clickable" onClick={() => props.handleAssignmentSelect(item)}>{item.name}</Card.Body>
+                                                <Dropdown className="course-assignment-dropdown" align="end">
+                                                    <Dropdown.Toggle variant="light" className="course-assignment-button">
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item onClick={() => props.setRemove(item.id)}>Delete Assignment</Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </Card>
+                                        )
+                                    })}
+                                </div>
+                            )
+                        }
+                    </div>
+                :
+                    <div>Error: user type {props.userType} unsupported.</div>
+                
             }
         </div>
     )
