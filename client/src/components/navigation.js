@@ -23,6 +23,7 @@ function Navigate(props) {
             fetch (`http://localhost:8080/user?id=${uid}`)
                 .then((response) => response.json())
                 .then ((data) => {
+                    console.log(uid)
                     setDisplayName(data.rows["0"].name)
                 })
         }
@@ -42,8 +43,8 @@ function Navigate(props) {
                         <Nav.Link href="/login">Log In</Nav.Link>
                         <Nav.Link href="/register">Register</Nav.Link>
                         <Nav.Link href="/debug">Debug</Nav.Link>
-                        {/* <Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link> */}
-                        <Nav.Link href={`/student/courses`}>Dashboard</Nav.Link>
+                        <Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link>
+                        {/*<Nav.Link href={`/student/courses`}>Dashboard</Nav.Link>*/}
                     </Nav>
                     {
                         authenticated ? 
