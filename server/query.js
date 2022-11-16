@@ -25,9 +25,9 @@ populate_queries = [ // see populate_tables.sql
     `COPY Teaches (course_id, staff_id) FROM '${process.env.CSV_PATH}teaches.csv' DELIMITER ',' CSV HEADER`,
     `COPY EnrolledIn (course_id, student_id) FROM '${process.env.CSV_PATH}enrolledin.csv' DELIMITER ',' CSV HEADER`,
     `COPY Assignment (course_id, name, deadline, max_grade) FROM '${process.env.CSV_PATH}assignment.csv' DELIMITER ',' CSV HEADER`,
-    `COPY Question (course_id, assignment_name, number, max_grade, description) FROM '${process.env.CSV_PATH}question.csv' DELIMITER ',' CSV HEADER`,
-    `COPY QuestionSubmission (student_id, course_id, assignment_name, question_number, file_path, grade, staff_comments) FROM '${process.env.CSV_PATH}question_submission.csv' DELIMITER ',' CSV HEADER`,
-    `COPY AssignmentSubmission (student_id, course_id, assignment_name, grade, is_submitted) FROM '${process.env.CSV_PATH}assignment_submission.csv' DELIMITER ',' CSV HEADER`    
+    `COPY Question (assignment_id, number, max_grade, description) FROM '${process.env.CSV_PATH}question.csv' DELIMITER ',' CSV HEADER`,
+    `COPY QuestionSubmission (student_id, assignment_id, question_number, file_path, grade, staff_comments) FROM '${process.env.CSV_PATH}question_submission.csv' DELIMITER ',' CSV HEADER`,
+    `COPY AssignmentSubmission (student_id, assignment_id, grade, is_submitted) FROM '${process.env.CSV_PATH}assignment_submission.csv' DELIMITER ',' CSV HEADER`
 ]
 
 async function multiQuery(req, res, query_array) {
