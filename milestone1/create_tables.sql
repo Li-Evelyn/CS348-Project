@@ -34,7 +34,7 @@ CREATE TABLE Teaches (
 CREATE TABLE EnrolledIn (
     course_id INT,
     student_id INT, 
-    FOREIGN KEY (student) REFERENCES "User"(id),
+    FOREIGN KEY (student_id) REFERENCES "User"(id),
     FOREIGN KEY (course_id) REFERENCES Course(id)
 );
 
