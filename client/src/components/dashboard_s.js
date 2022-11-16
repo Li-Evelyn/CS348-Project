@@ -21,17 +21,13 @@ function Dashboard(props) {
             case 'c':
                 return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/>
             case 'q':
-                return <AssignmentView assignment={activeAssignment}></AssignmentView>
+                return <AssignmentView userType={userType} assignment={activeAssignment}></AssignmentView>
             default:
                 return <></>
         }
     }
-
-    useEffect(() => {
-        console.log(activeCourse)
-    }, [activeCourse])
 
     let navigate = useNavigate();
 
@@ -98,7 +94,7 @@ function Dashboard(props) {
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
-    let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}}/assignment/${courseName}/${assignmentName.replace(' ', '-').toLowerCase()}`
+    let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
