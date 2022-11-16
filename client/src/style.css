@@ -97,14 +97,14 @@ a {
     border: 1px solid #ced4da
 }
 
-.course-page {
+.course-assignment-page {
     background-color: white !important;
     grid-area: right;
     padding: 5% 0;
     width: 90%;
 }
 
-.course-container {
+.course-assignment-container {
 }
 
 .user-dropdown {
@@ -115,12 +115,12 @@ a {
     background-color: white !important;
 }
 
-.course-body {
+.course-assignment-body {
     margin: 0.5em 1em;
     font-family: 'Poppins-Medium';
 }
 
-.course-card {
+.course-assignment-card {
     margin: 2em 0em;
     border-radius: 20px !important;
     box-shadow: 0.75em 1.25em #cac0e6;
@@ -131,13 +131,13 @@ a {
     justify-content: space-between;
 }
 
-.course-dropdown {
+.course-assignment-dropdown {
     border: none !important;
     height: 100%;
     margin: 1em 0.5em;
 }
 
-.course-button {
+.course-assignment-button {
     background-color: white !important;
     border: none !important;
 }
