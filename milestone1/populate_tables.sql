@@ -20,7 +20,7 @@ FROM './server/sample_data/enrolledin.csv'
 DELIMITER ','
 CSV HEADER;
 
-COPY Assignment (course_id, name, deadline, max_grade)
+COPY Assignment (course_id, name, deadline, max_grade, description)
 FROM './server/sample_data/assignment.csv'
 DELIMITER ','
 CSV HEADER;

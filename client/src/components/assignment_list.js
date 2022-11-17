@@ -107,7 +107,7 @@ function AssignmentList(props) {
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu>
                                                         {/* change setRemove to assignment id*/}
-                                                        <Dropdown.Item onClick={() => props.setRemove({"course_id": item.course_id, "assignment_name": item.name})}>Delete Assignment</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => props.setRemove({"assignment_id": item.id})}>Delete Assignment</Dropdown.Item>
                                                     </Dropdown.Menu>
                                                 </Dropdown>
                                             </Card>

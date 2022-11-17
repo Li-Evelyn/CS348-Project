@@ -64,7 +64,7 @@ app.get("/deleteCourse", (req, res) => {
 })
 
 app.get("/deleteAssignment", (req, res) => {
-    Query.deleteAssignment(req, res, req.query.course, req.query.assignment_name);
+    Query.deleteAssignment(req, res, req.query.assignment_id);
 })
 
 app.get("/test/:query", (req, res) => {
