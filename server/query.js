@@ -1,5 +1,5 @@
 const { unlink } = require('fs/promises');
-const { pool } = require('./database');
+const db = require('./database');
 
 create_queries = [ // see create_tables.sql
     "CREATE TYPE usertype AS ENUM ('student', 'staff', 'admin')",
@@ -35,18 +35,20 @@ async function multiQuery(req, res, query_array, { has_args = false, concurrent 
 	// assumes query array is in the form of [[query, args],...]
     data = {}
     try {
-		console.log(query_array);
 		let rows = [];
+
 		if (concurrent) {
-			rows = await Promise.all(query_array.map(query => has_args ? pool.query(query[0], query[1]) : pool.query(query)));
+			rows = await Promise.all(query_array.map(query => has_args ? db.query(query[0], query[1]) : db.query(query)));
 		}
 
         for (let i = 0; i < query_array.length; i++) {
 			if (!concurrent) {
 				let query = query_array[i];
-				rows.push(await has_args ? pool.query(query[0], query[1]) : pool.query(query));
+				let res = has_args ? db.query(query[0], query[1]) : db.query(query);
+				
+				rows.push(await res)
 			}
-            data[i + ''] = rows[i];
+            data[i + ''] = rows[i].rows;
         }
         return res.json({data});
     } catch (error) {
@@ -58,7 +60,7 @@ async function multiQuery(req, res, query_array, { has_args = false, concurrent 
 async function query(req, res, query_string, args) {
 	// args needs to be in an array
     try {
-        const { rows } = await pool.query(query_string, args);
+        const { rows } = await db.query(query_string, args);
         return res.json({ rows });
     } catch (error) {
         console.log(`Error: ${error}`);
@@ -74,7 +76,7 @@ const Query = {
         await multiQuery(req, res, drop_queries);
     },
     async populateTables(req, res) {
-        await multiQuery(req, res, populate_queries, { concurrent : true });
+        await multiQuery(req, res, populate_queries);
     },
     async resetTables(req, res) {
         let combined_queries = [].concat(drop_queries, create_queries, populate_queries);
@@ -121,7 +123,7 @@ const Query = {
             	['DELETE FROM assignment WHERE course_id=$1',[cid]],
             	['DELETE FROM course WHERE id=$1',[cid]],
             ]
-        )
+        , { has_args: true })
     }, 
 
     async deleteAssignment(req, res, aid) {
@@ -132,7 +134,7 @@ const Query = {
             	['DELETE FROM assignmentsubmission WHERE assignment_id=$1', [aid]],
             	['DELETE FROM assignment WHERE id=$1', [aid]],
             ]
-        )
+        , { has_args: true })
     }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here
