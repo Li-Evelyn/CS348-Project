@@ -8,7 +8,6 @@ const tables = [
     "EnrolledIn",
     "Assignment",
     "Question",
-    "File",
     "QuestionSubmission",
     "AssignmentSubmission"
 ]
