@@ -5,7 +5,7 @@ const pool = new Pool({
     connectionString: DATABASE_URL
 });
 
-function query(text) {
+function basic_query(text) {
     return new Promise((resolve, reject) => {
         pool
             .query(text)
@@ -19,5 +19,5 @@ function query(text) {
 }
 
 module.exports = {
-    query
+	pool,
 };
