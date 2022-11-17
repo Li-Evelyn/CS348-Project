@@ -34,9 +34,9 @@ populate_queries = [ // see populate_tables.sql
 async function multiQuery(req, res, query_array) {
     data = {}
     try {
+		let rows = await Promise.all(query_array.map(query => database.query(query)));
         for (let i = 0; i < query_array.length; i++) {
-            let { rows } = await database.query(query_array[i]);
-            data[i + ''] = { rows }
+            data[i + ''] = rows[i];
         }
         return res.json({data})
     } catch (error) {
