@@ -1,5 +1,4 @@
-const { unlink } = require('fs/promises');
-const database = require('./database');
+const db = require('./database');
 
 create_queries = [ // see create_tables.sql
     "CREATE TYPE usertype AS ENUM ('student', 'staff', 'admin')",
@@ -18,7 +17,7 @@ drop_queries = [
     'CREATE SCHEMA public;',
     'GRANT ALL ON SCHEMA public TO postgres;',
     'GRANT ALL ON SCHEMA public TO public;'
-]
+];
 
 populate_queries = [ // see populate_tables.sql
     `COPY "User" (name, email, password_hash, type) FROM '${process.env.CSV_PATH}user.csv' DELIMITER ',' CSV HEADER`,
@@ -31,26 +30,40 @@ populate_queries = [ // see populate_tables.sql
     `COPY AssignmentSubmission (student_id, assignment_id, grade, is_submitted) FROM '${process.env.CSV_PATH}assignment_submission.csv' DELIMITER ',' CSV HEADER`
 ]
 
-async function multiQuery(req, res, query_array) {
+async function multiQuery(req, res, query_array, { has_args = false, concurrent = false } = {} ) {
+	// assumes query array is in the form of [[query, args],...]
     data = {}
     try {
+		let rows = [];
+
+		if (concurrent) {
+			rows = await Promise.all(query_array.map(query => has_args ? db.query(query[0], query[1]) : db.query(query)));
+		}
+
         for (let i = 0; i < query_array.length; i++) {
-            let { rows } = await database.query(query_array[i]);
-            data[i + ''] = { rows }
+			if (!concurrent) {
+				let cur_query = query_array[i];
+				let res = has_args ? db.query(cur_query[0], cur_query[1]) : db.query(cur_query);
+				
+				rows.push(await res)
+			}
+			
+            data[i + ''] = rows[i].rows;
         }
-        return res.json({data})
+        return res.json({data});
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.log(`Error: ${error.stack}`);
         return res.send(error);
     }
 }
 
-async function query(req, res, query_string) {
+async function query(req, res, query_string, args) {
+	// args needs to be in an array
     try {
-        const { rows } = await database.query(query_string);
+        const { rows } = await db.query(query_string, args);
         return res.json({ rows });
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.log(`Error: ${error.stack}`);
         return res.send(error);
     }
 }
@@ -70,56 +83,58 @@ const Query = {
         await multiQuery(req, res, combined_queries);
     },
     async readAll(req, res, table) {
-        await query(req, res, `SELECT * FROM ${table}`);    
+        await query(req, res, `SELECT * FROM ${table}`);
     },
     async columns(req, res, table) {
-        await query(req, res, `SELECT column_name FROM information_schema.columns WHERE table_name='${table}' AND table_catalog='cs348' order by ordinal_position`);
+        await query(req, res, 'SELECT column_name FROM information_schema.columns WHERE table_name=$1 AND table_catalog=\'cs348\' order by ordinal_position', [table]);
     },
     async register(req, res, body) { // TODO: hash the password properly
-        await query(req, res, `INSERT INTO "User" (name, email, password_hash, type) VALUES ('${body.name}', '${body.email}', '${body.password}', '${body.type}')`)
+        await query(req, res, 'INSERT INTO "User" (name, email, password_hash, type) VALUES ($1, $2, $3, $4)', [body.name, body.email, body.password, body.type])
     },
     async login(req, res, email, pw) {
-        await query(req, res, `SELECT * FROM "User" WHERE email='${email}' AND password_hash='${pw}'`)
+        await query(req, res, 'SELECT * FROM "User" WHERE email=$1 AND password_hash=$2', [email, pw])
     },
     async getUser(req, res, id) {
-        await query(req, res, `SELECT * FROM "User" WHERE id='${id}'`)
+        await query(req, res, 'SELECT * FROM "User" WHERE id=$1', [id])
     },
     async getCourses(req, res, id, userType) {
         if (userType === "student") {
-            await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=${id})`)
+            await query(req, res, 'SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=$1)', [id])
         }
         else if (userType === "staff") {
-            await query(req, res, `SELECT * FROM course WHERE id IN (SELECT course_id FROM teaches WHERE staff_id=${id})`)
+            await query(req, res, 'SELECT * FROM course WHERE id IN (SELECT course_id FROM teaches WHERE staff_id=$1)', [id])
         }
     },
     async getAssignments(req, res, id) {
-        await query(req, res, `SELECT * FROM assignment WHERE course_id=${id}`)
+        await query(req, res, 'SELECT * FROM assignment WHERE course_id=$1', [id])
     },
     async unEnroll(req, res, uid, cid) {
-        await query(req, res, `DELETE FROM enrolledin WHERE student_id=${uid} AND course_id=${cid}`)
+        await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
     }, 
 
     async deleteCourse(req, res, cid) {
         await multiQuery(req, res, 
-            [`DELETE FROM teaches WHERE course_id=${cid}`,
-            `DELETE FROM enrolledin WHERE course_id=${cid}`,
-            `DELETE FROM questionsubmission WHERE course_id=${cid}`,
-            `DELETE FROM question WHERE course_id=${cid}`,
-            `DELETE FROM assignmentsubmission WHERE course_id=${cid}`,
-            `DELETE FROM assignment WHERE course_id=${cid}`,
-            `DELETE FROM course WHERE id=${cid}`
+            [
+				['DELETE FROM teaches WHERE course_id=$1',[cid]],
+            	['DELETE FROM enrolledin WHERE course_id=$1',[cid]],
+            	['DELETE FROM questionsubmission WHERE course_id=$1',[cid]],
+            	['DELETE FROM question WHERE course_id=$1',[cid]],
+            	['DELETE FROM assignmentsubmission WHERE course_id=$1',[cid]],
+            	['DELETE FROM assignment WHERE course_id=$1',[cid]],
+            	['DELETE FROM course WHERE id=$1',[cid]],
             ]
-        )
+        , { has_args: true })
     }, 
 
     async deleteAssignment(req, res, aid) {
         await multiQuery(req, res, 
-            [`DELETE FROM questionsubmission WHERE assignment_id=${aid}`,
-            `DELETE FROM question WHERE assignment_id=${aid}`,
-            `DELETE FROM assignmentsubmission WHERE assignment_id=${aid}`,
-            `DELETE FROM assignment WHERE id=${aid}`
+            [
+				['DELETE FROM questionsubmission WHERE assignment_id=$1', [aid]],
+            	['DELETE FROM question WHERE assignment_id=$1', [aid]],
+            	['DELETE FROM assignmentsubmission WHERE assignment_id=$1', [aid]],
+            	['DELETE FROM assignment WHERE id=$1', [aid]],
             ]
-        )
+        , { has_args: true })
     }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here

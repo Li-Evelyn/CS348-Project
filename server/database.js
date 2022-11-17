@@ -5,19 +5,8 @@ const pool = new Pool({
     connectionString: DATABASE_URL
 });
 
-function query(text) {
-    return new Promise((resolve, reject) => {
-        pool
-            .query(text)
-            .then((res) => {
-                resolve(res);
-            })
-            .catch((err) => {
-                reject(err);
-            });
-    });
-}
-
 module.exports = {
-    query
+	query: (text, params) => {
+		return pool.query(text, params);
+	},
 };
