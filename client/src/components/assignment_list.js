@@ -7,8 +7,34 @@ function AssignmentList(props) {
     const [cid, setCid] = useState("")
     const [cname, setCname] = useState("")
     const [assignments, setAssignments] = useState([])
+    const [assignmentSubmissions, setAssignmentSubmissions] = useState({})
     const [rerenderAssignments, setRerenderAssignments] = useState(null)
     let navigate = useNavigate()
+
+    let getAssignmentSubmissions = function() { // will correspond 1-1 with assignment list
+        fetch(`http://localhost:8080/assignmentsubmissions?uid=${props.user}`)
+        .then((response) => response.json())
+        .then((data) => {
+            let ret = {}
+            data.rows.map((item) => {
+                let ss = "Not submitted";
+                let g = "-"
+                let gc = "black"
+                let sc = "red"
+                if (item.grade) {
+                    ss = "Graded"
+                    g = `${item.grade}%`
+                    gc = "green"
+                    sc = "green"
+                } else if (item.is_submitted) {
+                    ss = "Submitted"
+                    sc = "green"
+                }
+                ret[item.assignment_id] = {"text": ss, "grade": g, "tcolor": sc, "gcolor": gc}
+            })
+            setAssignmentSubmissions(ret)
+        })
+    }
 
     let getAssignments = function() {
         fetch(`http://localhost:8080/assignments?cid=${cid}`)
@@ -19,15 +45,25 @@ function AssignmentList(props) {
     }
 
     useEffect(() => {
+        props.clearActiveAssignment();
+    }, [])
+
+    useEffect(() => {
         if (cid) {
-            getAssignments();
+            getAssignments()
+        }
+    }, [assignmentSubmissions])
+
+    useEffect(() => {
+        if (cid) {
+            getAssignmentSubmissions();
         }
     }, [cid])
 
     useEffect(() => {
         if (cid) {
             setRerenderAssignments(props.rerenderAssignments)
-            getAssignments();
+            getAssignmentSubmissions();
         }
     }, [props.rerenderAssignments])
 
@@ -49,7 +85,6 @@ function AssignmentList(props) {
         const d = new Date(s)
         return d.toString().substring(0, 21)
     }
-
 
     return (
         <div className="course-assignment-page">
@@ -74,12 +109,13 @@ function AssignmentList(props) {
                                         </thead>
                                         <tbody>
                                             {assignments.map((item, i) => {
+                                                let as = assignmentSubmissions[item.id]
                                                 return (
                                                     <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
                                                         <td className="medium">{item.name}</td>
                                                         <td className="medium">{dateString(item.deadline)}</td>
-                                                        <td className="medium">CHANGE ME</td>
-                                                        <td className="medium">CHANGE ME</td>
+                                                        <td className="medium" style={{color: as.tcolor}}>{as.text}</td>
+                                                        <td className="medium" style={{color: as.gcolor}}>{as.grade}</td>
                                                     </tr>
                                                 )
                                             })}

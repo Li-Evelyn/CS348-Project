@@ -108,6 +108,15 @@ const Query = {
     async getAssignments(req, res, id) {
         await query(req, res, 'SELECT * FROM assignment WHERE course_id=$1', [id])
     },
+    async getAssignment(req, res, id) {
+        await query(req, res, 'SELECT * FROM assignment WHERE id=$1', [id])
+    },
+    async getQuestions(req, res, aid) {
+        await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
+    },
+    async getAssignmentSubmissions(req, res, id) {
+        await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+    },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
     }, 
