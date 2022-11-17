@@ -1,4 +1,3 @@
-const { unlink } = require('fs/promises');
 const db = require('./database');
 
 create_queries = [ // see create_tables.sql
@@ -64,7 +63,7 @@ async function query(req, res, query_string, args) {
         const { rows } = await db.query(query_string, args);
         return res.json({ rows });
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.log(`Error: ${error.stack}`);
         return res.send(error);
     }
 }
@@ -87,7 +86,7 @@ const Query = {
         await query(req, res, `SELECT * FROM ${table}`);
     },
     async columns(req, res, table) {
-        await query(req, res, 'SELECT column_name FROM information_schema.columns WHERE table_name=$1 AND table_catalog="cs348" order by ordinal_position', [table]);
+        await query(req, res, 'SELECT column_name FROM information_schema.columns WHERE table_name=$1 AND table_catalog=\'cs348\' order by ordinal_position', [table]);
     },
     async register(req, res, body) { // TODO: hash the password properly
         await query(req, res, 'INSERT INTO "User" (name, email, password_hash, type) VALUES ($1, $2, $3, $4)', [body.name, body.email, body.password, body.type])
