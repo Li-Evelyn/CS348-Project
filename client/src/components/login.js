@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import shajs from 'sha.js';
 
 function LoginPage(props) {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ function LoginPage(props) {
 
   let handleSubmit = e => {
     e.preventDefault();
-    fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
+    fetch(`http://localhost:8080/login?email=${email}&pw=${shajs('sha256').update(password).digest('hex')}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.rows.length > 0) {

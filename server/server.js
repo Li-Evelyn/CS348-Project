@@ -6,6 +6,7 @@ const User = require("./query");
 const Query = require('./query');
 const app = express();
 const PORT = 8080;
+const { hashPassword } = require('./hash');
 // const queryMap = {
 //     "all": Query.readAll,
 //     "columns": Query.columns
@@ -36,11 +37,16 @@ app.get("/query/columns", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    Query.login(req, res, req.query.email, req.query.pw);
+    Query.login(req, res, req.query.email, hashPassword(req.query.pw));
 })
 
 app.post("/register", (req, res) => {
-    Query.register(req, res, req.body)
+    Query.register(req, res, {
+		name: req.body.name,
+		email: req.body.email,
+		password: hashPassword(req.body.password),
+		type: req.body.type,
+	})
 })
 
 app.get("/user", (req, res) => {
