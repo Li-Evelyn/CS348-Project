@@ -82,4 +82,3 @@ CREATE TABLE AssignmentSubmission (
     FOREIGN KEY (student_id) REFERENCES "User"(id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(id)
 );
-

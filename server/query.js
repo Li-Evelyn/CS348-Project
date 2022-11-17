@@ -7,10 +7,10 @@ create_queries = [ // see create_tables.sql
     "CREATE TABLE Course (id SERIAL PRIMARY KEY, name TEXT NOT NULL)",
     'CREATE TABLE Teaches (course_id INT, staff_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (staff_id) REFERENCES "User"(id))',
     'CREATE TABLE EnrolledIn (course_id INT, student_id INT, FOREIGN KEY (course_id) REFERENCES Course(id), FOREIGN KEY (student_id) REFERENCES "User"(id))',
-    'CREATE TABLE Assignment (course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), description TEXT DEFAULT \'\', FOREIGN KEY (course_id) REFERENCES Course(id), PRIMARY KEY (course_id, name))',
-    'CREATE TABLE Question (course_id INT, assignment_name TEXT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name), PRIMARY KEY (course_id, assignment_name, number))',
-    'CREATE TABLE QuestionSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name, question_number) REFERENCES Question(course_id, assignment_name, number), PRIMARY KEY (student_id, course_id, assignment_name, question_number))',
-    'CREATE TABLE AssignmentSubmission (student_id INT, course_id INT, assignment_name TEXT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (course_id, assignment_name) REFERENCES Assignment(course_id, name))'
+    'CREATE TABLE Assignment (id SERIAL PRIMARY KEY, course_id INT, name TEXT NOT NULL, deadline TIMESTAMP, max_grade INT CHECK (max_grade >= 0), description TEXT DEFAULT \'\', FOREIGN KEY (course_id) REFERENCES Course(id))',
+    'CREATE TABLE Question (assignment_id INT NOT NULL, number INT, max_grade INT CHECK (max_grade >= 0), description TEXT, FOREIGN KEY (assignment_id) REFERENCES Assignment(id), PRIMARY KEY (assignment_id, number))',
+    'CREATE TABLE QuestionSubmission (student_id INT, assignment_id INT NOT NULL, question_number INT, file_path TEXT DEFAULT \'\', grade INT CHECK (grade >= 0), staff_comments TEXT DEFAULT \'\', FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id, question_number) REFERENCES Question(assignment_id, number), PRIMARY KEY (student_id, assignment_id, question_number))',
+    'CREATE TABLE AssignmentSubmission (student_id INT, assignment_id INT NOT NULL, grade INT, is_submitted BOOLEAN, FOREIGN KEY (student_id) REFERENCES "User"(id), FOREIGN KEY (assignment_id) REFERENCES Assignment(id))'
 ]
 
 drop_queries = [
@@ -25,10 +25,10 @@ populate_queries = [ // see populate_tables.sql
     `COPY Course (name) FROM '${process.env.CSV_PATH}course.csv' DELIMITER ',' CSV HEADER`,
     `COPY Teaches (course_id, staff_id) FROM '${process.env.CSV_PATH}teaches.csv' DELIMITER ',' CSV HEADER`,
     `COPY EnrolledIn (course_id, student_id) FROM '${process.env.CSV_PATH}enrolledin.csv' DELIMITER ',' CSV HEADER`,
-    `COPY Assignment (course_id, name, deadline, max_grade) FROM '${process.env.CSV_PATH}assignment.csv' DELIMITER ',' CSV HEADER`,
-    `COPY Question (course_id, assignment_name, number, max_grade, description) FROM '${process.env.CSV_PATH}question.csv' DELIMITER ',' CSV HEADER`,
-    `COPY QuestionSubmission (student_id, course_id, assignment_name, question_number, file_path, grade, staff_comments) FROM '${process.env.CSV_PATH}question_submission.csv' DELIMITER ',' CSV HEADER`,
-    `COPY AssignmentSubmission (student_id, course_id, assignment_name, grade, is_submitted) FROM '${process.env.CSV_PATH}assignment_submission.csv' DELIMITER ',' CSV HEADER`    
+    `COPY Assignment (course_id, name, deadline, max_grade, description) FROM '${process.env.CSV_PATH}assignment.csv' DELIMITER ',' CSV HEADER`,
+    `COPY Question (assignment_id, number, max_grade, description) FROM '${process.env.CSV_PATH}question.csv' DELIMITER ',' CSV HEADER`,
+    `COPY QuestionSubmission (student_id, assignment_id, question_number, file_path, grade, staff_comments) FROM '${process.env.CSV_PATH}question_submission.csv' DELIMITER ',' CSV HEADER`,
+    `COPY AssignmentSubmission (student_id, assignment_id, grade, is_submitted) FROM '${process.env.CSV_PATH}assignment_submission.csv' DELIMITER ',' CSV HEADER`
 ]
 
 async function multiQuery(req, res, query_array) {
@@ -112,12 +112,12 @@ const Query = {
         )
     }, 
 
-    async deleteAssignment(req, res, cid, assignment_name) {
+    async deleteAssignment(req, res, aid) {
         await multiQuery(req, res, 
-            [`DELETE FROM questionsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM question WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM assignmentsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM assignment WHERE course_id=${cid} AND name='${assignment_name}'`
+            [`DELETE FROM questionsubmission WHERE assignment_id=${aid}`,
+            `DELETE FROM question WHERE assignment_id=${aid}`,
+            `DELETE FROM assignmentsubmission WHERE assignment_id=${aid}`,
+            `DELETE FROM assignment WHERE id=${aid}`
             ]
         )
     }, 
