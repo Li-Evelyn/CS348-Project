@@ -41,18 +41,21 @@ async function multiQuery(req, res, query_array, { has_args = false, concurrent 
 			rows = await Promise.all(query_array.map(query => has_args ? db.query(query[0], query[1]) : db.query(query)));
 		}
 
+		console.log("Got here\n");
         for (let i = 0; i < query_array.length; i++) {
 			if (!concurrent) {
-				let query = query_array[i];
-				let res = has_args ? db.query(query[0], query[1]) : db.query(query);
+				let cur_query = query_array[i];
+				console.log(`Query ${cur_query}\n`);
+				let res = has_args ? db.query(cur_query[0], cur_query[1]) : db.query(cur_query);
 				
 				rows.push(await res)
 			}
+			
             data[i + ''] = rows[i].rows;
         }
         return res.json({data});
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.log(`Error: ${error.stack}`);
         return res.send(error);
     }
 }
@@ -116,7 +119,7 @@ const Query = {
         await multiQuery(req, res, 
             [
 				['DELETE FROM teaches WHERE course_id=$1',[cid]],
-            	['DELETE FROM enrolledin WHERE course_id=$1',[cid]]
+            	['DELETE FROM enrolledin WHERE course_id=$1',[cid]],
             	['DELETE FROM questionsubmission WHERE course_id=$1',[cid]],
             	['DELETE FROM question WHERE course_id=$1',[cid]],
             	['DELETE FROM assignmentsubmission WHERE course_id=$1',[cid]],
