@@ -112,12 +112,12 @@ const Query = {
         )
     }, 
 
-    async deleteAssignment(req, res, cid, assignment_name) {
+    async deleteAssignment(req, res, aid) {
         await multiQuery(req, res, 
-            [`DELETE FROM questionsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM question WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM assignmentsubmission WHERE course_id=${cid} AND assignment_name='${assignment_name}'`,
-            `DELETE FROM assignment WHERE course_id=${cid} AND name='${assignment_name}'`
+            [`DELETE FROM questionsubmission WHERE assignment_id=${aid}`,
+            `DELETE FROM question WHERE assignment_id=${aid}`,
+            `DELETE FROM assignmentsubmission WHERE assignment_id=${aid}`,
+            `DELETE FROM assignment WHERE id=${aid}`
             ]
         )
     }, 
