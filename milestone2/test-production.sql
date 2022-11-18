@@ -71,18 +71,12 @@ SELECT AVG(grade)
 FROM AssignmentSubmission
 WHERE assignment_id = 1;
 
-DROP INDEX idx_assignment_id;
-
 --Feature 6: Grade Distribution
 /* This feature will be used for displaying the grade distribution for a given assignment*/
 --Example: Display grade distribution of an assignment
 
-WITH grade_ranges(user_id, assignment_id, grade_range) AS
-    (SELECT student_id, assignment_id, FLOOR(grade/10)*10 FROM
-    Assignment JOIN AssignmentSubmission ON Assignment.id = AssignmentSubmission.assignment_id
-    WHERE grade IS NOT NULL)
-SELECT COUNT(*), grade_range FROM grade_ranges
-WHERE assignment_id = 1
+SELECT COUNT(*), FLOOR(grade/10)*10 AS grade_range FROM AssignmentSubmission
+WHERE assignment_id = 1 AND grade IS NOT NULL
 GROUP BY grade_range
 ORDER BY grade_range ASC;
 

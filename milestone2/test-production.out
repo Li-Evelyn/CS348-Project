@@ -28,6 +28,14 @@ INSERT 0 1
  492 | Torie Kondratenya | tkondratenyac0@oracle.com | 22io3A        | student
 (10 rows)
 
+CREATE INDEX
+ id  |       name        |             email             | password_hash |  type   
+-----+-------------------+-------------------------------+---------------+---------
+ 129 | Lurline Aikenhead | laikenheadh@printfriendly.com | 4ldlYxl5k     | student
+(1 row)
+
+DROP INDEX
+
 Feature 2
 CREATE INDEX
    name   
@@ -80,6 +88,7 @@ DELETE 1
 (9 rows)
 
 Feature 5
+CREATE INDEX
          avg         
 ---------------------
  33.7500000000000000
@@ -95,3 +104,4 @@ Feature 6
      3 |          50
 (5 rows)
 
+DROP INDEX
