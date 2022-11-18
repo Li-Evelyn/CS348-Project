@@ -113,11 +113,11 @@ const Query = {
     }, 
 
     async deleteCourse(req, res, cid) {
-        await query(req, res,`DELETE FROM course WHERE id=${cid}`, [cid])
+        await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
 
     async deleteAssignment(req, res, aid) {
-        await query(req, res, `DELETE FROM assignment WHERE id=${aid}`, [aid])
+        await query(req, res, `DELETE FROM assignment WHERE id=$1`, [aid])
     }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here
