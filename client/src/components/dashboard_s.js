@@ -76,7 +76,7 @@ function Dashboard(props) {
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
         console.log(a.name)
-        navigate(`${getAssignmentLink(userType, activeCourse.name, a.id)}`)
+        navigate(`${getAssignmentLink(userType, activeCourse.name, a.name)}`)
     }
 
     let deleteAssignment = function() {
@@ -98,7 +98,7 @@ function Dashboard(props) {
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
-    let getAssignmentLink = (userType, courseName, assignmentID) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentID}`
+    let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
