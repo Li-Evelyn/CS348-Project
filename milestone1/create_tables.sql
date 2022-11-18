@@ -26,16 +26,16 @@ CREATE TABLE Course (
 CREATE TABLE Teaches (
     course_id INT,
     staff_id INT,
-    FOREIGN KEY (staff_id) REFERENCES "User"(id),
-    FOREIGN KEY (course_id) REFERENCES course(id)
+    FOREIGN KEY (staff_id) REFERENCES "User"(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES course(id) ON DELETE CASCADE
 );
 
 -- enrolledin relation
 CREATE TABLE EnrolledIn (
     course_id INT,
     student_id INT, 
-    FOREIGN KEY (student_id) REFERENCES "User"(id),
-    FOREIGN KEY (course_id) REFERENCES Course(id)
+    FOREIGN KEY (student_id) REFERENCES "User"(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Course(id) ON DELETE CASCADE
 );
 
 -- assignment entity
@@ -46,7 +46,8 @@ CREATE TABLE Assignment (
     deadline TIMESTAMP,
     max_grade INT CHECK (max_grade >= 0),
     description TEXT DEFAULT '',
-    FOREIGN KEY (course_id) REFERENCES Course(id),
+    UNIQUE (course_id, name),
+    FOREIGN KEY (course_id) REFERENCES Course(id) ON DELETE CASCADE,
     PRIMARY KEY (course_id, name)
 );
 
@@ -56,7 +57,7 @@ CREATE TABLE Question (
     number INT,
     max_grade INT CHECK (max_grade >= 0),
     description TEXT DEFAULT '',
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(id),
+    FOREIGN KEY (assignment_id) REFERENCES Assignment(id) ON DELETE CASCADE,
     PRIMARY KEY (assignment_id, number)
 );
 
@@ -68,8 +69,8 @@ CREATE TABLE QuestionSubmission (
     file_path TEXT DEFAULT '',
     grade INT CHECK (grade >= 0),
     staff_comments TEXT DEFAULT '',
-    FOREIGN KEY (student_id) REFERENCES "User"(id),
-    FOREIGN KEY (assignment_id, question_number) REFERENCES Question(assignment_id, number),
+    FOREIGN KEY (student_id) REFERENCES "User"(id) ON DELETE CASCADE,
+    FOREIGN KEY (assignment_id, question_number) REFERENCES Question(assignment_id, number) ON DELETE CASCADE,
     PRIMARY KEY (student_id, assignment_id, question_number)
 );
 
@@ -79,6 +80,6 @@ CREATE TABLE AssignmentSubmission (
     assignment_id INT
     grade INT,
     is_submitted BOOLEAN,
-    FOREIGN KEY (student_id) REFERENCES "User"(id),
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(id)
+    FOREIGN KEY (student_id) REFERENCES "User"(id) ON DELETE CASCADE,
+    FOREIGN KEY (assignment_id) REFERENCES Assignment(id) ON DELETE CASCADE
 );

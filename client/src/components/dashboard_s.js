@@ -72,13 +72,13 @@ function Dashboard(props) {
         setActiveAssignment(a);
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
-        navigate(`${getAssignmentLink(userType, a.name, a.id)}`)
+        navigate(`${getAssignmentLink(userType, a.name, a.name)}`)
     }
 
     let clearActiveAssignment = () => {
         setActiveAssignment(null);
         localStorage.removeItem("assignment_name")
-        localStorage.removeItem("assignment_id")
+        localStorage.removeItem("assignment_name")
     }
 
     let deleteAssignment = function() {
@@ -100,7 +100,7 @@ function Dashboard(props) {
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
-    let getAssignmentLink = (userType, courseName, assignmentID) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentID}`
+    let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
