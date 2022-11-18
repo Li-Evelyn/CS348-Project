@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react'; // useReducer
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './sidebar';
 import CourseList from './course_list'
 import AssignmentList from './assignment_list'
+import AssignmentView from './assignment_view';
 
 function Dashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -20,17 +21,13 @@ function Dashboard(props) {
             case 'c':
                 return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect}/> // TODO: persist this
+                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} user={user} clearActiveAssignment={clearActiveAssignment}/>
             case 'q':
-                return <></>
+                return <AssignmentView userType={userType} assignment={activeAssignment}></AssignmentView>
             default:
                 return <></>
         }
     }
-
-    useEffect(() => {
-        console.log(activeCourse)
-    }, [activeCourse])
 
     let navigate = useNavigate();
 
@@ -75,8 +72,13 @@ function Dashboard(props) {
         setActiveAssignment(a);
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
-        console.log(a.name)
         navigate(`${getAssignmentLink(userType, activeCourse.name, a.name)}`)
+    }
+
+    let clearActiveAssignment = () => {
+        setActiveAssignment(null);
+        localStorage.removeItem("assignment_name")
+        localStorage.removeItem("assignment_id")
     }
 
     let deleteAssignment = function() {

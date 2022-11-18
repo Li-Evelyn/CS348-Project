@@ -4,7 +4,7 @@ import Layout from "./components/layout";
 import Home from "./components/home";
 import LoginPage from "./components/login";
 import RegisterPage from "./components/register";
-import Dashboard from "./components/dashboard_s";
+import Dashboard from "./components/dashboard";
 import DebugPage from "./components/debug";
 import ErrorPage from "./components/error_page";
 import ReactDOM from 'react-dom/client';
