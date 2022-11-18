@@ -1,0 +1,107 @@
+Feature 1
+ id  |       name        |           email           | password_hash |  type   
+-----+-------------------+---------------------------+---------------+---------
+ 500 | Wilhelm Hallum    | whallumca@g.co            | 5NZNAEh14ro6  | student
+ 499 | Mela Jay          | mjayc9@deliciousdays.com  | IRimgezqBG    | student
+ 498 | Smitty Haythorn   | shaythornc8@go.com        | MJxYUTKv69Oz  | student
+ 497 | Moritz Tidy       | mtidyc7@histats.com       | WWrMf3lcuy    | student
+ 496 | Caron Wetton      | cwettonc6@gov.uk          | Z9c5fWIU      | student
+ 495 | Rowen Golde       | rgoldec5@dyndns.org       | A7hadd        | student
+ 494 | Ugo Bernuzzi      | ubernuzzic2@webnode.com   | yzoUmuyb      | student
+ 493 | Audie Harrowing   | aharrowingc1@ebay.com     | FHV1Vk        | student
+ 492 | Torie Kondratenya | tkondratenyac0@oracle.com | 22io3A        | student
+ 491 | Odilia Goldie     | ogoldiebz@dailymail.co.uk | wwxPOzm       | student
+(10 rows)
+
+INSERT 0 1
+ id  |       name        |           email           | password_hash |  type   
+-----+-------------------+---------------------------+---------------+---------
+ 501 | maxodell3         | modell3@uwaterloo.ca      | testpassword  | student
+ 500 | Wilhelm Hallum    | whallumca@g.co            | 5NZNAEh14ro6  | student
+ 499 | Mela Jay          | mjayc9@deliciousdays.com  | IRimgezqBG    | student
+ 498 | Smitty Haythorn   | shaythornc8@go.com        | MJxYUTKv69Oz  | student
+ 497 | Moritz Tidy       | mtidyc7@histats.com       | WWrMf3lcuy    | student
+ 496 | Caron Wetton      | cwettonc6@gov.uk          | Z9c5fWIU      | student
+ 495 | Rowen Golde       | rgoldec5@dyndns.org       | A7hadd        | student
+ 494 | Ugo Bernuzzi      | ubernuzzic2@webnode.com   | yzoUmuyb      | student
+ 493 | Audie Harrowing   | aharrowingc1@ebay.com     | FHV1Vk        | student
+ 492 | Torie Kondratenya | tkondratenyac0@oracle.com | 22io3A        | student
+(10 rows)
+
+CREATE INDEX
+ id  |       name        |             email             | password_hash |  type   
+-----+-------------------+-------------------------------+---------------+---------
+ 129 | Lurline Aikenhead | laikenheadh@printfriendly.com | 4ldlYxl5k     | student
+(1 row)
+
+DROP INDEX
+
+Feature 2
+CREATE INDEX
+   name   
+----------
+ CS 135
+ ECON 101
+(2 rows)
+
+DROP INDEX
+
+Feature 3
+ student_id | assignment_id | grade | is_submitted 
+------------+---------------+-------+--------------
+        116 |             5 |    50 | t
+(1 row)
+
+UPDATE 1
+ student_id | assignment_id | grade | is_submitted 
+------------+---------------+-------+--------------
+        116 |             5 |   100 | t
+(1 row)
+
+Feature 4
+ course_id | student_id 
+-----------+------------
+         1 |        126
+         1 |        129
+         1 |        153
+         1 |        176
+         1 |        245
+         1 |        259
+         1 |        318
+         1 |        326
+         1 |        356
+         1 |        494
+(10 rows)
+
+DELETE 1
+ course_id | student_id 
+-----------+------------
+         1 |        126
+         1 |        129
+         1 |        153
+         1 |        245
+         1 |        259
+         1 |        318
+         1 |        326
+         1 |        356
+         1 |        494
+(9 rows)
+
+Feature 5
+CREATE INDEX
+         avg         
+---------------------
+ 33.7500000000000000
+(1 row)
+
+Feature 6
+ count | grade_range 
+-------+-------------
+     1 |          10
+     2 |          20
+     1 |          30
+     1 |          40
+     3 |          50
+(5 rows)
+
+DROP INDEX
