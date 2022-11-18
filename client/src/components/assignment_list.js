@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import { Card, Dropdown } from 'react-bootstrap';
 
@@ -8,8 +7,6 @@ function AssignmentList(props) {
     const [cname, setCname] = useState("")
     const [assignments, setAssignments] = useState([])
     const [assignmentSubmissions, setAssignmentSubmissions] = useState({})
-    const [rerenderAssignments, setRerenderAssignments] = useState(null)
-    let navigate = useNavigate()
 
     let getAssignmentSubmissions = function() { // will correspond 1-1 with assignment list
         fetch(`http://localhost:8080/assignmentsubmissions?uid=${props.user}`)
@@ -31,6 +28,7 @@ function AssignmentList(props) {
                     sc = "green"
                 }
                 ret[item.assignment_id] = {"text": ss, "grade": g, "tcolor": sc, "gcolor": gc}
+                return 0
             })
             setAssignmentSubmissions(ret)
         })
@@ -62,7 +60,7 @@ function AssignmentList(props) {
 
     useEffect(() => {
         if (cid) {
-            setRerenderAssignments(props.rerenderAssignments)
+            props.setRerenderAssignments(props.rerenderAssignments)
             getAssignmentSubmissions();
         }
     }, [props.rerenderAssignments])

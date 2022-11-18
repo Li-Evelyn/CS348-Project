@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 function AssignmentView(props) {
     const [aid, setAid] = useState('')

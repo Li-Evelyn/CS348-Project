@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react'; // useReducer
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './sidebar';
 import CourseList from './course_list'
@@ -21,7 +21,7 @@ function Dashboard(props) {
             case 'c':
                 return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} user={user} clearActiveAssignment={clearActiveAssignment}/>
+                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} user={user} clearActiveAssignment={clearActiveAssignment}/>
             case 'q':
                 return <AssignmentView userType={userType} assignment={activeAssignment}></AssignmentView>
             default:

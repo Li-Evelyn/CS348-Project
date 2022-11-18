@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Card, Dropdown } from 'react-bootstrap';
 
 function CourseList(props) {
-    let navigate = useNavigate()
 
     useEffect(() => {
         props.setActiveCourse(null)
