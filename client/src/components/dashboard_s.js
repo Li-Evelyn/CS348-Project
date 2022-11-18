@@ -78,7 +78,7 @@ function Dashboard(props) {
     let clearActiveAssignment = () => {
         setActiveAssignment(null);
         localStorage.removeItem("assignment_name")
-        localStorage.removeItem("assignment_name")
+        localStorage.removeItem("assignment_id")
     }
 
     let deleteAssignment = function() {
