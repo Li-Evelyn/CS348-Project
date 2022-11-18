@@ -1,4 +1,4 @@
-name,email,password,type
+name,username,password_hash,type
 Toby Halahan,thalahan0@uwaterloo.ca,NyLOYwupE6Kp,admin
 Sherye Tadman,stadman1@uwaterloo.ca,EisBkV7h2s,admin
 Margarethe Custy,mcusty2@uwaterloo.ca,QppZ1cl0B,admin

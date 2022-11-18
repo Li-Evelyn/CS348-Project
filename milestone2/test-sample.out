@@ -1,0 +1,142 @@
+Feature 1:
+ id |         name         |            email            | password_hash |  type   
+----+----------------------+-----------------------------+---------------+---------
+  1 | Toby Halahan         | thalahan0@uwaterloo.ca      | NyLOYwupE6Kp  | admin
+  2 | Sherye Tadman        | stadman1@uwaterloo.ca       | EisBkV7h2s    | admin
+  3 | Margarethe Custy     | mcusty2@uwaterloo.ca        | QppZ1cl0B     | admin
+  4 | Hyman Falconer       | hfalconer3@uwaterloo.ca     | fNjsmp        | admin
+  5 | Virginie Krink       | vkrink4@uwaterloo.ca        | Sfc0G8Y5      | admin
+  6 | Kiri Marielle        | kmarielle5@uwaterloo.ca     | fwDAEHoHGGTo  | staff
+  7 | Marla Lewer          | mlewer6@uwaterloo.ca        | ZyzHL3q1t1X   | staff
+  8 | Hilario Dundendale   | hdundendale7@uwaterloo.ca   | 5YJEpQC9      | staff
+  9 | Kissiah Costi        | kcosti8@uwaterloo.ca        | 2BANxCLT      | staff
+ 10 | Viviyan Cristofolini | vcristofolini9@uwaterloo.ca | QXl421uloBcz  | staff
+ 11 | Van Myrkus           | vmyrkusa@uwaterloo.ca       | bOUn4ExtvF    | staff
+ 12 | Waiter Oxbrough      | woxbroughb@uwaterloo.ca     | ixSRyat       | staff
+ 13 | Bale O'Connolly      | boconnollyc@uwaterloo.ca    | LX2aAXeqEB    | staff
+ 14 | Louis Dand           | ldandd@uwaterloo.ca         | tMig2N        | staff
+ 15 | Sharron Redmond      | sredmonde@uwaterloo.ca      | 7D7jMd        | staff
+ 16 | Boy Stanbury         | bstanburyf@uwaterloo.ca     | PnulD3C       | staff
+ 17 | Gerick Langabeer     | glangabeerg@uwaterloo.ca    | 3Ac98nrXzH    | staff
+ 18 | Gussi Toynbee        | gtoynbeeh@uwaterloo.ca      | 3qhqQnxBEEh   | staff
+ 19 | Jody Desforges       | jdesforgesi@uwaterloo.ca    | 10FyfdC799    | staff
+ 20 | Cart Davioud         | cdavioudj@uwaterloo.ca      | RvxRPaar      | staff
+ 21 | Palm Snead           | psneadk@uwaterloo.ca        | MntRxW5Lko    | student
+ 22 | Demetrius Furman     | dfurmanl@uwaterloo.ca       | JXknMkpXav    | student
+ 23 | Erda Middlewick      | emiddlewickm@uwaterloo.ca   | HhcGfsZVO2l   | student
+ 24 | Morry Smart          | msmartn@uwaterloo.ca        | dmEuSGcx4     | student
+ 25 | Nikolia Deegan       | ndeegano@uwaterloo.ca       | UtH8xgXfYYN   | student
+ 26 | Amalie Callis        | acallisp@uwaterloo.ca       | KSZ0iXktr     | student
+ 27 | Candide Simoens      | csimoensq@uwaterloo.ca      | cDQwtwcCb2    | student
+ 28 | Gordan Dowse         | gdowser@uwaterloo.ca        | cR3uD6nT      | student
+ 29 | Leonore Melia        | lmelias@uwaterloo.ca        | toVhzUpI      | student
+ 30 | Happy Falla          | hfallat@uwaterloo.ca        | COX5oZJNT6    | student
+ 31 | Philomena Carillo    | pcarillou@uwaterloo.ca      | ON0cFNCY      | student
+ 32 | Samaria Lafont       | slafontv@uwaterloo.ca       | 3bwQqEj03v    | student
+ 33 | Yuma Jenkinson       | yjenkinsonw@uwaterloo.ca    | PwrTjIA3Z     | student
+ 34 | Ninette Diggar       | ndiggarx@uwaterloo.ca       | lApGsMD       | student
+ 35 | Dacy Pleven          | dpleveny@uwaterloo.ca       | ErgPCdBu      | student
+ 36 | Zachery Rabbe        | zrabbez@uwaterloo.ca        | HtarDmcaU     | student
+ 37 | Ash Banbrick         | abanbrick10@uwaterloo.ca    | G8AxfsUOq     | student
+ 38 | Jesus Newgrosh       | jnewgrosh11@uwaterloo.ca    | 9jfUAr        | student
+ 39 | Madalyn Sillick      | msillick12@uwaterloo.ca     | XnQzAKH       | student
+ 40 | Thelma Kalkhoven     | tkalkhoven13@uwaterloo.ca   | jM8WkdCQy     | student
+(40 rows)
+
+INSERT 0 1
+ id |         name         |            email            | password_hash |  type   
+----+----------------------+-----------------------------+---------------+---------
+  1 | Toby Halahan         | thalahan0@uwaterloo.ca      | NyLOYwupE6Kp  | admin
+  2 | Sherye Tadman        | stadman1@uwaterloo.ca       | EisBkV7h2s    | admin
+  3 | Margarethe Custy     | mcusty2@uwaterloo.ca        | QppZ1cl0B     | admin
+  4 | Hyman Falconer       | hfalconer3@uwaterloo.ca     | fNjsmp        | admin
+  5 | Virginie Krink       | vkrink4@uwaterloo.ca        | Sfc0G8Y5      | admin
+  6 | Kiri Marielle        | kmarielle5@uwaterloo.ca     | fwDAEHoHGGTo  | staff
+  7 | Marla Lewer          | mlewer6@uwaterloo.ca        | ZyzHL3q1t1X   | staff
+  8 | Hilario Dundendale   | hdundendale7@uwaterloo.ca   | 5YJEpQC9      | staff
+  9 | Kissiah Costi        | kcosti8@uwaterloo.ca        | 2BANxCLT      | staff
+ 10 | Viviyan Cristofolini | vcristofolini9@uwaterloo.ca | QXl421uloBcz  | staff
+ 11 | Van Myrkus           | vmyrkusa@uwaterloo.ca       | bOUn4ExtvF    | staff
+ 12 | Waiter Oxbrough      | woxbroughb@uwaterloo.ca     | ixSRyat       | staff
+ 13 | Bale O'Connolly      | boconnollyc@uwaterloo.ca    | LX2aAXeqEB    | staff
+ 14 | Louis Dand           | ldandd@uwaterloo.ca         | tMig2N        | staff
+ 15 | Sharron Redmond      | sredmonde@uwaterloo.ca      | 7D7jMd        | staff
+ 16 | Boy Stanbury         | bstanburyf@uwaterloo.ca     | PnulD3C       | staff
+ 17 | Gerick Langabeer     | glangabeerg@uwaterloo.ca    | 3Ac98nrXzH    | staff
+ 18 | Gussi Toynbee        | gtoynbeeh@uwaterloo.ca      | 3qhqQnxBEEh   | staff
+ 19 | Jody Desforges       | jdesforgesi@uwaterloo.ca    | 10FyfdC799    | staff
+ 20 | Cart Davioud         | cdavioudj@uwaterloo.ca      | RvxRPaar      | staff
+ 21 | Palm Snead           | psneadk@uwaterloo.ca        | MntRxW5Lko    | student
+ 22 | Demetrius Furman     | dfurmanl@uwaterloo.ca       | JXknMkpXav    | student
+ 23 | Erda Middlewick      | emiddlewickm@uwaterloo.ca   | HhcGfsZVO2l   | student
+ 24 | Morry Smart          | msmartn@uwaterloo.ca        | dmEuSGcx4     | student
+ 25 | Nikolia Deegan       | ndeegano@uwaterloo.ca       | UtH8xgXfYYN   | student
+ 26 | Amalie Callis        | acallisp@uwaterloo.ca       | KSZ0iXktr     | student
+ 27 | Candide Simoens      | csimoensq@uwaterloo.ca      | cDQwtwcCb2    | student
+ 28 | Gordan Dowse         | gdowser@uwaterloo.ca        | cR3uD6nT      | student
+ 29 | Leonore Melia        | lmelias@uwaterloo.ca        | toVhzUpI      | student
+ 30 | Happy Falla          | hfallat@uwaterloo.ca        | COX5oZJNT6    | student
+ 31 | Philomena Carillo    | pcarillou@uwaterloo.ca      | ON0cFNCY      | student
+ 32 | Samaria Lafont       | slafontv@uwaterloo.ca       | 3bwQqEj03v    | student
+ 33 | Yuma Jenkinson       | yjenkinsonw@uwaterloo.ca    | PwrTjIA3Z     | student
+ 34 | Ninette Diggar       | ndiggarx@uwaterloo.ca       | lApGsMD       | student
+ 35 | Dacy Pleven          | dpleveny@uwaterloo.ca       | ErgPCdBu      | student
+ 36 | Zachery Rabbe        | zrabbez@uwaterloo.ca        | HtarDmcaU     | student
+ 37 | Ash Banbrick         | abanbrick10@uwaterloo.ca    | G8AxfsUOq     | student
+ 38 | Jesus Newgrosh       | jnewgrosh11@uwaterloo.ca    | 9jfUAr        | student
+ 39 | Madalyn Sillick      | msillick12@uwaterloo.ca     | XnQzAKH       | student
+ 40 | Thelma Kalkhoven     | tkalkhoven13@uwaterloo.ca   | jM8WkdCQy     | student
+ 41 | maxodell3            | modell3@uwaterloo.ca        | testpassword  | student
+(41 rows)
+
+Feature 2
+   name   
+----------
+ CS 135
+ CS 246
+ ECON 101
+(3 rows)
+
+Feature 3
+ student_id | assignment_id | grade | is_submitted 
+------------+---------------+-------+--------------
+         25 |             7 |    44 | t
+(1 row)
+
+UPDATE 1
+ student_id | assignment_id | grade | is_submitted 
+------------+---------------+-------+--------------
+         25 |             7 |   100 | t
+(1 row)
+
+Feature 4
+ course_id | student_id 
+-----------+------------
+         6 |         28
+         6 |         31
+         6 |         33
+(3 rows)
+
+DELETE 1
+ course_id | student_id 
+-----------+------------
+         6 |         31
+         6 |         33
+(2 rows)
+
+Feature 5
+         avg         
+---------------------
+ 40.4000000000000000
+(1 row)
+
+Feature 6
+ count | grade_range 
+-------+-------------
+     1 |           0
+     1 |          20
+     1 |          30
+     1 |          40
+     1 |          90
+(5 rows)
+
