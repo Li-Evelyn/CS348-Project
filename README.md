@@ -57,3 +57,27 @@ Note: How to create/load the sample database is described in the development set
 * Homepage
 * Login/Registration pages, authentication, and queries; logging out (TODO: update navbar on login/register automatically)
 * Student Dashboard (with authentication gating) displaying list of courses (TODO: individual assignment pages), unenrollment
+
+---
+
+## Milestone 2
+Note: If you were previously signed in to a user's account, please log out and update your local files with the new production data found in `/server/production_data` as described in Backend Step 5
+
+### Supported Features
+** See /milestone2 for queries and output from running the queries on our production dataset and the submitted report.pdf for how to test non-query-only features.**
+* R6. Registration (All Users)
+* R7. View Courses (Student)
+* R8. Update Assignment Submission Grade (Staff) - query only
+* R9. Drop Courses (Student)
+* R10. Average Grade - query only
+* R11. Assignment Grade Distribution (All Users) - query only
+
+### Developer/Admin Tools/Improvements
+* Updated schemas (`ON DELETE CASCADE` for foreign keys, adding serialized `id` field to the assignment table as a primary key)
+* SQL Injection protection, better backend architecture
+* Fixed Debug page to reflect updated schemas
+
+### User Interface
+* Dynamic dashboard for all users
+* Staff Course/Assignment View (TODO: grading interface/functionality)
+* Student Assignment/Question View (TODO: proper form submission for questions)
