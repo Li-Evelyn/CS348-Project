@@ -53,21 +53,34 @@ function AssignmentView(props) {
     return (
         <div className="course-assignment-page">
             <h2 className="medium course-assignment-name">{assignment.name}</h2>
-            <h5 className="medium" style={{color: "#5271ff"}}>Deadline: {dateString(assignment.deadline)}</h5>
-            <p className="light">{assignment.description}</p>
-            <h4 className="medium">Submit Your Assignment</h4>
-            {questions.map((item, i) => {
-                return (
-                    <Card className="course-assignment-card" key={i}>
-                        <Card.Body style={{width: "60% !important"}}>
-                            <Card.Title>Question {item.number}</Card.Title>
-                            <Card.Subtitle>{item.description}</Card.Subtitle>
-                            <input type="file"/>
-                        </Card.Body>
-                        <Card.Text className="medium">/{item.max_grade}</Card.Text>
-                    </Card>
-                )
-            })}
+            {
+                props.userType === "student" ?
+                <div>
+                    <h5 className="medium" style={{color: "#5271ff"}}>Deadline: {dateString(assignment.deadline)}</h5>
+                    <p className="light">{assignment.description}</p>
+                    <h4 className="medium">Submit Your Assignment</h4>
+                    {questions.map((item, i) => {
+                        return (
+                            <Card className="course-assignment-card" key={i}>
+                                <Card.Body style={{width: "60% !important"}}>
+                                    <Card.Title>Question {item.number}</Card.Title>
+                                    <Card.Subtitle>{item.description}</Card.Subtitle>
+                                    <input type="file"/>
+                                </Card.Body>
+                                <Card.Text className="medium">/{item.max_grade}</Card.Text>
+                            </Card>
+                        )
+                    })}
+                </div>
+                :
+                props.userType === "staff" ?
+                <div>
+                    <p>TODO</p>
+                </div>
+                :
+                <div>Error: user type {props.userType} unsupported.</div>
+            }
+            
         </div>
     )
 }
