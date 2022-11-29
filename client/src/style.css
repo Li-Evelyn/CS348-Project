@@ -28,6 +28,10 @@ html, body {
     background-color: #e5e1f1 !important;
 }
 
+.App {
+    height: 90%;
+}
+
 .homebutton {
     background-color: white !important;
     width: 30%;
@@ -46,9 +50,9 @@ html, body {
 
 .homepage {
     position: relative;
-    transform: translate(5%, 60%);
+    transform: translate(0%, 100%);
+    text-align: center !important;
     width: 100% !important;
-    margin: 0 0 !important; 
 }
 
 .sign-in {
