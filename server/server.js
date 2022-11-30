@@ -2,8 +2,10 @@ require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser")
+const fileUpload = require("express-fileupload")
 const User = require("./query");
 const Query = require('./query');
+const fs = require('fs')
 const app = express();
 const PORT = 8080;
 // const queryMap = {
@@ -11,6 +13,8 @@ const PORT = 8080;
 //     "columns": Query.columns
 // }
 
+app.use(express.static("file_submissions"))
+app.use(fileUpload())
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -82,6 +86,30 @@ app.get("/deleteAssignment", (req, res) => {
 app.get("/test/:query", (req, res) => {
     q = req.params.query
     Query.run(req, res, q.substring(1, q.length - 1));
+})
+
+app.post('/upload', (req, res) => {
+    const files = Object.entries(req.files)
+    const info = []
+    let uid = req.query.uid;
+    let aid = req.query.aid;
+    for (const [key, value] of files) {
+        let s = key.split("-")
+        let uid = s[0]
+        let aid = s[1]
+        let qnum = s[2]
+        fs.mkdirSync(`${__dirname}/file_submissions/u${uid}/a${aid}`, {recursive: true}, (err) => {
+            if (err) throw err;
+        })
+        value.mv(`${__dirname}/file_submissions/u${uid}/a${aid}/q${qnum}`, (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).send({ msg: "Error occurred"})
+            }
+        })
+        info.push({uid: uid, aid: aid, qnum: qnum, file_path:`/u${uid}/a${aid}/q${qnum}`})
+    }
+    Query.submitAssignment(req, res, uid, aid, info);
 })
 
 app.listen(PORT, () => {

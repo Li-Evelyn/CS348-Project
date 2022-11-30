@@ -131,6 +131,15 @@ const Query = {
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
+    },
+
+    async submitAssignment(req, res, uid, aid, info) {
+        let submitQueries = [[`UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2`, [uid, aid]]]
+        for (let i = 0; i < info.length; i++) {
+            submitQueries.push([`INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4)`, [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
+        }
+        console.log(submitQueries)
+        await multiQuery(req, res, submitQueries)
     }
 
 };

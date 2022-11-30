@@ -1,10 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 
 function AssignmentView(props) {
     const [aid, setAid] = useState('')
     const [assignment, setAssignment] = useState({})
     const [questions, setQuestions] = useState([])
+    const [questionSubmissions, setQuestionSubmissions] = useState([])
+    const [files, setFiles] = useState([])
+
+    let getFileRefs = function() {
+        let ret = []
+        for (let i = 0; i < questions.length; i++) {
+            ret.push(React.createRef())
+        }
+        setFiles(ret)
+    }
+
+    let handleAssignmentSubmit = function(e) {
+        e.preventDefault();
+        let uid = localStorage.getItem("user_id")
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].current.files) {
+                let file = files[i].current.files[0];
+                formData.append(`${uid}-${aid}-${i+1}`, file) // single submission
+            }
+        }
+        fetch(`http://localhost:8080/upload?uid=${uid}&aid=${aid}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+        })
+    }
+
+    let getQuestionSubmissions = function() { // will correspond 1-1 with questions list IN THEORY
+        
+    }
 
     let getAssignment = function(id) {
         fetch(`http://localhost:8080/assignment?id=${id}`)
@@ -26,6 +60,19 @@ function AssignmentView(props) {
             setQuestions(data.rows)
         })
     }
+
+    useEffect(() => {
+        if (files) {
+            console.log(files)
+        }
+    }, [files])
+
+    useEffect(() => {
+        if (questions) {
+            getFileRefs()
+            // getQuestionSubmissions()
+        }
+    }, [questions])
 
     useEffect(() => {
         if (aid) {
@@ -54,7 +101,7 @@ function AssignmentView(props) {
             <h2 className="medium course-assignment-name">{assignment.name}</h2>
             {
                 props.userType === "student" ?
-                <div>
+                <form onSubmit={handleAssignmentSubmit}>
                     <h5 className="medium" style={{color: "#5271ff"}}>Deadline: {dateString(assignment.deadline)}</h5>
                     <p className="light">{assignment.description}</p>
                     <h4 className="medium">Submit Your Assignment</h4>
@@ -62,15 +109,21 @@ function AssignmentView(props) {
                         return (
                             <Card className="course-assignment-card" key={i}>
                                 <Card.Body style={{width: "60% !important"}}>
-                                    <Card.Title>Question {item.number}</Card.Title>
+                                    <Card.Title className="question-title">
+                                        <>Question {item.number}</>
+                                        <>
+                                            {/* something here for grading mayhaps */}
+                                            <Card.Text className="medium">/{item.max_grade}</Card.Text>
+                                        </>
+                                    </Card.Title>
                                     <Card.Subtitle>{item.description}</Card.Subtitle>
-                                    <input type="file"/>
+                                    <input type="file" className="input-submission" ref={files[i]}/>
                                 </Card.Body>
-                                <Card.Text className="medium">/{item.max_grade}</Card.Text>
                             </Card>
                         )
                     })}
-                </div>
+                    <div className="center"><Button className="medium questions-button" type="submit">Submit Assignment</Button></div>
+                </form>
                 :
                 props.userType === "staff" ?
                 <div>

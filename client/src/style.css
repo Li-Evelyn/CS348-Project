@@ -135,6 +135,13 @@ a {
     justify-content: space-between;
 }
 
+.question-title {
+    margin: 2em 0em;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+}
+
 .course-assignment-dropdown {
     border: none !important;
     height: 100%;
@@ -184,4 +191,18 @@ a:link {
 
 #root {
     height: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.questions-button {
+    width: 30%;
+    height: 3.5em !important;
+    background-color: #ada0d6 !important;
+    border-radius: 25px !important;
+    outline-style: none !important;
+    border-style: none !important;
+    color: black !important;
 }
