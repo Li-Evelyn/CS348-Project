@@ -37,13 +37,10 @@ function QuestionsCreate(props) {
         }
     }
 
-    let editQuestion = function() {
-        // TODO
-        alert("TODO")
-    }
-
-    let deleteQuestion = function() {
-        alert("TODO")
+    let deleteQuestion = function(e) {
+        let question_to_remove_index = parseInt(e.target.parentElement.parentElement.children[0].innerText) - 1
+        let new_questions = props.questions.slice(0, question_to_remove_index).concat(props.questions.slice(question_to_remove_index+1))
+        props.setQuestions(new_questions)
     }
 
     return (
@@ -73,7 +70,6 @@ function QuestionsCreate(props) {
                                             <td className="medium">{item.description}</td>
                                             <td className="medium">{item.max_grade}</td>
                                             <td className="medium">
-                                                <Button className="purple-button small edit" onClick={editQuestion}>Edit</Button>
                                                 <Button className="purple-button small delete" onClick={deleteQuestion}>Delete</Button>
                                             </td>
                                         </tr>
