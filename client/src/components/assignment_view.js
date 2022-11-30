@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import Table from 'react-bootstrap/Table';
+import { useNavigate } from 'react-router-dom';
 
 function AssignmentView(props) {
     const [aid, setAid] = useState('')
@@ -78,6 +80,7 @@ function AssignmentView(props) {
         if (aid) {
             getAssignment(aid)
             getQuestions(aid)
+            getAssignmentSubmissions(aid)
         }
     }, [aid])
 
@@ -127,7 +130,37 @@ function AssignmentView(props) {
                 :
                 props.userType === "staff" ?
                 <div>
-                    <p>TODO</p>
+                    <h5 className="medium">{assignment.description}</h5>
+                    <div className="splash medium container assignmenteditbuttoncontainer">
+                        <Button variant="Light" size="lg" className="assignmenteditbutton" onClick={() => props.handleAssignmentEditing(assignment)}>Edit Assignment</Button>
+                    </div>
+                    <h5 className="medium">Student Submissions</h5>
+                    <div className="course-assignment-container">
+                        <Table className="t">
+                            <thead>
+                                <tr>
+                                    <th className="medium">Name</th>
+                                    <th className="medium">Email</th>
+                                    <th className="medium">Submission</th>
+                                    <th className="medium">Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {assignmentSubmissions.map((item, i) => {
+                                    return (
+                                        <tr>
+                                            <td className="medium">{item.name}</td>
+                                            <td className="medium">{item.email}</td>
+                                            <td className="medium" >
+                                                <Button variant="Light" size="lg" className="assignmentgradebutton" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
+                                            </td>
+                                            <td className="medium" style={{color: item.gcolor}}>{item.grade}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
                 </div>
                 :
                 <div>Error: user type {props.userType} unsupported.</div>

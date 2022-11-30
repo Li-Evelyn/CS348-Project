@@ -23,7 +23,7 @@ function Dashboard(props) {
             case 'a':
                 return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} user={user} clearActiveAssignment={clearActiveAssignment}/>
             case 'q':
-                return <AssignmentView userType={userType} assignment={activeAssignment}></AssignmentView>
+                return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentEditing={handleAssignmentEditing} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
             default:
                 return <></>
         }
@@ -81,6 +81,17 @@ function Dashboard(props) {
         localStorage.removeItem("assignment_id")
     }
 
+    let handleAssignmentEditing = (a) => {
+        setActiveAssignment(a);
+        navigate(`${getAssignmentEditingLink(a.name, activeCourse.name)}`)
+    }
+
+    let handleAssignmentGrading = (a, uid) => {
+        setActiveAssignment(a);
+        localStorage.setItem("assignment_id", a.id)
+        navigate(`${getGradingLink(a.id, uid)}`)
+    }
+
     let deleteAssignment = function() {
         if (removeAssignment != null) {
             // TODO: change to assignment id
@@ -101,6 +112,8 @@ function Dashboard(props) {
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
     let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
+    let getGradingLink = (assignmentId, userId) => `/staff/grading/${assignmentId}/${userId}`
+    let getAssignmentEditingLink = (assignmentName, courseName) => `/staff/edit-assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
