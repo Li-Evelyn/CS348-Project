@@ -97,6 +97,9 @@ const Query = {
     async getUser(req, res, id) {
         await query(req, res, 'SELECT * FROM "User" WHERE id=$1', [id])
     },
+    async getUsersInCourse(req, res, cid) {
+        await query(req, res, 'SELECT student_id FROM enrolledin WHERE course_id=$1', [cid])
+    },
     async getCourses(req, res, id, userType) {
         if (userType === "student") {
             await query(req, res, 'SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=$1)', [id])
@@ -117,8 +120,14 @@ const Query = {
     async getQuestions(req, res, aid) {
         await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
     },
+    async createQuestionSubmission(req, res, uid, aid, num) {
+        await query(req, res, 'INSERT into questionsubmission (student_id, assignment_id, question_number) values ($1, $2, $3)', [uid, aid, num])
+    },
     async getAssignmentSubmissions(req, res, id) {
         await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+    },
+    async createAssignmentSubmission(req, res, uid, aid) {
+        await query(req, res, 'INSERT INTO assignmentsubmission (student_id, assignment_id, is_submitted) values($1, $2, FALSE)', [uid, aid])
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])

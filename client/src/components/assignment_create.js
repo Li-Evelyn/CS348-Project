@@ -30,26 +30,35 @@ function AssignmentCreate(props) {
         e.preventDefault();
 
         const assignmentName = document.getElementById("assignmentName").value
+        if (assignmentName === "") {
+            alert ("Please specify an assignment name.")
+            return
+        }
+
         const deadlineDate = document.getElementById("deadline-date").value
         const deadlineTime = document.getElementById("deadline-time").value
         let deadline = null
         if (deadlineDate && deadlineTime) {
             deadline = deadlineDate + " " + deadlineTime
         }
-
+        else {
+            alert ("Please specify a deadline date and time.")
+            return
+        }
+ 
         if (assignmentName && deadline) {
             let next_aid = 0
+            // get max assignment id so we can assign the next assignment id to be 1 greater
             fetch(`http://localhost:8080/max_aid`)
             .then((response) => response.json())
             .then((data) => {
                 let max_aid = data.rows[0].max
                 next_aid = max_aid + 1
-
+                // get all assignments to check for unique assignment name
                 fetch(`http://localhost:8080/assignments?cid=${cid}`)
                 .then((response) => response.json())
                 .then((data) => {
                     let existingAssignments = data.rows
-    
                     existingAssignments.forEach((existing_a, i) => {
                         // check for unique assignment name
                         if (existing_a.name === assignmentName) {
@@ -59,12 +68,13 @@ function AssignmentCreate(props) {
                     })
     
                     // check that deadline is in the future
-                    const deadline_timestamp = new Date(deadline).toISOString()
+                    let deadline_timestamp = new Date(deadline)
                     const today = new Date();
                     if (deadline_timestamp <= today.getTime()) {
                         alert("Assignment deadline must be set to a future time.")
                         return
                     }
+                    deadline_timestamp = deadline_timestamp.toISOString()
     
                     // compute total max grade from question max grades
                     var max_grade = 0
@@ -82,16 +92,45 @@ function AssignmentCreate(props) {
                     fetch(`http://localhost:8080/createAssignment?aid=${next_aid}&cid=${cid}&a_name=${assignmentName}&deadline=${deadline_timestamp}&max_grade=${max_grade}&description=${description}`)
                     .then((response) => response.json())
                     .then((data) => {
-                        // create questions
-                        Promise.all(questions.map((q, i) => {
-                            // TODO: remove
-                            //alert(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
-                            fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
-                            .then((response) => response.json())
+                        // get users in course to create assignmentsubmissions for
+                        fetch(`http://localhost:8080/usersInCourse?cid=${cid}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            let usersInCourse = data.rows
+                            // create assignmentsubmissions
+                            Promise.all(usersInCourse.map((u) => {
+                                // TODO: remove
+                                //alert(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
+                                fetch(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
+                                .then((response) => response.json())
+                                .then(() => {
+                                    // TODO: remove
+                                    //alert(`created assignment submission for ${u.student_id}`)
+                                })
+                            }))
                             .then(() => {
-                                navigate(`${props.getCourseLink(props.userType, cname)}`)
+                                // create questions
+                                Promise.all(questions.map((q, i) => {
+                                    // TODO: remove
+                                    //alert(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
+                                    fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
+                                }))
+                                .then(() => {
+                                    // create questionsubmissions
+                                    Promise.all(usersInCourse.map((u) => {
+                                        return Promise.all(questions.map((q, i) => {
+                                            // TODO: remove
+                                            //alert(`http://localhost:8080/createQuestionSubmission?uid=${u.student_id}&aid=${next_aid}&num=${i+1}`)
+                                            fetch(`http://localhost:8080/createQuestionSubmission?uid=${u.student_id}&aid=${next_aid}&num=${i+1}`)
+                                        }))
+                                    }))
+                                    .then(() => {
+                                        // done, navigate back to assignments list for this course
+                                        navigate(`${props.getCourseLink(props.userType, cname)}`)
+                                    })
+                                })
                             })
-                        }))
+                        })
                     })
                 })
             })
