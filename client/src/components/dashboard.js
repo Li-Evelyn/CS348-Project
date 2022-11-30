@@ -4,6 +4,7 @@ import Sidebar from './sidebar';
 import CourseList from './course_list'
 import AssignmentList from './assignment_list'
 import AssignmentView from './assignment_view';
+import AssignmentCreate from './assignment_create';
 
 function Dashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -21,9 +22,11 @@ function Dashboard(props) {
             case 'c':
                 return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
             case 'a':
-                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} user={user} clearActiveAssignment={clearActiveAssignment}/>
+                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} handleCreateAssignment={handleCreateAssignment} user={user} clearActiveAssignment={clearActiveAssignment}/>            
             case 'q':
                 return <AssignmentView userType={userType} assignment={activeAssignment}></AssignmentView>
+            case 'ca':
+                return <AssignmentCreate userType={userType} course={activeCourse} getCourseLink={getCourseLink}></AssignmentCreate>
             default:
                 return <></>
         }
@@ -75,6 +78,10 @@ function Dashboard(props) {
         navigate(`${getAssignmentLink(userType, activeCourse.name, a.name)}`)
     }
 
+    let handleCreateAssignment = () => {
+        navigate(`${getCreateAssignmentLink(userType, activeCourse.name)}`)
+    }
+
     let clearActiveAssignment = () => {
         setActiveAssignment(null);
         localStorage.removeItem("assignment_name")
@@ -100,6 +107,7 @@ function Dashboard(props) {
     }
 
     let getCourseLink = (userType, courseName) => `/${userType}/courses/${courseName.replace(' ', '-').toLowerCase()}`;
+    let getCreateAssignmentLink = (userType, courseName) => `/${userType}/createAssignment/${courseName.replace(' ', '-').toLowerCase()}`;
     let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
 
     useEffect(() => {
