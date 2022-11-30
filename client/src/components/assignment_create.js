@@ -27,113 +27,112 @@ function AssignmentCreate(props) {
     }, [props.course])
 
     let createAssignment = function(e) {
-        e.preventDefault();
-
-        const assignmentName = document.getElementById("assignmentName").value
-        if (assignmentName === "") {
-            alert ("Please specify an assignment name.")
-            return
-        }
-
-        const deadlineDate = document.getElementById("deadline-date").value
-        const deadlineTime = document.getElementById("deadline-time").value
-        let deadline = null
-        if (deadlineDate && deadlineTime) {
-            deadline = deadlineDate + " " + deadlineTime
-        }
-        else {
-            alert ("Please specify a deadline date and time.")
-            return
-        }
- 
-        if (assignmentName && deadline) {
-            let next_aid = 0
-            // get max assignment id so we can assign the next assignment id to be 1 greater
-            fetch(`http://localhost:8080/max_aid`)
-            .then((response) => response.json())
-            .then((data) => {
-                let max_aid = data.rows[0].max
-                next_aid = max_aid + 1
-                // get all assignments to check for unique assignment name
-                fetch(`http://localhost:8080/assignments?cid=${cid}`)
+        try {
+            e.preventDefault();
+            const assignmentName = document.getElementById("assignmentName").value
+            if (assignmentName === "") {
+                alert ("Please specify an assignment name.")
+                throw ""
+            }
+    
+            const deadlineDate = document.getElementById("deadline-date").value
+            const deadlineTime = document.getElementById("deadline-time").value
+            let deadline = null
+            if (deadlineDate && deadlineTime) {
+                deadline = deadlineDate + " " + deadlineTime
+            }
+            else {
+                alert ("Please specify a deadline date and time.")
+                throw ""
+            }
+     
+            if (assignmentName && deadline) {
+                let next_aid = 0
+                // get max assignment id so we can assign the next assignment id to be 1 greater
+                fetch(`http://localhost:8080/max_aid`)
                 .then((response) => response.json())
                 .then((data) => {
-                    let existingAssignments = data.rows
-                    existingAssignments.forEach((existing_a, i) => {
-                        // check for unique assignment name
-                        if (existing_a.name === assignmentName) {
-                            alert(`Assignment with name "${assignmentName}" already exists for this course.`)
-                            return
-                        }
-                    })
-    
-                    // check that deadline is in the future
-                    let deadline_timestamp = new Date(deadline)
-                    const today = new Date();
-                    if (deadline_timestamp <= today.getTime()) {
-                        alert("Assignment deadline must be set to a future time.")
-                        return
-                    }
-                    deadline_timestamp = deadline_timestamp.toISOString()
-    
-                    // compute total max grade from question max grades
-                    var max_grade = 0
-                    questions.forEach((q, i) => {
-                        max_grade += q.max_grade
-                    })
-    
-                    // optional, can be blank
-                    const description = document.getElementById("description").value
-    
-                    // TODO remove
-                    //alert(`http://localhost:8080/createAssignment?aid=${next_aid}&cid=${cid}&a_name=${assignmentName}&deadline=${deadline_timestamp}&max_grade=${max_grade}&description=${description}`)
-    
-                    // create assignment
-                    fetch(`http://localhost:8080/createAssignment?aid=${next_aid}&cid=${cid}&a_name=${assignmentName}&deadline=${deadline_timestamp}&max_grade=${max_grade}&description=${description}`)
+                    let max_aid = data.rows[0].max
+                    next_aid = max_aid + 1
+                    // get all assignments to check for unique assignment name
+                    fetch(`http://localhost:8080/assignments?cid=${cid}`)
                     .then((response) => response.json())
                     .then((data) => {
-                        // get users in course to create assignmentsubmissions for
-                        fetch(`http://localhost:8080/usersInCourse?cid=${cid}`)
+                        let existingAssignments = data.rows
+                        existingAssignments.forEach((existing_a, i) => {
+                            // check for unique assignment name
+                            if (existing_a.name === assignmentName) {
+                                alert(`Assignment with name "${assignmentName}" already exists for this course.`)
+                                throw ""
+                            }
+                        })
+        
+                        // check that deadline is in the future
+                        let deadline_timestamp = new Date(deadline)
+                        const today = new Date();
+                        if (deadline_timestamp <= today.getTime()) {
+                            alert("Assignment deadline must be set to a future time.")
+                            throw ""
+                        }
+                        deadline_timestamp = deadline_timestamp.toISOString()
+        
+                        // compute total max grade from question max grades
+                        var max_grade = 0
+                        questions.forEach((q, i) => {
+                            max_grade += q.max_grade
+                        })
+        
+                        // optional, can be blank
+                        const description = document.getElementById("description").value
+        
+                        // create assignment
+                        fetch(`http://localhost:8080/createAssignment?aid=${next_aid}&cid=${cid}&a_name=${assignmentName}&deadline=${deadline_timestamp}&max_grade=${max_grade}&description=${description}`)
                         .then((response) => response.json())
                         .then((data) => {
-                            let usersInCourse = data.rows
-                            // create assignmentsubmissions
-                            Promise.all(usersInCourse.map((u) => {
-                                // TODO: remove
-                                //alert(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
-                                fetch(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
-                                .then((response) => response.json())
-                                .then(() => {
-                                    // TODO: remove
-                                    //alert(`created assignment submission for ${u.student_id}`)
-                                })
-                            }))
-                            .then(() => {
-                                // create questions
-                                Promise.all(questions.map((q, i) => {
-                                    // TODO: remove
-                                    //alert(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
-                                    fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
+                            // get users in course to create assignmentsubmissions for
+                            fetch(`http://localhost:8080/usersInCourse?cid=${cid}`)
+                            .then((response) => response.json())
+                            .then((data) => {
+                                let usersInCourse = data.rows
+                                // create assignmentsubmissions
+                                Promise.all(usersInCourse.map((u) => {
+                                    fetch(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
                                 }))
                                 .then(() => {
-                                    // create questionsubmissions
-                                    Promise.all(usersInCourse.map((u) => {
-                                        return Promise.all(questions.map((q, i) => {
-                                            // TODO: remove
-                                            //alert(`http://localhost:8080/createQuestionSubmission?uid=${u.student_id}&aid=${next_aid}&num=${i+1}`)
-                                            fetch(`http://localhost:8080/createQuestionSubmission?uid=${u.student_id}&aid=${next_aid}&num=${i+1}`)
-                                        }))
+                                    // create questions
+                                    Promise.all(questions.map((q, i) => {
+                                        fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
                                     }))
                                     .then(() => {
-                                        // done, navigate back to assignments list for this course
-                                        navigate(`${props.getCourseLink(props.userType, cname)}`)
+                                        // create questionsubmissions
+                                        // combined users and questions into one array of pairs bc of async issues
+                                        let allUserQuestionCombos = []
+                                        for (let u = 0; u < usersInCourse.length; ++u) {
+                                            for (let i = 0; i < questions.length; ++i) {
+                                                allUserQuestionCombos.push({
+                                                    uid: usersInCourse[u].student_id,
+                                                    question_index: i
+                                                })
+                                            }
+                                        }
+                                        Promise.all(allUserQuestionCombos.map((userQuestionPair) => {
+                                            let uid = userQuestionPair.uid
+                                            let i = userQuestionPair.question_index
+                                            fetch(`http://localhost:8080/createQuestionSubmission?uid=${uid}&aid=${next_aid}&num=${i+1}`)
+                                        }))
+                                        .then(() => {
+                                            // done, navigate back to assignments list for this course
+                                            navigate(`${props.getCourseLink(props.userType, cname)}`)
+                                        })
                                     })
                                 })
                             })
                         })
                     })
                 })
-            })
+            }
+        } catch (error) {
+            return
         }
     }
 
