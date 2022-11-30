@@ -26,22 +26,6 @@ function AssignmentCreate(props) {
         }
     }, [props.course])
 
-    let saveQuestion = function() {
-        const description_input = document.getElementById("description_input").value
-        const max_grade_input = document.getElementById("max_grade_input").value
-        if (!Number.isInteger(parseInt(max_grade_input))) {
-            alert("Max Grade must be an integer.");
-        }
-        else {
-            let new_question = {
-                description: description_input,
-                max_grade: max_grade_input
-            }
-            questions.push(new_question)
-            setQuestions(questions)
-        }
-    }
-
     let createAssignment = function(e) {
         e.preventDefault();
 

@@ -39,10 +39,11 @@ function QuestionsCreate(props) {
 
     let editQuestion = function() {
         // TODO
+        alert("TODO")
     }
 
     let deleteQuestion = function() {
-        // TODO
+        alert("TODO")
     }
 
     return (
