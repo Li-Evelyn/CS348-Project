@@ -1,10 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import Table from 'react-bootstrap/Table';
+import { useNavigate } from 'react-router-dom';
 
 function AssignmentView(props) {
     const [aid, setAid] = useState('')
     const [assignment, setAssignment] = useState({})
     const [questions, setQuestions] = useState([])
+    const [assignmentSubmissions, setAssignmentSubmissions] = useState([])
+    let navigate = useNavigate();
+
+    let getAssignmentSubmissions = function(aid) { // will correspond 1-1 with assignment list
+        fetch(`http://localhost:8080/submissioninfofromassignment?aid=${aid}`)
+        .then((response) => response.json())
+        .then((data) => {
+            let ret = []
+            data.rows.map((item, i) => {
+                let ss = "Not submitted";
+                let g = "-"
+                let gc = "black"
+                let sc = "red"
+                if (item.grade) {
+                    ss = "Graded"
+                    g = `${item.grade}%`
+                    gc = "green"
+                    sc = "green"
+                } else if (item.is_submitted) {
+                    ss = "Submitted"
+                    sc = "green"
+                }
+                console.log(item);
+                ret.push({"text": ss, "grade": g, "tcolor": sc, "gcolor": gc, "name": item.name, "email": item.email, "uid": item.id})
+                return 0
+            })
+            console.log(ret)
+            setAssignmentSubmissions(ret)
+        })
+    }
 
     let getAssignment = function(id) {
         fetch(`http://localhost:8080/assignment?id=${id}`)
@@ -31,6 +63,7 @@ function AssignmentView(props) {
         if (aid) {
             getAssignment(aid)
             getQuestions(aid)
+            getAssignmentSubmissions(aid)
         }
     }, [aid])
 
@@ -74,7 +107,35 @@ function AssignmentView(props) {
                 :
                 props.userType === "staff" ?
                 <div>
-                    <p>TODO</p>
+                    <h5 className="medium">{assignment.description}</h5>
+                    <Button className="purple-button" onClick={() => props.handleAssignmentEditing(assignment)}>Edit Assignment</Button>
+                    <h5 className="medium">Student Submissions</h5>
+                    <div className="course-assignment-container">
+                        <Table className="t">
+                            <thead>
+                                <tr>
+                                    <th className="medium">Name</th>
+                                    <th className="medium">Email</th>
+                                    <th className="medium">Submission</th>
+                                    <th className="medium">Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {assignmentSubmissions.map((item, i) => {
+                                    return (
+                                        <tr>
+                                            <td className="medium">{item.name}</td>
+                                            <td className="medium">{item.email}</td>
+                                            <td className="medium" >
+                                                <Button className="purple-button small" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
+                                            </td>
+                                            <td className="medium" style={{color: item.gcolor}}>{item.grade}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
                 </div>
                 :
                 <div>Error: user type {props.userType} unsupported.</div>

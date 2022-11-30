@@ -25,7 +25,7 @@
 html, body {
     height: 100%;
     width: 100%;
-    background-color: #e5e1f1 !important;
+    background-color: white !important;
 }
 
 .homebutton {
@@ -175,6 +175,7 @@ a {
     border-color: #aea0e6 !important;
     color: black !important;
     font-family: 'Poppins-Medium' !important;
+    font-size: 1em !important;
     margin: auto !important;
     display: flex !important;
     flex-direction: row !important;
@@ -183,6 +184,7 @@ a {
 }
 
 .purple-button.small {
+    font-size: 0.75em !important;
     padding: 10px 20px 10px 20px !important;
 }
 
@@ -225,6 +227,15 @@ a {
 }
 
 .questions-table {
+}
+
+
+
+.assignmentgradebuttoncontainer {
+    display: flex;
+    justify-content: space-around;
+    height: 2em;
+    width: 80% !important;
 }
 
 a:link {
