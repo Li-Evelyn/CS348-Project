@@ -111,6 +111,9 @@ const Query = {
     async getAssignment(req, res, id) {
         await query(req, res, 'SELECT * FROM assignment WHERE id=$1', [id])
     },
+    async getMaxAssignmentId(req, res) {
+        await query(req, res, 'SELECT MAX(id) FROM assignment', [])
+    },
     async getQuestions(req, res, aid) {
         await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
     },
@@ -125,8 +128,16 @@ const Query = {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
 
+    async createAssignment(req, res, aid, cid, a_name, deadline, max_grade, description) {
+        await query(req, res, `INSERT INTO assignment values($1, $2, $3, $4, $5, $6)`, [aid, cid, a_name, deadline, max_grade, description])
+    }, 
+
     async deleteAssignment(req, res, aid) {
         await query(req, res, `DELETE FROM assignment WHERE id=$1`, [aid])
+    }, 
+
+    async createQuestion(req, res, aid, num, max_grade, description) {
+        await query(req, res, `INSERT INTO question values($1, $2, $3, $4)`, [aid, num, max_grade, description])
     }, 
     
     async run(req, res, q) { // gary dw this is very secure, no ACE here
