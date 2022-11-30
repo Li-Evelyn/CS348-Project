@@ -97,6 +97,9 @@ const Query = {
     async getUser(req, res, id) {
         await query(req, res, 'SELECT * FROM "User" WHERE id=$1', [id])
     },
+    async getCourse(req, res, id) {
+        await query(req, res, 'SELECT * FROM course WHERE id=$1', [id])
+    },
     async getCourses(req, res, id, userType) {
         if (userType === "student") {
             await query(req, res, 'SELECT * FROM course WHERE id IN (SELECT course_id FROM enrolledin WHERE student_id=$1)', [id])
@@ -104,6 +107,9 @@ const Query = {
         else if (userType === "staff") {
             await query(req, res, 'SELECT * FROM course WHERE id IN (SELECT course_id FROM teaches WHERE staff_id=$1)', [id])
         }
+    },
+    async getCourseStudents(req, res, id) {
+        await query(req, res, 'SELECT * FROM "User" WHERE id IN (SELECT student_id FROM enrolledin WHERE course_id=$1)', [id])
     },
     async getAssignments(req, res, id) {
         await query(req, res, 'SELECT * FROM assignment WHERE course_id=$1', [id])
@@ -116,6 +122,9 @@ const Query = {
     },
     async getAssignmentSubmissions(req, res, id) {
         await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+    },
+    async getSubmissionInfoFromAssignment(req, res, aid) {
+        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
