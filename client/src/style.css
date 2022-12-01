@@ -189,36 +189,65 @@ a {
 
 .dashboard {
     background-color: white !important;
-    height: 100% !important;
+    height: 120%;
     width: 100%;
     margin: 0;
     display: grid;
     grid-template-areas: 'left right right right right right right right'; 
 }
 
-.assignmenteditbutton {
+.purple-button {
     background-color: #aea0e6 !important;
-    width: 50%;
-    border-radius: 40px !important;
-    font-size: 1.5em !important;
-    height: 3.75em;
+    border-color: #aea0e6 !important;
+    color: black !important;
+    font-family: 'Poppins-Medium' !important;
+    font-size: 1em !important;
+    margin: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 15px 30px 15px 30px !important;
+    border-radius: 20px !important;
 }
 
-.assignmenteditbuttoncontainer {
+.purple-button.small {
+    font-size: 0.75em !important;
+    padding: 10px 20px 10px 20px !important;
+}
+
+.purple-button.small.edit {
+    float: left !important;
+    margin-right: 5px !important;
+}
+
+.purple-button.small.plus {
+    float: right !important;
+}
+
+.purple-button:hover {
+    background-color: #9487c7 !important;
+    border-color: #9487c7 !important;
+}
+
+.create-assignment-text {
+    font-family: 'Poppins-Medium' !important;
+}
+
+.deadline-date-time {
     display: flex;
-    justify-content: space-around;
-    height: 8em;
-    width: 80% !important;
 }
 
-.assignmentgradebutton {
-    background-color: #aea0e6 !important;
-    width: 100%;
-    border-radius: 40px !important;
-    font-size: 0.6em !important;
-    height: 3em;
-    padding: 0.02em !important
+.deadline-date {
+    margin-right: 10px;
 }
+
+.deadline-time {
+    margin-left: 10px;
+}
+
+.questions-table {
+}
+
+
 
 .assignmentgradebuttoncontainer {
     display: flex;

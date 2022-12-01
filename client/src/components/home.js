@@ -2,6 +2,12 @@ import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+const navigateTo = {
+	student: '/student/courses',
+	staff: '/staff/courses',
+	admin: '/debug'
+}
+
 function Home(props) {
   // const [content, setContent] = useState([]);
   let navigate = useNavigate();
@@ -18,7 +24,12 @@ function Home(props) {
 
   useEffect(() => {
     console.log(`Page loaded`);
-    // fetchData();
+
+    const isAuthed = localStorage.getItem("authenticated");
+	if (isAuthed) {
+		const user_type = localStorage.getItem("user_type");
+		navigate(`${navigateTo[user_type]}`);
+	}
   }, [""]);
 
   return (

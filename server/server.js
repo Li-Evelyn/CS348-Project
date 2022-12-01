@@ -51,6 +51,10 @@ app.get("/user", (req, res) => {
     Query.getUser(req, res, req.query.id);
 })
 
+app.get("/usersInCourse", (req, res) => {
+    Query.getUsersInCourse(req, res, req.query.cid);
+})
+
 app.get("/course", (req, res) => {
     Query.getCourses(req, res, req.query.cid);
 })
@@ -71,6 +75,14 @@ app.get("/assignments", (req, res) => {
     Query.getAssignments(req, res, req.query.cid)
 })
 
+app.get("/max_aid", (req, res) => {
+    Query.getMaxAssignmentId(req, res)
+})
+
+app.get("/createQuestion", (req, res) => {
+    Query.createQuestion(req, res, req.query.aid, req.query.num, req.query.max_grade, req.query.description);
+})
+
 app.get("/questions", (req, res) => {
     Query.getQuestions(req, res, req.query.aid)
 })
@@ -88,6 +100,10 @@ app.get("/assignmentsubmissions", (req, res) => {
     Query.getAssignmentSubmissions(req, res, req.query.uid)
 })
 
+app.get("/createAssignmentSubmission", (req, res) => {
+    Query.createAssignmentSubmission(req, res, req.query.uid, req.query.aid)
+})
+
 app.get("/submissioninfofromassignment", (req, res) => {
     Query.getSubmissionInfoFromAssignment(req, res, req.query.aid)
 })
@@ -98,6 +114,10 @@ app.get("/unenroll", (req, res) => {
 
 app.get("/deleteCourse", (req, res) => {
     Query.deleteCourse(req, res, req.query.course);
+})
+
+app.get("/createAssignment", (req, res) => {
+    Query.createAssignment(req, res, req.query.aid, req.query.cid, req.query.a_name, req.query.deadline, req.query.max_grade, req.query.description);
 })
 
 app.get("/deleteAssignment", (req, res) => {
