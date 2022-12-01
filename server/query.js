@@ -144,7 +144,7 @@ const Query = {
     async submitAssignment(req, res, uid, aid, info) { // gary help
         let submitQueries = [['UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2', [uid, aid]]]
         for (let i = 0; i < info.length; i++) {
-            submitQueries.push(['INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4) ON CONFLICT DO UPDATE', [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
+            submitQueries.push(['INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4) ON CONFLICT (student_id, assignment_id, question_number) DO UPDATE SET file_path=$4', [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
         }
         await multiQuery(req, res, submitQueries, {has_args: true})
     },

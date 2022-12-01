@@ -131,17 +131,10 @@ app.post('/upload', (req, res) => {
             })
             info.push({uid: uid, aid: aid, qnum: qnum, file_path:`/u${uid}/a${aid}/q${qnum}`})
         }
-        console.log("got here")
         Query.submitAssignment(req, res, uid, aid, info);
     } else {
         console.log("No files submitted")
     }
-})
-
-app.get('/download', (req, res) => {
-    res.sendFile(`file_submissions/${req.query.path}.png`, {root: path.join(__dirname)}, function (err) {
-        if (err) throw err;
-    })
 })
 
 app.listen(PORT, () => {
