@@ -33,7 +33,7 @@ function Dashboard(props) {
                             <StudentList userType={userType} course={activeCourse} courseStudents={courseStudents} enrollStudent={enrollStudent} unenrollStudent={unenrollStudent}/>
                        </div>           
             case 'q':
-                return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentEditing={handleAssignmentEditing} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
+                return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
             case 'ca':
                 return <AssignmentCreate userType={userType} course={activeCourse} getCourseLink={getCourseLink}></AssignmentCreate>
             case 'g':
