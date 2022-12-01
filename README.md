@@ -64,7 +64,7 @@ Note: How to create/load the sample database is described in the development set
 Note: If you were previously signed in to a user's account, please log out and update your local files with the new production data found in `/server/production_data` as described in Backend Step 5
 
 ### Supported Features
-** See /milestone2 for queries and output from running the queries on our production dataset and the submitted report.pdf for how to test non-query-only features.**
+**See /milestone2 for queries and output from running the queries on our production dataset and the submitted report.pdf for how to test non-query-only features.**
 * R6. Registration (All Users)
 * R7. View Courses (Student)
 * R8. Update Assignment Submission Grade (Staff) - query only
@@ -81,3 +81,31 @@ Note: If you were previously signed in to a user's account, please log out and u
 * Dynamic dashboard for all users
 * Staff Course/Assignment View (TODO: grading interface/functionality)
 * Student Assignment/Question View (TODO: proper form submission for questions)
+
+---
+
+## Final Submission
+Note: If you were previously signed in to a user's account, please log out and update your local files with the new production data found in `/server/production_data` as described in Backend Step 5. Additionally, when logging in as any user, use the passwords found in `user_password.csv` (as `user.csv` only contains password hashes)
+
+### Supported Features
+**See report.pdf for testing steps.**
+* R6. Registration (All Users)
+* R7. View Courses/Assignments/Questions (Student)
+* R8. Update Assignment Submission Grade (Staff)
+* R9. Drop Courses (Student)
+* R10. Average Grade (All Users)
+* R11. Assignment Grade Distribution (All Users)
+
+### Other Notable (Fancy) Features
+**See report.pdf for descriptions of fancy features.**
+* R12. UI Design (https://www.canva.com/design/DAFPXFalvFE/1tmCJuwTaXe1dwQ2L53zoA/view)
+* R13. Increased Security (SQL injection protection via sanitized queries, password hashing)
+* R14. View/Delete Courses/Assignments (Staff)
+* R15. Unit Testing (`/server/test`)
+* R16. File Upload/Viewing
+* Navigation gating for different user types (i.e. only admin users can see the debug page, only staff users can create/delete courses and assignments, only students can upload files and submit assignments)
+* Deadline gating for student assignment submissions (after the deadline for an assignment has passed, students cannot create a submission)
+* Staff can enroll and unenroll students from a course that they teach
+* Staff can view all students in their courses and see which students have created a submission for any particular assignment
+* Staff can create assignments and questions, and the relevant AssignmentSubmission entities will be created automatically (with QuestionSubmissions being created when students submit their assignments)
+* CrowdMark-like assignment statistics on assignment pages
