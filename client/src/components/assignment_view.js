@@ -27,7 +27,6 @@ function AssignmentView(props) {
 
     let getFileRefs = function() {
         let ret = []
-        let ret2 = []
         for (let i = 0; i < questions.length; i++) {
             ret.push(React.createRef())
         }
@@ -41,6 +40,7 @@ function AssignmentView(props) {
         for (let i = 0; i < files.length; i++) {
             if (files[i].current.files) {
                 let file = files[i].current.files[0];
+                console.log(file)
                 formData.append(`${uid}-${aid}-${i+1}`, file) // single submission
             }
         }
@@ -122,9 +122,9 @@ function AssignmentView(props) {
     }
 
     useEffect(() => {
-        if (questions) {
+        if (questions && aid) {
             getFileRefs()
-            // getQuestionSubmissions()
+            getQuestionSubmissions(aid)
         }
     }, [questions, submitted])
 
