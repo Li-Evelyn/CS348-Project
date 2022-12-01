@@ -23,7 +23,6 @@ function Navigate(props) {
             fetch (`http://localhost:8080/user?id=${uid}`)
                 .then((response) => response.json())
                 .then ((data) => {
-                    console.log(uid)
                     setDisplayName(data.rows["0"].name)
                 })
         }

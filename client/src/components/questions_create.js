@@ -1,24 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 function QuestionsCreate(props) {
-    const [cid, setCid] = useState("")
-    const [cname, setCname] = useState("")
-
-    useEffect(() => {
-        if (!props.course) {
-            const courseID = localStorage.getItem("course_id")
-            if (courseID) {
-                setCid(courseID)
-                const courseName = localStorage.getItem("course_name")
-                setCname(courseName)
-            }
-        } else {
-            setCid(props.course.id)
-            setCname(props.course.name)
-        }
-    }, [props.course])
 
     let saveQuestion = function() {
         const description_input = document.getElementById("description_input").value
@@ -65,7 +49,7 @@ function QuestionsCreate(props) {
                             <tbody>
                                 {props.questions.map((item, i) => {
                                     return (
-                                        <tr>
+                                        <tr key={i}>
                                             <td className="medium">{i + 1}</td>
                                             <td className="medium">{item.description}</td>
                                             <td className="medium">{item.max_grade}</td>
