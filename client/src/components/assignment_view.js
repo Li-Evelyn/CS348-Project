@@ -153,7 +153,13 @@ function AssignmentView(props) {
             }
 
             data.rows.forEach(row => {
-                distribution[row.grade_range/bin_distance].students = parseInt(row.count)
+                if (row.grade_range/bin_distance < 100/bin_distance) {
+                    distribution[row.grade_range/bin_distance].students = parseInt(row.count)
+                }
+                else {
+                    console.log(row.grade_range)
+                    distribution[distribution.length-1].students += parseInt(row.count)
+                }
             })
 
             setDistribution(distribution)
@@ -208,18 +214,6 @@ function AssignmentView(props) {
             getAssignmentDistribution()
         }
     }, [assignment])
-
-    useEffect(() => {
-        if (distribution.length > 0 && 'total_count' in stats) {
-            const distribution_copy = distribution
-            let graded_count = 0
-            distribution_copy.forEach(range => graded_count += range.students)
-
-            console.log(stats.total_count - graded_count)
-            distribution_copy[0].students += stats.total_count - graded_count
-            setDistribution(distribution_copy)
-        }
-    }, [distribution, stats])
 
     let dateString = (s) => {
         const d = new Date(s)
