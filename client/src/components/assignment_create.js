@@ -104,26 +104,9 @@ function AssignmentCreate(props) {
                                         fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
                                     }))
                                     .then(() => {
-                                        // create questionsubmissions
-                                        // combined users and questions into one array of pairs bc of async issues
-                                        let allUserQuestionCombos = []
-                                        for (let u = 0; u < usersInCourse.length; ++u) {
-                                            for (let i = 0; i < questions.length; ++i) {
-                                                allUserQuestionCombos.push({
-                                                    uid: usersInCourse[u].student_id,
-                                                    question_index: i
-                                                })
-                                            }
-                                        }
-                                        Promise.all(allUserQuestionCombos.map((userQuestionPair) => {
-                                            let uid = userQuestionPair.uid
-                                            let i = userQuestionPair.question_index
-                                            fetch(`http://localhost:8080/createQuestionSubmission?uid=${uid}&aid=${next_aid}&num=${i+1}`)
-                                        }))
-                                        .then(() => {
-                                            // done, navigate back to assignments list for this course
-                                            navigate(`${props.getCourseLink(props.userType, cname)}`)
-                                        })
+                                        // no need to create questionsubmissions since they're created on assignment submission
+                                        // done, navigate back to assignments list for this course
+                                        navigate(`${props.getCourseLink(props.userType, cname)}`)
                                     })
                                 })
                             })
@@ -150,22 +133,22 @@ function AssignmentCreate(props) {
                         <h2>Create Assignment</h2>
                         <br/>
                         <Form>
-                            <div class="form-group">
-                                <label for="assignmentName" class="create-assignment-text">Assignment Name</label>
-                                <input type="text" class="form-control" id="assignmentName" required/>
+                            <div className="form-group">
+                                <label htmlFor="assignmentName" className="create-assignment-text">Assignment Name</label>
+                                <input type="text" className="form-control" id="assignmentName" required/>
                             </div>
                             <br/>
-                            <div class="form-group">
-                                <label for="deadline-date" class="create-assignment-text">Deadline</label>
-                                <div class="deadline-date-time">
-                                    <input type="date" class="form-control deadline-date" id="deadline-date" required/>
-                                    <input type="time" class="form-control deadline-time" id="deadline-time" required/>
+                            <div className="form-group">
+                                <label htmlFor="deadline-date" className="create-assignment-text">Deadline</label>
+                                <div className="deadline-date-time">
+                                    <input type="date" className="form-control deadline-date" id="deadline-date" required/>
+                                    <input type="time" className="form-control deadline-time" id="deadline-time" required/>
                                 </div>
                             </div>
                             <br/>
-                            <div class="form-group">
-                                <label for="description" class="create-assignment-text">Description</label>
-                                <textarea class="form-control" id="description"/>
+                            <div className="form-group">
+                                <label htmlFor="description" className="create-assignment-text">Description</label>
+                                <textarea className="form-control" id="description"/>
                             </div>
                             <br/>
                             <QuestionsCreate userType={props.userType} questions={questions} setQuestions={setQuestions} course={props.course}/>
