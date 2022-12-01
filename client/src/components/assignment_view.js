@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 function AssignmentView(props) {
     const [aid, setAid] = useState('')
