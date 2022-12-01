@@ -69,7 +69,6 @@ function Dashboard(props) {
     }
 
     let handleAssignmentSelect = (a) => {
-		console.log(a);
         setActiveAssignment(a);
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
@@ -134,7 +133,7 @@ function Dashboard(props) {
 			const courseName = localStorage.getItem("course_name");
 			if (courseId && courseName) {
 				const curCourse = {
-					id: courseId,
+					id: parseInt(courseId),
 					name: courseName
 				};
 
