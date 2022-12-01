@@ -72,5 +72,12 @@ test('Set Assignment Grade', async () => {
 })
 
 test('Calculate Assignment Average', async () => {
-    expect(1).toBe(1)
+    const res = await request('http://localhost:8080').get('/submissioninfofromassignment?aid=18')
+    const data = res.body.rows
+    let sum = 0
+    for (const i in data) {
+        sum = data[i].grade ? sum + data[i].grade : sum
+    }
+    avg = (sum / data.length)
+    expect(avg).toBe(23)
 })
