@@ -7,7 +7,6 @@ function Sidebar(props) {
     // TODO: if on a course page, keep active item highlighted
     return (
         <div className="sidebar">
-			{ true ? console.log(props.activeCourse) : <></>}
             <h3 className="medium sidebar-item clickable" onClick={() => navigate('/student/courses')}>Courses</h3>
             <div>
                 {props.courses.map((item, i) =>
