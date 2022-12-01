@@ -124,8 +124,8 @@ function AssignmentView(props) {
         })
     }
 
-    let getAssignmentStats = function(id) {
-        fetch(`http://localhost:8080/assignmentstats?aid=${id}`)
+    let getAssignmentStats = function() {
+        fetch(`http://localhost:8080/assignmentstats?aid=${assignment.id}&max_grade=${assignment.max_grade}`)
         .then((response) => response.json())
         .then((data) => {
             if (data.rows.length > 0) {
@@ -142,8 +142,8 @@ function AssignmentView(props) {
     }
 
     const bin_distance = 10
-    let getAssignmentDistribution = function(id) {
-        fetch(`http://localhost:8080/assignmentdistribution?aid=${id}`)
+    let getAssignmentDistribution = function() {
+        fetch(`http://localhost:8080/assignmentdistribution?aid=${assignment.id}&max_grade=${assignment.max_grade}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data.rows)
@@ -156,7 +156,7 @@ function AssignmentView(props) {
             }
 
             data.rows.forEach(row => {
-                distribution[row.grade_range/bin_distance].students = row.count
+                distribution[row.grade_range/bin_distance].students = parseInt(row.count)
             })
 
             setDistribution(distribution)
@@ -190,8 +190,6 @@ function AssignmentView(props) {
             getAssignment(aid)
             getQuestions(aid)
             getAssignmentSubmissions(aid)
-            getAssignmentStats(aid)
-            getAssignmentDistribution(aid)
             getAssignmentNotGraded(aid)
             getAS(aid)
             getQuestionSubmissions(aid)
@@ -209,11 +207,22 @@ function AssignmentView(props) {
     }, [props.assignment])
 
     useEffect(() => {
-        const distribution_copy = distribution
-        if (distribution_copy.length > 0 && 'total_count' in stats && 'graded_count' in stats) {
-            distribution_copy[0].students += stats.total_count - stats.graded_count
+        if ('id' in assignment && 'max_grade' in assignment) {
+            getAssignmentStats()
+            getAssignmentDistribution()
         }
-        setDistribution(distribution_copy)
+    }, [assignment])
+
+    useEffect(() => {
+        if (distribution.length > 0 && 'total_count' in stats) {
+            const distribution_copy = distribution
+            let graded_count = 0
+            distribution_copy.forEach(range => graded_count += range.students)
+
+            console.log(stats.total_count - graded_count)
+            distribution_copy[0].students += stats.total_count - graded_count
+            setDistribution(distribution_copy)
+        }
     }, [distribution, stats])
 
     let dateString = (s) => {
