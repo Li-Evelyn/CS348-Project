@@ -97,6 +97,9 @@ const Query = {
     async getUser(req, res, id) {
         await query(req, res, 'SELECT * FROM "User" WHERE id=$1', [id])
     },
+    async getAllUsers(req, res) {
+        await query(req, res, 'SELECT * FROM "User"', [])
+    },
     async getUsersInCourse(req, res, cid) {
         await query(req, res, 'SELECT student_id FROM enrolledin WHERE course_id=$1', [cid])
     },    
@@ -113,6 +116,9 @@ const Query = {
     },
     async getCourseStudents(req, res, id) {
         await query(req, res, 'SELECT * FROM "User" WHERE id IN (SELECT student_id FROM enrolledin WHERE course_id=$1)', [id])
+    },
+    async enrollStudent(req, res, cid, uid) {
+        await query(req, res, 'INSERT INTO enrolledin values ($1, $2)', [cid, uid])
     },
     async getAssignments(req, res, id) {
         await query(req, res, 'SELECT * FROM assignment WHERE course_id=$1', [id])

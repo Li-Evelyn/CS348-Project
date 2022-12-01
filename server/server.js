@@ -51,6 +51,10 @@ app.get("/user", (req, res) => {
     Query.getUser(req, res, req.query.id);
 })
 
+app.get("/allUsers", (req, res) => {
+    Query.getAllUsers(req, res);
+})
+
 app.get("/usersInCourse", (req, res) => {
     Query.getUsersInCourse(req, res, req.query.cid);
 })
@@ -65,6 +69,10 @@ app.get("/courses", (req, res) => {
 
 app.get("/coursestudents", (req, res) => {
     Query.getCourseStudents(req, res, req.query.cid);
+})
+
+app.get("/enrollStudent", (req, res) => {
+    Query.enrollStudent(req, res, req.query.cid, req.query.uid);
 })
 
 app.get("/assignment", (req, res) => {
