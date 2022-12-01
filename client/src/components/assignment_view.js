@@ -336,7 +336,7 @@ function AssignmentView(props) {
                                                 <td className="medium">{item.name}</td>
                                                 <td className="medium">{item.email}</td>
                                                 <td className="medium" >
-                                                <Button className="purple-button small" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
+                                                <Button className="purple-button small view-grade" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
                                                 </td>
                                                 <td className="medium" style={{color: item.gcolor}}>{item.grade}</td>
                                             </tr>

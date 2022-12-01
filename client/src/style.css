@@ -243,6 +243,10 @@ a {
     float: right !important;
 }
 
+.purple-button.small.view-grade {
+    float: left !important;
+}
+
 .purple-button:hover {
     background-color: #9487c7 !important;
     border-color: #9487c7 !important;
