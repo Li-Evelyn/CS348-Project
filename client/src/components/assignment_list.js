@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Card, Dropdown } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 function AssignmentList(props) {
     const [cid, setCid] = useState("")
@@ -128,10 +129,14 @@ function AssignmentList(props) {
                     <div>
                         {
                             assignments.length === 0
-                            ? <h2>No assignments to display.</h2>
+                            ? <div>
+                                <h2>No assignments to display.</h2>
+                                <Button className='purple-button' onClick={() => props.handleCreateAssignment()}>Create Assignment</Button>
+                              </div>
                             : (
                                 <div className="course-assignment-container">
                                     <h2 className="medium">Assignments</h2>
+                                    <Button className='purple-button'onClick={() => props.handleCreateAssignment()}>Create Assignment</Button>
                                     {assignments.map((item, i) => {
                                         return (
                                             <Card className="course-assignment-card" key={item.id}>
