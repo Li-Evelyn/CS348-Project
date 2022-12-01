@@ -209,18 +209,6 @@ function AssignmentView(props) {
         }
     }, [assignment])
 
-    useEffect(() => {
-        if (distribution.length > 0 && 'total_count' in stats) {
-            const distribution_copy = distribution
-            let graded_count = 0
-            distribution_copy.forEach(range => graded_count += range.students)
-
-            console.log(stats.total_count - graded_count)
-            distribution_copy[0].students += stats.total_count - graded_count
-            setDistribution(distribution_copy)
-        }
-    }, [distribution, stats])
-
     let dateString = (s) => {
         const d = new Date(s)
         return d.toString().substring(0, 21)
