@@ -108,9 +108,7 @@ function AssignmentView(props) {
                 props.userType === "staff" ?
                 <div>
                     <h5 className="medium">{assignment.description}</h5>
-                    <div className="splash medium container assignmenteditbuttoncontainer">
-                        <Button variant="Light" size="lg" className="assignmenteditbutton" onClick={() => props.handleAssignmentEditing(assignment)}>Edit Assignment</Button>
-                    </div>
+                    <Button className="purple-button" onClick={() => props.handleAssignmentEditing(assignment)}>Edit Assignment</Button>
                     <h5 className="medium">Student Submissions</h5>
                     <div className="course-assignment-container">
                         <Table className="t">
@@ -129,7 +127,7 @@ function AssignmentView(props) {
                                             <td className="medium">{item.name}</td>
                                             <td className="medium">{item.email}</td>
                                             <td className="medium" >
-                                                <Button variant="Light" size="lg" className="assignmentgradebutton" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
+                                                <Button className="purple-button small" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
                                             </td>
                                             <td className="medium" style={{color: item.gcolor}}>{item.grade}</td>
                                         </tr>

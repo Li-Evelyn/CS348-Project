@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import shajs from 'sha.js';
+
+const navigateTo = {
+	student: '/student/courses',
+	staff: '/staff/courses',
+	admin: '/debug'
+}
 
 function LoginPage(props) {
   const [email, setEmail] = useState("");
@@ -11,7 +18,7 @@ function LoginPage(props) {
 
   let handleSubmit = e => {
     e.preventDefault();
-    fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
+    fetch(`http://localhost:8080/login?email=${email}&pw=${shajs('sha256').update(password).digest('hex')}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.rows.length > 0) {
@@ -19,7 +26,7 @@ function LoginPage(props) {
           localStorage.setItem("authenticated", true)
           localStorage.setItem("user_id", data.rows["0"].id)
           localStorage.setItem("user_type", data.rows["0"].type)
-          navigate(`/${data.rows["0"].type}/courses`);
+          navigate(`${navigateTo[data.rows["0"].type]}`);
         }
       })
   }

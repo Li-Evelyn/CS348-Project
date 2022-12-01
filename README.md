@@ -13,7 +13,7 @@ Note: Use `\conninfo` to see information about your database (it was useful for 
 
 ### Backend (Node/Express)
 1. Navigate to `/server`, initialize Node with `npm init`, and install the required libraries with `npm install`.
-2. Create a `.env` file in `/server` with the contents `DB_USER="(your postgres user)"` and `DB_PASSWORD="(your postgres password)"` in `/server`.
+2. Create a `.env` file in `/server` with the contents `DB_USER="(your postgres user)"` and `DB_PASSWORD="(your postgres password)"` in `/server`, and also `SALT=""` (empty for now) in the same file.
 3. Verify that the server runs with `npm start` and navigate to http://localhost:8080/. You should see a "Hello World" message.
 4. Navigate to http://localhost:8080/query/create to create the project's relations. You should see output that looks like this: `{"data":{"0":{"rows":[]},"1":{"rows":[]},"2":{"rows":[]},"3":{"rows":[]},"4":{"rows":[]},"5":{"rows":[]},"6":{"rows":[]},"7":{"rows":[]},"8":{"rows":[]}}}`. To verify that the tables have been created, you can use `\dt` in your SQL shell.
 * To reset the database (reset the schema by removing all tables and types), navigate to http://localhost:8080/query/drop. You should see output similar to the above but with only four elements.

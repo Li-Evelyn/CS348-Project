@@ -28,10 +28,12 @@ function Navigate(props) {
                 })
         }
     }
+	
     useEffect(() => {
         document.title = "GenericMark";
         getDisplayName();
-    }, []);
+    }, [navigate]);
+
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -40,10 +42,23 @@ function Navigate(props) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/login">Log In</Nav.Link>
-                        <Nav.Link href="/register">Register</Nav.Link>
-                        <Nav.Link href="/debug">Debug</Nav.Link>
-                        <Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link>
+                        { !authenticated ?
+							<>
+								<Nav.Link href="/login">Log In</Nav.Link>
+								<Nav.Link href="/register">Register</Nav.Link>
+							</> :
+							<></>
+						}
+                        { authenticated && localStorage.getItem('user_type') === 'admin' ?
+							<Nav.Link href="/debug">Debug</Nav.Link>
+							:
+							<></>
+						}
+						{ authenticated ?
+                        	<Nav.Link href={`/${localStorage.getItem("user_type")}/courses`}>Dashboard</Nav.Link>
+							:
+							<></>
+						}
                         {/*<Nav.Link href={`/student/courses`}>Dashboard</Nav.Link>*/}
                     </Nav>
                     {
