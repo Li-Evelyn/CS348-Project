@@ -21,7 +21,7 @@ function AssignmentList(props) {
                 let sc = "red"
                 if (item.grade !== null) {
                     ss = "Graded"
-                    g = `${item.grade}%`
+                    g = item.grade
                     gc = "green"
                     sc = "green"
                 } else if (item.is_submitted) {
@@ -109,12 +109,15 @@ function AssignmentList(props) {
                                         <tbody>
                                             {assignments.map((item, i) => {
                                                 let as = assignmentSubmissions[item.id]
+                                                console.log(as.grade)
+                                                console.log(item.max_grade)
+                                                let ovr_grade = as.grade != '-' ? `${((as.grade / item.max_grade) * 100).toFixed(2)}%` : as.grade
                                                 return (
                                                     <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
                                                         <td className="medium">{item.name}</td>
                                                         <td className="medium">{dateString(item.deadline)}</td>
                                                         <td className="medium" style={{color: as.tcolor}}>{as.text}</td>
-                                                        <td className="medium" style={{color: as.gcolor}}>{as.grade}</td>
+                                                        <td className="medium" style={{color: as.gcolor}}>{ovr_grade}</td>
                                                     </tr>
                                                 )
                                             })}
