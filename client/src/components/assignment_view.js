@@ -117,7 +117,7 @@ function AssignmentView(props) {
         fetch(`http://localhost:8080/questions?aid=${id}`)
         .then((response) => response.json())
         .then((data) => {
-            setQuestions(data.rows)
+            setQuestions(data.rows.sort((a, b) => { return a.number - b.number}))
         })
     }
 
