@@ -126,9 +126,18 @@ const Query = {
     async getSubmissionInfoFromAssignment(req, res, aid) {
         await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
     },
+
+    async updateAssignmentGrade(req, res, grade, aid, uid) {
+        await query(req, res, 'UPDATE assignmentsubmission SET grade=$1 WHERE assignment_id=$2 AND student_id=$3', [grade, aid, uid])
+    },
+
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
-    }, 
+    },
+
+    async enrollInto(req, res, uid, cid) {
+        await query(req, res, 'INSERT INTO enrolledin (course_id, student_id) VALUES($1, $2)', [cid, uid])
+    },
 
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])

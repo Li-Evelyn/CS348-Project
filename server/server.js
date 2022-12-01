@@ -79,8 +79,16 @@ app.get("/submissioninfofromassignment", (req, res) => {
     Query.getSubmissionInfoFromAssignment(req, res, req.query.aid)
 })
 
+app.get("/updateassignmentgrade", (req, res) => {
+    Query.updateAssignmentGrade(req, res, req.query.grade, req.query.aid, req.query.uid)
+})
+
 app.get("/unenroll", (req, res) => {
     Query.unEnroll(req, res, req.query.uid, req.query.course);
+})
+
+app.get("/enrollinto", (req, res) => {
+    Query.enrollInto(req, res, req.query.uid, req.query.cid)
 })
 
 app.get("/deleteCourse", (req, res) => {
