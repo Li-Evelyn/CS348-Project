@@ -20,14 +20,19 @@ function StudentList(props) {
         }
     }, [props.course])
 
-    let deleteStudent = function(e) {
-        // TODO
-        alert("TODO")
+    let unenrollStudent = function(e) {
+        let uid = parseInt(e.target.parentElement.parentElement.children[0].id.replace('student_', ''))
+        props.unenrollStudent(uid)
     }
 
-    let addStudent = function(e) {
-        // TODO
-        alert("TODO")
+    let enrollStudent = function() {
+        let name = document.getElementById("name_input").value 
+        let email = document.getElementById("email_input").value 
+        let successful_add = props.enrollStudent(name, email)
+        if (successful_add) {
+            document.getElementById("name_input").value = ""
+            document.getElementById("email_input").value = ""
+        }
     }
 
     return (
@@ -49,18 +54,17 @@ function StudentList(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/*props.students.map((student, i) => {
+                                {props.courseStudents.map((student, i) => {
                                     return (
                                         <tr>
-                                            <td className="medium">{i + 1}</td>
-                                            <td className="medium">{student.name}</td>
+                                            <td className="medium" id={`student_${student.id}`}>{student.name}</td>
                                             <td className="medium">{student.email}</td>
                                             <td className="medium">
-                                                <Button className="purple-button small" onClick={deleteStudent}>Unenroll</Button>
+                                                <Button className="purple-button small" onClick={unenrollStudent}>Unenroll</Button>
                                             </td>
                                         </tr>
                                     )
-                                })*/}
+                                })}
                                 <tr>
                                     <td className="medium">
                                         <input type="text" id="name_input"></input>
@@ -69,7 +73,7 @@ function StudentList(props) {
                                         <input type="text" id="email_input"></input>
                                     </td>
                                     <td className="medium">
-                                        <Button className="purple-button small" onClick={addStudent}>Save and New</Button>
+                                        <Button className="purple-button small" onClick={enrollStudent}>Save and New</Button>
                                     </td>
                                 </tr>
                             </tbody>

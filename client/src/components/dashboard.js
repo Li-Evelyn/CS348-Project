@@ -17,7 +17,8 @@ function Dashboard(props) {
     const [rerenderAssignments, setRerenderAssignments] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
     const [activeAssignment, setActiveAssignment] = useState(null)
-    const [students, setStudents] = useState([])
+    const [allUsers, setAllUsers] = useState([])
+    const [courseStudents, setCourseStudents] = useState([])
 
     let conditionalRender = () => {
         switch(props.view) {
@@ -27,7 +28,7 @@ function Dashboard(props) {
                 return <div className="course-assignment-page">
                             <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} handleCreateAssignment={handleCreateAssignment} user={user} clearActiveAssignment={clearActiveAssignment}/> 
                             <br/>
-                            <StudentList userType={userType} course={activeCourse}/>
+                            <StudentList userType={userType} course={activeCourse} courseStudents={courseStudents} enrollStudent={enrollStudent} unenrollStudent={unenrollStudent}/>
                        </div>           
             case 'q':
                 return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentEditing={handleAssignmentEditing} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
@@ -79,9 +80,59 @@ function Dashboard(props) {
     }
 
     let getCourseStudents = (c) => {
-        // TODO
+        fetch (`http://localhost:8080/coursestudents?cid=${c.id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setCourseStudents(data.rows)
+        })
+    }
+    let getAllUsers = () => {
+        fetch (`http://localhost:8080/allUsers`)
+        .then((response) => response.json())
+        .then((data) => {
+            setAllUsers(data.rows)
+        })
     }
 
+    let enrollStudent = (name, email) => {
+        // check that this student exists
+        let uid = null;
+        for (let i = 0; i < allUsers.length; ++i) {
+            let u = allUsers[i]
+            if (u.name === name && u.email === email && u.type === 'student') {
+                for (let j = 0; j < courseStudents.length; ++j) {
+                    let courseStudent = courseStudents[j]
+                    if (u.email === courseStudent.email) {
+                        alert ("This student is already enrolled in this course.")
+                        return false;
+                    }
+                }
+                uid = u.id;
+                break;
+            }
+        }
+        if (uid) {
+            fetch (`http://localhost:8080/enrollStudent?cid=${activeCourse.id}&uid=${uid}`)
+            .then((response) => response.json())
+            .then((data) => {
+                getCourseStudents(activeCourse)
+            })
+        }
+        else {
+            alert ("Error: A student with this name and email doesn't exist in the system.")
+            return false;
+        }
+        return true;
+    }
+
+    let unenrollStudent = (uid) => {
+        fetch (`http://localhost:8080/unenroll?uid=${uid}&course=${activeCourse.id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            getCourseStudents(activeCourse)
+        })
+    }
+ 
     let handleAssignmentSelect = (a) => {
         setActiveAssignment(a);
         localStorage.setItem("assignment_name", a.name)
@@ -143,6 +194,7 @@ function Dashboard(props) {
             const user_type = localStorage.getItem("user_type");
             setUserType(user_type);
             getCourses(uid, user_type);
+            getAllUsers();
         } else {
             navigate("/login");
         }
