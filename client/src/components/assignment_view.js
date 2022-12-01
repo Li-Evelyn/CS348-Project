@@ -27,7 +27,7 @@ function AssignmentView(props) {
                 let sc = "red"
                 if (item.grade) {
                     ss = "Graded"
-                    g = `${item.grade}%`
+                    g = `${((item.grade / item.max_grade) * 100).toFixed(2)}%`
                     gc = "green"
                     sc = "green"
                 } else if (item.is_submitted) {

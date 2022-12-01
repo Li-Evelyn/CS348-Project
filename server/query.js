@@ -136,40 +136,35 @@ const Query = {
         await query(req, res, 'INSERT INTO assignmentsubmission (student_id, assignment_id, is_submitted) values($1, $2, FALSE)', [uid, aid])
     },
     async getSubmissionInfoFromAssignment(req, res, aid) {
-        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
+        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM ((assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id) INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id) WHERE assignmentsubmission.assignment_id=$1', [aid])
+    },
+    async getSubmissionInfoFromUser(req, res, uid) {
+        await query(req, res, 'SELECT assignment.id AS assignment_id, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM assignmentsubmission INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id WHERE assignmentsubmission.student_id=$1', [uid])
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
-    }, 
-
+    },
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
-
     async createAssignment(req, res, aid, cid, a_name, deadline, max_grade, description) {
         await query(req, res, `INSERT INTO assignment values($1, $2, $3, $4, $5, $6)`, [aid, cid, a_name, deadline, max_grade, description])
     }, 
-
     async deleteAssignment(req, res, aid) {
         await query(req, res, `DELETE FROM assignment WHERE id=$1`, [aid])
     }, 
-
     async createQuestion(req, res, aid, num, max_grade, description) {
         await query(req, res, `INSERT INTO question values($1, $2, $3, $4)`, [aid, num, max_grade, description])
     }, 
-
     async getAssignmentStats(req, res, aid) {
         await query(req, res, `SELECT COUNT(*) AS total_count, COUNT(grade) AS graded_count, AVG(grade) AS avg, STDDEV_SAMP(grade) AS std FROM AssignmentSubmission  WHERE assignment_id=$1;`, [aid])
     },
-
     async getAssignmentDistribution(req, res, aid) {
         await query(req, res, `SELECT COUNT(grade) AS count, FLOOR(grade/10)*10 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NOT NULL GROUP BY grade_range ORDER BY grade_range ASC;`, [aid])
     },
-
     async getAssignmentNotGraded(req, res, aid) {
         await query(req, res, `SELECT * FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NULL AND is_submitted;`, [aid])
     },
-
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
     }

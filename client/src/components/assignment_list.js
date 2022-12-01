@@ -109,12 +109,13 @@ function AssignmentList(props) {
                                         <tbody>
                                             {assignments.map((item, i) => {
                                                 let as = assignmentSubmissions[item.id]
+                                                let ovr_grade = as.grade != '-' ? `${((as.grade / item.max_grade) * 100).toFixed(2)}%` : as.grade
                                                 return (
                                                     <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
                                                         <td className="medium">{item.name}</td>
                                                         <td className="medium">{dateString(item.deadline)}</td>
                                                         <td className="medium" style={{color: as.tcolor}}>{as.text}</td>
-                                                        <td className="medium" style={{color: as.gcolor}}>{as.grade}</td>
+                                                        <td className="medium" style={{color: as.gcolor}}>{ovr_grade}</td>
                                                     </tr>
                                                 )
                                             })}
