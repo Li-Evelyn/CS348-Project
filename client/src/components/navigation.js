@@ -28,10 +28,12 @@ function Navigate(props) {
                 })
         }
     }
+	
     useEffect(() => {
         document.title = "GenericMark";
         getDisplayName();
-    }, []);
+    }, [navigate]);
+
     return (
         <Navbar bg="light" expand="lg">
             <Container>
