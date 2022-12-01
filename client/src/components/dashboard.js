@@ -69,6 +69,7 @@ function Dashboard(props) {
     }
 
     let handleAssignmentSelect = (a) => {
+		console.log(a);
         setActiveAssignment(a);
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
@@ -127,6 +128,19 @@ function Dashboard(props) {
         } else {
             navigate("/login");
         }
+
+		if (activeCourse === null) {
+			const courseId = localStorage.getItem("course_id")
+			const courseName = localStorage.getItem("course_name");
+			if (courseId && courseName) {
+				const curCourse = {
+					id: courseId,
+					name: courseName
+				};
+
+				setActiveCourse(curCourse);
+			}
+		}
     }, []);
 
     useEffect(() => {
