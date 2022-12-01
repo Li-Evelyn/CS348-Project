@@ -81,16 +81,15 @@ function AssignmentView(props) {
         })
     }
 
+    const bin_distance = 10
     let getAssignmentDistribution = function(id) {
         fetch(`http://localhost:8080/assignmentdistribution?aid=${id}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data.rows)
             const distribution = []
-            const bin_distance = 10
             for (let i=0; i<100; i+=bin_distance) {
                 distribution.push({
-                    range: i.toString() + "% - " + (i+bin_distance).toString() + "%",
                     range_med: (i+bin_distance/2).toString() + "%",
                     students: 0
                 })
@@ -156,7 +155,6 @@ function AssignmentView(props) {
     const CustomTooltip = ({active, payload, label}) => {
         if (active && payload && payload.length && payload[0].value > 0) {
             const range_med = parseInt(label.slice(0,-1))
-            const bin_distance = 10;
             return (
                 <div className="custom-tooltip">
                     <p className="label">{`${range_med-bin_distance/2}% - ${range_med+bin_distance/2}%`}</p>
