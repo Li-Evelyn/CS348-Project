@@ -126,11 +126,11 @@ const Query = {
     async getQuestions(req, res, aid) {
         await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
     },
-    async createQuestionSubmission(req, res, uid, aid, num) {
-        await query(req, res, 'INSERT into questionsubmission (student_id, assignment_id, question_number) values ($1, $2, $3)', [uid, aid, num])
+    async getAssignmentSubmission(req, res, id, aid) {
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1 AND assignment_id=$2", [id, aid])
     },
     async getAssignmentSubmissions(req, res, id) {
-        await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1", [id])
     },
     async createAssignmentSubmission(req, res, uid, aid) {
         await query(req, res, 'INSERT INTO assignmentsubmission (student_id, assignment_id, is_submitted) values($1, $2, FALSE)', [uid, aid])
@@ -141,7 +141,6 @@ const Query = {
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
     }, 
-
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
@@ -172,6 +171,16 @@ const Query = {
 
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
+    },
+    async submitAssignment(req, res, uid, aid, info) { // gary help
+        let submitQueries = [['UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2', [uid, aid]]]
+        for (let i = 0; i < info.length; i++) {
+            submitQueries.push(['INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4) ON CONFLICT (student_id, assignment_id, question_number) DO UPDATE SET file_path=$4', [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
+        }
+        await multiQuery(req, res, submitQueries, {has_args: true})
+    },
+    async getQuestionSubmissions(req, res, uid, aid) {
+        await query(req, res, "SELECT * FROM questionsubmission WHERE student_id=$1 AND assignment_id=$2", [uid, aid])
     }
 
 };
