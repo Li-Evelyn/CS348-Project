@@ -129,7 +129,7 @@ const Query = {
     async getAssignmentSubmission(req, res, id, aid) {
         await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1 AND assignment_id=$2", [id, aid])
     },
-    async getAssignmentSubmissions(req, res, id, aid=null) {
+    async getAssignmentSubmissions(req, res, id) {
         await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1", [id])
     },
     async createAssignmentSubmission(req, res, uid, aid) {

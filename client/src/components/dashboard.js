@@ -73,10 +73,9 @@ function Dashboard(props) {
 
     let handleAssignmentSelect = (a) => {
         setActiveAssignment(a);
-        let cname = localStorage.getItem("course_name")
         localStorage.setItem("assignment_name", a.name)
         localStorage.setItem("assignment_id", a.id)
-        navigate(`${getAssignmentLink(userType, cname, a.name)}`)
+        navigate(`${getAssignmentLink(userType, activeCourse.name, a.name)}`)
     }
 
     let handleCreateAssignment = () => {
