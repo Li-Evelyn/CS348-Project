@@ -43,7 +43,6 @@ function AssignmentView(props) {
         for (let i = 0; i < files.length; i++) {
             if (files[i].current.files) {
                 let file = files[i].current.files[0];
-                console.log(file)
                 formData.append(`${uid}-${aid}-${i+1}`, file) // single submission
             }
         }
@@ -88,7 +87,7 @@ function AssignmentView(props) {
                 let g = "-"
                 let gc = "black"
                 let sc = "red"
-                if (item.grade) {
+                if (item.grade !== null) {
                     ss = "Graded"
                     g = `${((item.grade / item.max_grade) * 100).toFixed(2)}%`
                     gc = "green"
@@ -129,7 +128,6 @@ function AssignmentView(props) {
         .then((response) => response.json())
         .then((data) => {
             if (data.rows.length > 0) {
-                console.log(data.rows["0"])
                 setStats(data.rows["0"])
             }
             else {
@@ -146,7 +144,6 @@ function AssignmentView(props) {
         fetch(`http://localhost:8080/assignmentdistribution?aid=${assignment.id}&max_grade=${assignment.max_grade}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.rows)
             const distribution = []
             for (let i=0; i<100; i+=bin_distance) {
                 distribution.push({
@@ -156,7 +153,13 @@ function AssignmentView(props) {
             }
 
             data.rows.forEach(row => {
-                distribution[row.grade_range/bin_distance].students = parseInt(row.count)
+                if (row.grade_range/bin_distance < 100/bin_distance) {
+                    distribution[row.grade_range/bin_distance].students = parseInt(row.count)
+                }
+                else {
+                    console.log(row.grade_range)
+                    distribution[distribution.length-1].students += parseInt(row.count)
+                }
             })
 
             setDistribution(distribution)
@@ -170,7 +173,6 @@ function AssignmentView(props) {
         fetch(`http://localhost:8080/assignmentnotgraded?aid=${id}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.rows)
             setAssignmentNotGraded(data.rows)
         })
         .catch((e) => {
@@ -212,18 +214,6 @@ function AssignmentView(props) {
             getAssignmentDistribution()
         }
     }, [assignment])
-
-    useEffect(() => {
-        if (distribution.length > 0 && 'total_count' in stats) {
-            const distribution_copy = distribution
-            let graded_count = 0
-            distribution_copy.forEach(range => graded_count += range.students)
-
-            console.log(stats.total_count - graded_count)
-            distribution_copy[0].students += stats.total_count - graded_count
-            setDistribution(distribution_copy)
-        }
-    }, [distribution, stats])
 
     let dateString = (s) => {
         const d = new Date(s)
@@ -276,8 +266,7 @@ function AssignmentView(props) {
                                         <Card.Title className="question-title">
                                             <>Question {item.number}</>
                                             <>
-                                                {/* something here for grading mayhaps */}
-                                                <Card.Text className="medium">{item.number in questionSubmissions && questionSubmissions[item.number].grade ? questionSubmissions[item.number].grade : ""}/{item.max_grade}</Card.Text>
+                                                <Card.Text className="medium">{item.number in questionSubmissions && questionSubmissions[item.number].grade !== null ? questionSubmissions[item.number].grade : ""}/{item.max_grade}</Card.Text>
                                             </>
                                         </Card.Title>
                                         <Card.Subtitle>{item.description}</Card.Subtitle>
@@ -347,7 +336,7 @@ function AssignmentView(props) {
                                                 <td className="medium">{item.name}</td>
                                                 <td className="medium">{item.email}</td>
                                                 <td className="medium" >
-                                                <Button className="purple-button small" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
+                                                <Button className="purple-button small view-grade" onClick={() => props.handleAssignmentGrading(assignment, item.uid)}>View and Grade</Button>
                                                 </td>
                                                 <td className="medium" style={{color: item.gcolor}}>{item.grade}</td>
                                             </tr>

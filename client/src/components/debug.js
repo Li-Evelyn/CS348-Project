@@ -69,7 +69,7 @@ function DebugPage(props) {
                 <tr>{columns.map((item) => <th>{item}</th>)}</tr>
             </thead>
             <tbody>
-                {content.map((item) => <tr>{item.map((i) => <td>{i}</td>)}</tr>)} 
+                {content.map((item) => <tr>{item.map((i) => <td>{`${i}`}</td>)}</tr>)} 
             </tbody>
         </Table>
     </>

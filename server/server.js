@@ -91,6 +91,9 @@ app.get('/questionSubmissions', (req, res) => {
     Query.getQuestionSubmissions(req, res, req.query.uid, req.query.aid)
 })
 
+app.post('/submitGrades', (req, res) => {
+    Query.submitGrades(req, res, req.query.uid, req.query.aid, req.body)
+}) 
 
 app.get("/assignmentsubmission", (req, res) => {
     Query.getAssignmentSubmission(req, res, req.query.uid, req.query.aid)

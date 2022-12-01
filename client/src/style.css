@@ -243,6 +243,10 @@ a {
     float: right !important;
 }
 
+.purple-button.small.view-grade {
+    float: left !important;
+}
+
 .purple-button:hover {
     background-color: #9487c7 !important;
     border-color: #9487c7 !important;
@@ -300,4 +304,16 @@ a:link {
     outline-style: none !important;
     border-style: none !important;
     color: black !important;
+}
+
+.num-input {
+    width: 15% !important;
+}
+
+.corner {
+    text-align: right !important;
+}
+
+.long {
+    width: 100% !important;
 }

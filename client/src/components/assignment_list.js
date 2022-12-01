@@ -19,7 +19,7 @@ function AssignmentList(props) {
                 let g = "-"
                 let gc = "black"
                 let sc = "red"
-                if (item.grade) {
+                if (item.grade !== null) {
                     ss = "Graded"
                     g = item.grade
                     gc = "green"
