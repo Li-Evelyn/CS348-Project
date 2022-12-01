@@ -7,7 +7,7 @@ user_id,assignment_id,grade,is_submitted
 123,17,50,TRUE
 126,1,30,TRUE
 126,2,20,TRUE
-126,28,20,TRUE
+126,28,,TRUE
 127,6,20,TRUE
 127,7,50,TRUE
 127,8,20,TRUE

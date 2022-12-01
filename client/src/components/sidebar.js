@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Sidebar(props) {
     let navigate = useNavigate();
 
-    // TODO: if on a course page, keep active item highlighted
     return (
         <div className="sidebar">
             <h3 className="medium sidebar-item clickable" onClick={() => navigate('/student/courses')}>Courses</h3>
