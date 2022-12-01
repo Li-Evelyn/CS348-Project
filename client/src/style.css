@@ -309,3 +309,7 @@ a:link {
 .corner {
     text-align: right !important;
 }
+
+.long {
+    width: 100% !important;
+}

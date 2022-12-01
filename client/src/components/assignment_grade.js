@@ -119,7 +119,7 @@ function AssignmentGradeView (props) {
                 if (questions[i].number in questionSubmissions && questionSubmissions[questions[i].number].grade !== null) {
                     temp.push(questionSubmissions[questions[i].number].grade)
                 } else {
-                    temp.push(-1)
+                    temp.push(0)
                 }
                 if (questions[i].number in questionSubmissions && questionSubmissions[questions[i].number].staff_comments !== null) {
                     temp2.push(questionSubmissions[questions[i].number].staff_comments)
@@ -234,7 +234,7 @@ function AssignmentGradeView (props) {
                                                 :
                                                 <></>
                                                 :
-                                                <input type="text" className="medium" placeholder="Enter comments" onChange={(e) => handleCommentsChange(e, i)}/>
+                                                <input type="text" className="medium long" placeholder="Enter comments" onChange={(e) => handleCommentsChange(e, i)}/>
                                             }
                                         </Card.Body>
                                     </Card>
