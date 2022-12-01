@@ -69,8 +69,8 @@ function QuestionsCreate(props) {
                                             <td className="medium">{i + 1}</td>
                                             <td className="medium">{item.description}</td>
                                             <td className="medium">{item.max_grade}</td>
-                                            <td className="medium">
-                                                <Button className="purple-button small delete" onClick={deleteQuestion}>Delete</Button>
+                                            <td className="medium delete-container">
+                                                <Button className="purple-button small" onClick={deleteQuestion}>Delete</Button>
                                             </td>
                                         </tr>
                                     )
@@ -86,7 +86,7 @@ function QuestionsCreate(props) {
                                         <input type="text" id="max_grade_input"></input>
                                     </td>
                                     <td className="medium">
-                                        <Button className="purple-button small save" onClick={saveQuestion}>Save and New</Button>
+                                        <Button className="purple-button small" onClick={saveQuestion}>Save and New</Button>
                                     </td>
                                 </tr>
                             </tbody>
