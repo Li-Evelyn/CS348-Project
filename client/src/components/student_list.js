@@ -1,24 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 function StudentList(props) {
-    const [cid, setCid] = useState("")
-    const [cname, setCname] = useState("")
-
-    useEffect(() => {
-        if (!props.course) {
-            const courseID = localStorage.getItem("course_id")
-            if (courseID) {
-                setCid(courseID)
-                const courseName = localStorage.getItem("course_name")
-                setCname(courseName)
-            }
-        } else {
-            setCid(props.course.id)
-            setCname(props.course.name)
-        }
-    }, [props.course])
 
     let unenrollStudent = function(e) {
         let uid = parseInt(e.target.parentElement.parentElement.children[0].id.replace('student_', ''))

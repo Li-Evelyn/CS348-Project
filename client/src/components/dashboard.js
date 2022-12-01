@@ -127,6 +127,7 @@ function Dashboard(props) {
                     let courseAssignments = data.rows
                     Promise.all(courseAssignments.map((assignment) => {
                         fetch(`http://localhost:8080/createAssignmentSubmission?uid=${uid}&aid=${assignment.id}`)
+                        return 0;
                     }))
                 })
             })
@@ -163,11 +164,6 @@ function Dashboard(props) {
         localStorage.removeItem("assignment_id")
     }
 
-    let handleAssignmentEditing = (a) => {
-        setActiveAssignment(a);
-        navigate(`${getAssignmentEditingLink(a.name, activeCourse.name)}`)
-    }
-
     let handleAssignmentGrading = (a, uid) => {
         setActiveAssignment(a);
         localStorage.setItem("assignment_id", a.id)
@@ -198,8 +194,7 @@ function Dashboard(props) {
     let getCreateAssignmentLink = (userType, courseName) => `/${userType}/createAssignment/${courseName.replace(' ', '-').toLowerCase()}`;
     let getAssignmentLink = (userType, courseName, assignmentName) => `/${userType}/assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
     let getGradingLink = (assignmentId, userId) => `/staff/grading/${assignmentId}/${userId}`
-    let getAssignmentEditingLink = (assignmentName, courseName) => `/staff/edit-assignment/${courseName.replace(' ', '-').toLowerCase()}/${assignmentName.replace(' ', '-').toLowerCase()}`
-
+    
     useEffect(() => {
         const isAuthed = localStorage.getItem("authenticated")
         if (isAuthed) {
