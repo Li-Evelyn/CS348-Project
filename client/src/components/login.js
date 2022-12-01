@@ -3,6 +3,12 @@ import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import shajs from 'sha.js';
 
+const navigateTo = {
+	student: '/student/courses',
+	staff: '/staff/courses',
+	admin: '/debug'
+}
+
 function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +26,7 @@ function LoginPage(props) {
           localStorage.setItem("authenticated", true)
           localStorage.setItem("user_id", data.rows["0"].id)
           localStorage.setItem("user_type", data.rows["0"].type)
-          navigate(`/${data.rows["0"].type}/courses`);
+          navigate(`${navigateTo[data.rows["0"].type]}`);
         }
       })
   }

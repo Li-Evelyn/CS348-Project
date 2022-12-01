@@ -127,6 +127,19 @@ function Dashboard(props) {
         } else {
             navigate("/login");
         }
+
+		if (activeCourse === null) {
+			const courseId = localStorage.getItem("course_id")
+			const courseName = localStorage.getItem("course_name");
+			if (courseId && courseName) {
+				const curCourse = {
+					id: parseInt(courseId),
+					name: courseName
+				};
+
+				setActiveCourse(curCourse);
+			}
+		}
     }, []);
 
     useEffect(() => {
