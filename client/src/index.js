@@ -37,7 +37,6 @@ export default function App() {
           <Route path="staff/assignment/*" element={<Dashboard view='q'/>} />
           <Route exact path="staff/createAssignment/*" element={<Dashboard view='ca'/>} /> 
           <Route path="staff/grading/*" element={<Dashboard view='g'/>} />
-          <Route path="staff/edit-assignment/*" element={<Dashboard view='q'/>} />
           <Route path="*" element={<ErrorPage />}/>
         </Route>
       </Routes>
