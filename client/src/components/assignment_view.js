@@ -263,7 +263,7 @@ function AssignmentView(props) {
                                         <Card.Title className="question-title">
                                             <>Question {item.number}</>
                                             <>
-                                                <Card.Text className="medium">{item.number in questionSubmissions && questionSubmissions[item.number].grade ? questionSubmissions[item.number].grade : ""}/{item.max_grade}</Card.Text>
+                                                <Card.Text className="medium">{item.number in questionSubmissions && questionSubmissions[item.number].grade !== null ? questionSubmissions[item.number].grade : ""}/{item.max_grade}</Card.Text>
                                             </>
                                         </Card.Title>
                                         <Card.Subtitle>{item.description}</Card.Subtitle>
