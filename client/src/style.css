@@ -56,13 +56,12 @@ html, body {
 }
 
 .sign-in {
-    width: 50%;
+    width: 40%;
     text-align: center;
     align-items: center;
     box-shadow: 0.75em 1.25em #cac0e6;
     border-radius: 20px !important;
     border-color: transparent; 
-    height: 100% !important;
 }
 
 .sign-in-button {
@@ -86,7 +85,7 @@ a {
 }
 .card-body {
     width: 60%;
-    height: 60%;
+    height: 50%;
 }
 .custom-container {
     display: flex;

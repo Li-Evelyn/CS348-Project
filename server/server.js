@@ -116,7 +116,6 @@ app.post('/upload', (req, res) => {
         let uid = req.query.uid;
         let aid = req.query.aid;
         for (const [key, value] of files) {
-            console.log(value)
             let s = key.split("-")
             let uid = s[0]
             let aid = s[1]
@@ -132,6 +131,7 @@ app.post('/upload', (req, res) => {
             })
             info.push({uid: uid, aid: aid, qnum: qnum, file_path:`/u${uid}/a${aid}/q${qnum}`})
         }
+        console.log("got here")
         Query.submitAssignment(req, res, uid, aid, info);
     } else {
         console.log("No files submitted")
