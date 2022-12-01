@@ -321,7 +321,7 @@ function AssignmentView(props) {
                         </div>}
                         <Button className="purple-button" onClick={() => props.handleAssignmentEditing(assignment)}>Edit Assignment</Button>
                         <h5 className="medium">Student Submissions</h5>
-                        <div className="course-assignment-container">
+                        <div style={{width: "100%", justifyContent: "center"}}>
                             <Table className="t">
                                 <thead>
                                     <tr>
