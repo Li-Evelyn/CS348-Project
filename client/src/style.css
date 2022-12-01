@@ -28,6 +28,10 @@ html, body {
     background-color: white !important;
 }
 
+.App {
+    height: 90%;
+}
+
 .homebutton {
     background-color: white !important;
     width: 30%;
@@ -46,19 +50,27 @@ html, body {
 
 .homepage {
     position: relative;
-    transform: translate(5%, 60%);
+    transform: translate(0%, 100%);
+    text-align: center !important;
     width: 100% !important;
-    margin: 0 0 !important; 
+}
+
+.custom-input {
+    width: 100% !important;
+    background-color: #e5e1f1;
+    color: #737373;
+    padding: 1em;
+    text-align: center;
+    border-radius: 25px;
 }
 
 .sign-in {
-    width: 50%;
+    width: 40%;
     text-align: center;
     align-items: center;
     box-shadow: 0.75em 1.25em #cac0e6;
     border-radius: 20px !important;
     border-color: transparent; 
-    height: 100% !important;
 }
 
 .sign-in-button {
@@ -82,7 +94,7 @@ a {
 }
 .card-body {
     width: 60%;
-    height: 60%;
+    height: 50%;
 }
 .custom-container {
     display: flex;
@@ -101,10 +113,17 @@ a {
     background-color: white !important;
     grid-area: right;
     padding: 5% 0;
-    width: 90%;
+    width: 100%;
+    /* display: flex; */
+    justify-content: center;
+}
+
+.assignment {
+    display: flex;
 }
 
 .course-assignment-container {
+    width: 85%
 }
 
 .user-dropdown {
@@ -131,10 +150,37 @@ a {
     justify-content: space-between;
 }
 
+.question-title {
+    margin: 2em 0em;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+}
+
 .course-assignment-dropdown {
     border: none !important;
     height: 100%;
     margin: 1em 0.5em;
+}
+
+.course-assignment-stats {
+    width: 100%;
+    height: 10em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3em 0em;
+}
+
+.custom-tooltip {
+    background-color: #cac0e6;
+    color: white;
+    padding: 0.25em 0.75em;
+    border-radius: 15px;
+}
+
+.custom-tooltip, .label {
+    margin-top: 0.5em;
 }
 
 .course-assignment-button {
@@ -197,6 +243,10 @@ a {
     float: right !important;
 }
 
+.purple-button.small.view-grade {
+    float: left !important;
+}
+
 .purple-button:hover {
     background-color: #9487c7 !important;
     border-color: #9487c7 !important;
@@ -236,9 +286,35 @@ a:link {
 }
 
 .t {
-    width: 80% !important;
+    width: 100% !important;
 }
 
 #root {
     height: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.questions-button {
+    width: 30%;
+    height: 3.5em !important;
+    background-color: #ada0d6 !important;
+    border-radius: 25px !important;
+    outline-style: none !important;
+    border-style: none !important;
+    color: black !important;
+}
+
+.num-input {
+    width: 15% !important;
+}
+
+.corner {
+    text-align: right !important;
+}
+
+.long {
+    width: 100% !important;
 }

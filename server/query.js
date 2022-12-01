@@ -132,42 +132,72 @@ const Query = {
     async getQuestions(req, res, aid) {
         await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
     },
-    async createQuestionSubmission(req, res, uid, aid, num) {
-        await query(req, res, 'INSERT into questionsubmission (student_id, assignment_id, question_number) values ($1, $2, $3)', [uid, aid, num])
+    async getAssignmentSubmission(req, res, id, aid) {
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1 AND assignment_id=$2", [id, aid])
     },
     async getAssignmentSubmissions(req, res, id) {
-        await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1", [id])
     },
     async createAssignmentSubmission(req, res, uid, aid) {
         await query(req, res, 'INSERT INTO assignmentsubmission (student_id, assignment_id, is_submitted) values($1, $2, FALSE)', [uid, aid])
     },
     async getSubmissionInfoFromAssignment(req, res, aid) {
-        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
+        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM ((assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id) INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id) WHERE assignmentsubmission.assignment_id=$1', [aid])
+    },
+    async getSubmissionInfoFromUser(req, res, uid) {
+        await query(req, res, 'SELECT assignment.id AS assignment_id, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM assignmentsubmission INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id WHERE assignmentsubmission.student_id=$1', [uid])
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
-    }, 
-
+    },
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
-
     async createAssignment(req, res, aid, cid, a_name, deadline, max_grade, description) {
         await query(req, res, `INSERT INTO assignment values($1, $2, $3, $4, $5, $6)`, [aid, cid, a_name, deadline, max_grade, description])
     }, 
-
     async deleteAssignment(req, res, aid) {
         await query(req, res, `DELETE FROM assignment WHERE id=$1`, [aid])
     }, 
-
     async createQuestion(req, res, aid, num, max_grade, description) {
         await query(req, res, `INSERT INTO question values($1, $2, $3, $4)`, [aid, num, max_grade, description])
     }, 
-    
-    async run(req, res, q) { // gary dw this is very secure, no ACE here
+    async getAssignmentStats(req, res, aid, max_grade) {
+        await query(req, res, `SELECT COUNT(*) AS total_count, COUNT(grade) AS graded_count, AVG(grade*100.0/$2) AS avg, STDDEV_SAMP(grade*100.0/$2) AS std FROM AssignmentSubmission  WHERE assignment_id=$1;`, [aid, max_grade])
+    },
+    async getAssignmentDistribution(req, res, aid, max_grade) {
+        await query(req, res, `SELECT COUNT(grade) AS count, FLOOR(grade*10.0/$2)*10 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NOT NULL GROUP BY grade_range ORDER BY grade_range ASC;`, [aid, max_grade])
+    },
+    async getAssignmentNotGraded(req, res, aid) {
+        await query(req, res, `SELECT * FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NULL AND is_submitted;`, [aid])
+    },
+    async run(req, res, q) {
         await query(req, res, q);
+    },
+    async submitAssignment(req, res, uid, aid, info) {
+        let submitQueries = [['UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2', [uid, aid]]]
+        for (let i = 0; i < info.length; i++) {
+            submitQueries.push(['INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4) ON CONFLICT (student_id, assignment_id, question_number) DO UPDATE SET file_path=$4', [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
+        }
+        await multiQuery(req, res, submitQueries, {has_args: true})
+    },
+    async getQuestionSubmissions(req, res, uid, aid) {
+        await query(req, res, "SELECT * FROM questionsubmission WHERE student_id=$1 AND assignment_id=$2", [uid, aid])
+    },
+    async submitGrades(req, res, uid, aid, qdata) {
+        let submitQueries = [['UPDATE assignmentsubmission SET grade=$1 WHERE student_id=$2 AND assignment_id=$3', [qdata["assn_grade"], uid, aid]]]
+        let items = Object.entries(qdata)
+        for (let i = 0; i < items.length; i++) {
+            let entry = items[i]
+            if (!isNaN(entry[0])) { // not the assignment grade
+                submitQueries.push([
+                    'INSERT INTO questionsubmission (student_id, assignment_id, question_number, grade, staff_comments) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (student_id, assignment_id, question_number) DO UPDATE SET grade=$4,staff_comments=$5', 
+                    [uid, aid, entry[0], entry[1].grade, entry[1].staff_comments]
+                ])
+            }
+        }
+        await multiQuery(req, res, submitQueries, {has_args: true})
     }
-
 };
 
 module.exports = Query;

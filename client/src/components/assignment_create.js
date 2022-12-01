@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
 import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import QuestionsCreate from './questions_create';
@@ -32,7 +31,7 @@ function AssignmentCreate(props) {
             const assignmentName = document.getElementById("assignmentName").value
             if (assignmentName === "") {
                 alert ("Please specify an assignment name.")
-                throw ""
+                throw new Error("Assignment name not specified")
             }
     
             const deadlineDate = document.getElementById("deadline-date").value
@@ -43,7 +42,7 @@ function AssignmentCreate(props) {
             }
             else {
                 alert ("Please specify a deadline date and time.")
-                throw ""
+                throw new Error("Please specify a date and time")
             }
      
             if (assignmentName && deadline) {
@@ -63,7 +62,7 @@ function AssignmentCreate(props) {
                             // check for unique assignment name
                             if (existing_a.name === assignmentName) {
                                 alert(`Assignment with name "${assignmentName}" already exists for this course.`)
-                                throw ""
+                                throw new Error("Duplicate assignment name")
                             }
                         })
         
@@ -72,7 +71,7 @@ function AssignmentCreate(props) {
                         const today = new Date();
                         if (deadline_timestamp <= today.getTime()) {
                             alert("Assignment deadline must be set to a future time.")
-                            throw ""
+                            throw new Error("Assignment deadline must be set to a future time.")
                         }
                         deadline_timestamp = deadline_timestamp.toISOString()
         
@@ -97,11 +96,13 @@ function AssignmentCreate(props) {
                                 // create assignmentsubmissions
                                 Promise.all(usersInCourse.map((u) => {
                                     fetch(`http://localhost:8080/createAssignmentSubmission?uid=${u.student_id}&aid=${next_aid}`)
+                                    return 0
                                 }))
                                 .then(() => {
                                     // create questions
                                     Promise.all(questions.map((q, i) => {
                                         fetch(`http://localhost:8080/createQuestion?aid=${next_aid}&num=${i+1}&max_grade=${q.max_grade}&description=${q.description}`)
+                                        return 0
                                     }))
                                     .then(() => {
                                         // no need to create questionsubmissions since they're created on assignment submission
