@@ -5,13 +5,11 @@ const bodyParser = require("body-parser")
 const fileUpload = require("express-fileupload")
 const User = require("./query");
 const Query = require('./query');
-const fs = require('fs')
+const fs = require('fs');
+const path = require('path');
+const { nextTick } = require('process');
 const app = express();
 const PORT = 8080;
-// const queryMap = {
-//     "all": Query.readAll,
-//     "columns": Query.columns
-// }
 
 app.use(express.static("file_submissions"))
 app.use(fileUpload())
@@ -23,10 +21,6 @@ app.get("/", (req, res) => {
     res.json("hello world :)");
 });
 
-// app.get("/query/:option", (req, res) => {
-//     console.log(req.params.option)
-//     res.json(queryMap[req.params.option])
-// });
 app.get("/query/create", Query.createTables);
 app.get("/query/drop", Query.dropTables);
 app.get("/query/populate", Query.populateTables);
@@ -75,6 +69,15 @@ app.get("/questions", (req, res) => {
     Query.getQuestions(req, res, req.query.aid)
 })
 
+app.get('/questionSubmissions', (req, res) => {
+    Query.getQuestionSubmissions(req, res, req.query.uid, req.query.aid)
+})
+
+
+app.get("/assignmentsubmission", (req, res) => {
+    Query.getAssignmentSubmission(req, res, req.query.uid, req.query.aid)
+})
+
 app.get("/assignmentsubmissions", (req, res) => {
     Query.getAssignmentSubmissions(req, res, req.query.uid)
 })
@@ -101,27 +104,38 @@ app.get("/test/:query", (req, res) => {
 })
 
 app.post('/upload', (req, res) => {
-    const files = Object.entries(req.files)
-    const info = []
-    let uid = req.query.uid;
-    let aid = req.query.aid;
-    for (const [key, value] of files) {
-        let s = key.split("-")
-        let uid = s[0]
-        let aid = s[1]
-        let qnum = s[2]
-        fs.mkdirSync(`${__dirname}/file_submissions/u${uid}/a${aid}`, {recursive: true}, (err) => {
-            if (err) throw err;
-        })
-        value.mv(`${__dirname}/file_submissions/u${uid}/a${aid}/q${qnum}`, (err) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).send({ msg: "Error occurred"})
-            }
-        })
-        info.push({uid: uid, aid: aid, qnum: qnum, file_path:`/u${uid}/a${aid}/q${qnum}`})
+    if (req.files) {
+        const files = Object.entries(req.files)
+        const info = []
+        let uid = req.query.uid;
+        let aid = req.query.aid;
+        for (const [key, value] of files) {
+            console.log(value)
+            let s = key.split("-")
+            let uid = s[0]
+            let aid = s[1]
+            let qnum = s[2]
+            fs.mkdirSync(`${__dirname}/file_submissions/u${uid}/a${aid}`, {recursive: true}, (err) => {
+                if (err) throw err;
+            })
+            value.mv(`${__dirname}/file_submissions/u${uid}/a${aid}/q${qnum}.png`, (err) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).send({ msg: "Error occurred"})
+                }
+            })
+            info.push({uid: uid, aid: aid, qnum: qnum, file_path:`/u${uid}/a${aid}/q${qnum}`})
+        }
+        Query.submitAssignment(req, res, uid, aid, info);
+    } else {
+        console.log("No files submitted")
     }
-    Query.submitAssignment(req, res, uid, aid, info);
+})
+
+app.get('/download', (req, res) => {
+    res.sendFile(`file_submissions/${req.query.path}.png`, {root: path.join(__dirname)}, function (err) {
+        if (err) throw err;
+    })
 })
 
 app.listen(PORT, () => {

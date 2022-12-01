@@ -120,8 +120,11 @@ const Query = {
     async getQuestions(req, res, aid) {
         await query(req, res, 'SELECT * FROM question WHERE assignment_id=$1', [aid])
     },
-    async getAssignmentSubmissions(req, res, id) {
-        await query(req, res, 'SELECT * FROM assignmentsubmission WHERE student_id=$1', [id])
+    async getAssignmentSubmission(req, res, id, aid) {
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1 AND assignment_id=$2", [id, aid])
+    },
+    async getAssignmentSubmissions(req, res, id, aid=null) {
+        await query(req, res, "SELECT * FROM assignmentsubmission WHERE student_id=$1", [id])
     },
     async getSubmissionInfoFromAssignment(req, res, aid) {
         await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
@@ -129,26 +132,24 @@ const Query = {
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
     }, 
-
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
-
     async deleteAssignment(req, res, aid) {
         await query(req, res, `DELETE FROM assignment WHERE id=$1`, [aid])
     }, 
-    
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
     },
-
-    async submitAssignment(req, res, uid, aid, info) {
-        let submitQueries = [[`UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2`, [uid, aid]]]
+    async submitAssignment(req, res, uid, aid, info) { // gary help
+        let submitQueries = [['UPDATE assignmentsubmission SET is_submitted=TRUE WHERE student_id=$1 AND assignment_id=$2', [uid, aid]]]
         for (let i = 0; i < info.length; i++) {
-            submitQueries.push([`INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4)`, [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
+            submitQueries.push(['INSERT INTO questionsubmission (student_id, assignment_id, question_number, file_path) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', [info[i].uid, info[i].aid, info[i].qnum, info[i].file_path]])
         }
-        console.log(submitQueries)
-        await multiQuery(req, res, submitQueries)
+        await multiQuery(req, res, submitQueries, {has_args: true})
+    },
+    async getQuestionSubmissions(req, res, uid, aid) {
+        await query(req, res, "SELECT * FROM questionsubmission WHERE student_id=$1 AND assignment_id=$2", [uid, aid])
     }
 
 };
