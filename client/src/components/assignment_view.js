@@ -228,7 +228,7 @@ function AssignmentView(props) {
                                 <tbody>
                                     {assignmentSubmissions.map((item, i) => {
                                         return (
-                                            <tr>
+                                            <tr key={i}>
                                                 <td className="medium">{item.name}</td>
                                                 <td className="medium">{item.email}</td>
                                                 <td className="medium" >
