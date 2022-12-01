@@ -1,4 +1,5 @@
 const request = require("supertest");
+const shajs = require('sha.js');
 
 test('Getting User by ID', async () => {
     const res = await request('http://localhost:8080').get('/user?id=10')
@@ -12,10 +13,14 @@ test('Getting User by ID', async () => {
 });
 
 test('Login Success', async () => {
-    const res = await request('http://localhost:8080').get('/login?email=fmatczak5@yandex.ru&pw=bQyx9pqubLSl')
+    const a = shajs('sha256').update('bQyx9pqubLSl').digest('hex')
+    console.log(a)
+    const email = 'fmatczak5@yandex.ru'
+    const password = 'c34a98165b0eb5686c4a1c30b2dee597318d55749c2bc4e61f576c8bbe6915db'
+    const res = await request('http://localhost:8080').get(`/login?email=${email}pw=${password}`)
     const data = res.body.rows[0]
     expect(res.status).toBe(200)
-
+    console.log(res.body)
     expect(data.name).toBe("Faith Matczak")
     expect(data.email).toBe("fmatczak5@yandex.ru")
     expect(data.type).toBe('admin')
@@ -40,6 +45,7 @@ test('Student View Courses', async () => {
 test('Staff View Courses', async () => {
     const res = await request('http://localhost:8080').get('/courses?uid=110&userType=staff')
     const data = res.body.rows
+    console.log(data)
     expect(res.status).toBe(200)
     expect(data[0].id).toBe(11)
     expect(data[1].id).toBe(9)
