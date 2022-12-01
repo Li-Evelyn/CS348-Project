@@ -105,6 +105,18 @@ app.get("/submissioninfofromassignment", (req, res) => {
     Query.getSubmissionInfoFromAssignment(req, res, req.query.aid)
 })
 
+app.get("/assignmentstats", (req, res) => {
+    Query.getAssignmentStats(req, res, req.query.aid)
+})
+
+app.get("/assignmentdistribution", (req, res) => {
+    Query.getAssignmentDistribution(req, res, req.query.aid)
+})
+
+app.get("/assignmentnotgraded", (req, res) => {
+    Query.getAssignmentNotGraded(req, res, req.query.aid)
+})
+
 app.get("/unenroll", (req, res) => {
     Query.unEnroll(req, res, req.query.uid, req.query.course);
 })

@@ -157,7 +157,19 @@ const Query = {
     async createQuestion(req, res, aid, num, max_grade, description) {
         await query(req, res, `INSERT INTO question values($1, $2, $3, $4)`, [aid, num, max_grade, description])
     }, 
-    
+
+    async getAssignmentStats(req, res, aid) {
+        await query(req, res, `SELECT COUNT(*) AS total_count, COUNT(grade) AS graded_count, AVG(grade) AS avg, STDDEV_SAMP(grade) AS std FROM AssignmentSubmission  WHERE assignment_id=$1;`, [aid])
+    },
+
+    async getAssignmentDistribution(req, res, aid) {
+        await query(req, res, `SELECT COUNT(grade) AS count, FLOOR(grade/10)*10 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NOT NULL GROUP BY grade_range ORDER BY grade_range ASC;`, [aid])
+    },
+
+    async getAssignmentNotGraded(req, res, aid) {
+        await query(req, res, `SELECT * FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NULL AND is_submitted;`, [aid])
+    },
+
     async run(req, res, q) { // gary dw this is very secure, no ACE here
         await query(req, res, q);
     }
