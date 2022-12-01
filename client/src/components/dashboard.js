@@ -116,6 +116,15 @@ function Dashboard(props) {
             .then((response) => response.json())
             .then((data) => {
                 getCourseStudents(activeCourse)
+                // create assignmentsubmissions for this new student
+                fetch(`http://localhost:8080/assignments?cid=${activeCourse.id}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    let courseAssignments = data.rows
+                    Promise.all(courseAssignments.map((assignment) => {
+                        fetch(`http://localhost:8080/createAssignmentSubmission?uid=${uid}&aid=${assignment.id}`)
+                    }))
+                })
             })
         }
         else {
