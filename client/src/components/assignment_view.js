@@ -27,6 +27,7 @@ function AssignmentView(props) {
 
     let getFileRefs = function() {
         let ret = []
+        let ret2 = []
         for (let i = 0; i < questions.length; i++) {
             ret.push(React.createRef())
         }
@@ -125,7 +126,7 @@ function AssignmentView(props) {
             getFileRefs()
             // getQuestionSubmissions()
         }
-    }, [questions])
+    }, [questions, submitted])
 
     useEffect(() => {
         if (aid) {
@@ -189,7 +190,10 @@ function AssignmentView(props) {
                                             deadlinePassed ?
                                             <></>
                                             :
-                                            <input type="file" className="input-submission" key={i} ref={files[i]} accept="image/png"/>
+                                            <>
+                                                <input id={`in-${i}`} type="file" className="input-submission" key={i} ref={files[i]} accept="image/png" hidden/>
+                                                <label htmlFor={`in-${i}`} className="custom-input medium">Click to upload a single file.</label>
+                                            </>
                                         }
                                         {
                                             item.number in questionSubmissions && questionSubmissions[item.number].staff_comments ?

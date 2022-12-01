@@ -55,6 +55,15 @@ html, body {
     width: 100% !important;
 }
 
+.custom-input {
+    width: 100% !important;
+    background-color: #e5e1f1;
+    color: #737373;
+    padding: 1em;
+    text-align: center;
+    border-radius: 25px;
+}
+
 .sign-in {
     width: 40%;
     text-align: center;
