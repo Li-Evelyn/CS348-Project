@@ -111,7 +111,7 @@ function AssignmentList(props) {
                                                 let as = assignmentSubmissions[item.id]
                                                 console.log(as.grade)
                                                 console.log(item.max_grade)
-                                                let ovr_grade = as.grade != '-' ? `${((as.grade / item.max_grade) * 100).toFixed(2)}%` : as.grade
+                                                let ovr_grade = as.grade !== '-' ? `${((as.grade / item.max_grade) * 100).toFixed(2)}%` : as.grade
                                                 return (
                                                     <tr onClick={() => props.handleAssignmentSelect(item)} key={i}>
                                                         <td className="medium">{item.name}</td>
