@@ -86,7 +86,7 @@ function AssignmentList(props) {
     }
 
     return (
-        <div className="course-assignment-page">
+        <div>
             <h2 className="medium course-assignment-name">{cname}</h2>
             {
                 props.userType === "student" ?

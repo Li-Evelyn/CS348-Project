@@ -25,6 +25,11 @@ function StudentList(props) {
         alert("TODO")
     }
 
+    let addStudent = function(e) {
+        // TODO
+        alert("TODO")
+    }
+
     return (
         <div>
             {
@@ -38,37 +43,33 @@ function StudentList(props) {
                         <Table className="students-table">
                             <thead>
                                 <tr>
-                                    <th className="medium">Number</th>
-                                    <th className="medium">Description</th>
-                                    <th className="medium">Max Grade</th>
+                                    <th className="medium">Name</th>
+                                    <th className="medium">Email</th>
                                     <th className="medium"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {props.questions.map((item, i) => {
+                                {/*props.students.map((student, i) => {
                                     return (
                                         <tr>
                                             <td className="medium">{i + 1}</td>
-                                            <td className="medium">{item.description}</td>
-                                            <td className="medium">{item.max_grade}</td>
+                                            <td className="medium">{student.name}</td>
+                                            <td className="medium">{student.email}</td>
                                             <td className="medium">
-                                                <Button className="purple-button small delete" onClick={deleteQuestion}>Delete</Button>
+                                                <Button className="purple-button small" onClick={deleteStudent}>Unenroll</Button>
                                             </td>
                                         </tr>
                                     )
-                                })}
+                                })*/}
                                 <tr>
                                     <td className="medium">
-                                        {props.questions.length + 1}
+                                        <input type="text" id="name_input"></input>
                                     </td>
                                     <td className="medium">
-                                        <input type="text" id="description_input"></input>
+                                        <input type="text" id="email_input"></input>
                                     </td>
                                     <td className="medium">
-                                        <input type="text" id="max_grade_input"></input>
-                                    </td>
-                                    <td className="medium">
-                                        <Button className="purple-button small save" onClick={saveQuestion}>Save and New</Button>
+                                        <Button className="purple-button small" onClick={addStudent}>Save and New</Button>
                                     </td>
                                 </tr>
                             </tbody>

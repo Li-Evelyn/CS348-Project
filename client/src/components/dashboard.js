@@ -5,6 +5,7 @@ import CourseList from './course_list'
 import AssignmentList from './assignment_list'
 import AssignmentView from './assignment_view';
 import AssignmentCreate from './assignment_create';
+import StudentList from './student_list';
 
 function Dashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -16,13 +17,18 @@ function Dashboard(props) {
     const [rerenderAssignments, setRerenderAssignments] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
     const [activeAssignment, setActiveAssignment] = useState(null)
+    const [students, setStudents] = useState([])
 
     let conditionalRender = () => {
         switch(props.view) {
             case 'c':
-                return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>;
+                return <CourseList userType={userType} courses={courses} getLink={getCourseLink} setRemove={setRemoveCourse} handleCourseSelect={handleCourseSelect} setActiveCourse={setActiveCourse}/>
             case 'a':
-                return <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} handleCreateAssignment={handleCreateAssignment} user={user} clearActiveAssignment={clearActiveAssignment}/>            
+                return <div className="course-assignment-page">
+                            <AssignmentList userType={userType} course={activeCourse} rerenderAssignments={rerenderAssignments} setRerenderAssignments={setRerenderAssignments} setRemove={setRemoveAssignment} handleAssignmentSelect={handleAssignmentSelect} handleCreateAssignment={handleCreateAssignment} user={user} clearActiveAssignment={clearActiveAssignment}/> 
+                            <br/>
+                            <StudentList userType={userType} course={activeCourse}/>
+                       </div>           
             case 'q':
                 return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentEditing={handleAssignmentEditing} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
             case 'ca':
@@ -66,9 +72,14 @@ function Dashboard(props) {
 
     let handleCourseSelect = (c) => {
         setActiveCourse(c)
+        getCourseStudents(c)
         localStorage.setItem("course_name", c.name)
         localStorage.setItem("course_id", c.id)
         navigate(`${getCourseLink(userType, c.name)}`)
+    }
+
+    let getCourseStudents = (c) => {
+        // TODO
     }
 
     let handleAssignmentSelect = (a) => {
