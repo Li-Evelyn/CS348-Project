@@ -43,7 +43,6 @@ function AssignmentView(props) {
         for (let i = 0; i < files.length; i++) {
             if (files[i].current.files) {
                 let file = files[i].current.files[0];
-                console.log(file)
                 formData.append(`${uid}-${aid}-${i+1}`, file) // single submission
             }
         }
@@ -88,7 +87,7 @@ function AssignmentView(props) {
                 let g = "-"
                 let gc = "black"
                 let sc = "red"
-                if (item.grade) {
+                if (item.grade !== null) {
                     ss = "Graded"
                     g = `${item.grade}%`
                     gc = "green"
@@ -129,7 +128,6 @@ function AssignmentView(props) {
         .then((response) => response.json())
         .then((data) => {
             if (data.rows.length > 0) {
-                console.log(data.rows["0"])
                 setStats(data.rows["0"])
             }
             else {
@@ -146,7 +144,6 @@ function AssignmentView(props) {
         fetch(`http://localhost:8080/assignmentdistribution?aid=${id}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.rows)
             const distribution = []
             for (let i=0; i<100; i+=bin_distance) {
                 distribution.push({
@@ -170,7 +167,6 @@ function AssignmentView(props) {
         fetch(`http://localhost:8080/assignmentnotgraded?aid=${id}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.rows)
             setAssignmentNotGraded(data.rows)
         })
         .catch((e) => {
@@ -267,7 +263,6 @@ function AssignmentView(props) {
                                         <Card.Title className="question-title">
                                             <>Question {item.number}</>
                                             <>
-                                                {/* something here for grading mayhaps */}
                                                 <Card.Text className="medium">{item.number in questionSubmissions && questionSubmissions[item.number].grade ? questionSubmissions[item.number].grade : ""}/{item.max_grade}</Card.Text>
                                             </>
                                         </Card.Title>

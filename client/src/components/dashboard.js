@@ -5,6 +5,7 @@ import CourseList from './course_list'
 import AssignmentList from './assignment_list'
 import AssignmentView from './assignment_view';
 import AssignmentCreate from './assignment_create';
+import AssignmentGradeView from './assignment_grade';
 
 function Dashboard(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -16,6 +17,7 @@ function Dashboard(props) {
     const [rerenderAssignments, setRerenderAssignments] = useState(null)
     const [activeCourse, setActiveCourse] = useState(null)
     const [activeAssignment, setActiveAssignment] = useState(null)
+    const [gradingID, setGradingID] = useState(null)
 
     let conditionalRender = () => {
         switch(props.view) {
@@ -27,6 +29,8 @@ function Dashboard(props) {
                 return <AssignmentView userType={userType} assignment={activeAssignment} handleAssignmentEditing={handleAssignmentEditing} handleAssignmentGrading={handleAssignmentGrading}></AssignmentView>
             case 'ca':
                 return <AssignmentCreate userType={userType} course={activeCourse} getCourseLink={getCourseLink}></AssignmentCreate>
+            case 'g':
+                return <AssignmentGradeView assignment={activeAssignment} student_id={gradingID}></AssignmentGradeView>
             default:
                 return <></>
         }
@@ -96,6 +100,8 @@ function Dashboard(props) {
     let handleAssignmentGrading = (a, uid) => {
         setActiveAssignment(a);
         localStorage.setItem("assignment_id", a.id)
+        setGradingID(uid)
+        localStorage.setItem("graded_student_id", uid)
         navigate(`${getGradingLink(a.id, uid)}`)
     }
 

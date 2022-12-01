@@ -301,3 +301,11 @@ a:link {
     border-style: none !important;
     color: black !important;
 }
+
+.num-input {
+    width: 15% !important;
+}
+
+.corner {
+    text-align: right !important;
+}

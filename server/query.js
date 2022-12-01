@@ -181,8 +181,21 @@ const Query = {
     },
     async getQuestionSubmissions(req, res, uid, aid) {
         await query(req, res, "SELECT * FROM questionsubmission WHERE student_id=$1 AND assignment_id=$2", [uid, aid])
+    },
+    async submitGrades(req, res, uid, aid, qdata) {
+        let submitQueries = [['UPDATE assignmentsubmission SET grade=$1 WHERE student_id=$2 AND assignment_id=$3', [qdata["assn_grade"], uid, aid]]]
+        let items = Object.entries(qdata)
+        for (let i = 0; i < items.length; i++) {
+            let entry = items[i]
+            if (!isNaN(entry[0])) { // not the assignment grade
+                submitQueries.push([
+                    'INSERT INTO questionsubmission (student_id, assignment_id, question_number, grade, staff_comments) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (student_id, assignment_id, question_number) DO UPDATE SET grade=$4,staff_comments=$5', 
+                    [uid, aid, entry[0], entry[1].grade, entry[1].staff_comments]
+                ])
+            }
+        }
+        await multiQuery(req, res, submitQueries, {has_args: true})
     }
-
 };
 
 module.exports = Query;
