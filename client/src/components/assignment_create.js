@@ -71,7 +71,7 @@ function AssignmentCreate(props) {
                         const today = new Date();
                         if (deadline_timestamp <= today.getTime()) {
                             alert("Assignment deadline must be set to a future time.")
-                            throw new Error("Assignment deadline must be set to a future time.")
+                            throw ""
                         }
                         deadline_timestamp = deadline_timestamp.toISOString()
         
