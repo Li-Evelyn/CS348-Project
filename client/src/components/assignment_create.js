@@ -31,7 +31,7 @@ function AssignmentCreate(props) {
             const assignmentName = document.getElementById("assignmentName").value
             if (assignmentName === "") {
                 alert ("Please specify an assignment name.")
-                throw new Error("Assignment name not specified")
+                throw ""
             }
     
             const deadlineDate = document.getElementById("deadline-date").value
@@ -42,7 +42,7 @@ function AssignmentCreate(props) {
             }
             else {
                 alert ("Please specify a deadline date and time.")
-                throw new Error("Please specify a date and time")
+                throw ""
             }
      
             if (assignmentName && deadline) {
@@ -62,7 +62,7 @@ function AssignmentCreate(props) {
                             // check for unique assignment name
                             if (existing_a.name === assignmentName) {
                                 alert(`Assignment with name "${assignmentName}" already exists for this course.`)
-                                throw new Error("Duplicate assignment name")
+                                throw ""
                             }
                         })
         
@@ -71,7 +71,7 @@ function AssignmentCreate(props) {
                         const today = new Date();
                         if (deadline_timestamp <= today.getTime()) {
                             alert("Assignment deadline must be set to a future time.")
-                            throw new Error("Assignment deadline must be set to a future time.")
+                            throw ""
                         }
                         deadline_timestamp = deadline_timestamp.toISOString()
         
