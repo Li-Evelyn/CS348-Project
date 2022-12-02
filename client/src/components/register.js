@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import shajs from 'sha.js';
 
 function RegisterPage(props) {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ function RegisterPage(props) {
     e.preventDefault();
     const data = {
       'email': email,
-      'password': password, //this is not ok, gotta hash at some point
+      'password': shajs('sha256').update(password).digest('hex'), //this is not ok, gotta hash at some point
       'name': name,
       'type': dropVal
     }
