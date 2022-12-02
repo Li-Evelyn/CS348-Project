@@ -142,14 +142,16 @@ const Query = {
         await query(req, res, 'INSERT INTO assignmentsubmission (student_id, assignment_id, is_submitted) values($1, $2, FALSE)', [uid, aid])
     },
     async getSubmissionInfoFromAssignment(req, res, aid) {
-        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM ((assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id) INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id) WHERE assignmentsubmission.assignment_id=$1', [aid])
-    },
-    async getSubmissionInfoFromUser(req, res, uid) {
-        await query(req, res, 'SELECT assignment.id AS assignment_id, assignmentsubmission.grade, assignmentsubmission.is_submitted, assignment.max_grade FROM assignmentsubmission INNER JOIN assignment ON assignmentsubmission.assignment_id=assignment.id WHERE assignmentsubmission.student_id=$1', [uid])
+        await query(req, res, 'SELECT "User".id, "User".name, "User".email, assignmentsubmission.grade, assignmentsubmission.is_submitted FROM assignmentsubmission INNER JOIN "User" ON assignmentsubmission.student_id="User".id WHERE assignmentsubmission.assignment_id=$1', [aid])
     },
     async unEnroll(req, res, uid, cid) {
         await query(req, res, 'DELETE FROM enrolledin WHERE student_id=$1 AND course_id=$2', [uid, cid])
     },
+
+    async enrollInto(req, res, uid, cid) {
+        await query(req, res, 'INSERT INTO enrolledin (course_id, student_id) VALUES($1, $2)', [cid, uid])
+    },
+
     async deleteCourse(req, res, cid) {
         await query(req, res,`DELETE FROM course WHERE id=$1`, [cid])
     }, 
