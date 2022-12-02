@@ -163,10 +163,11 @@ const Query = {
         await query(req, res, `INSERT INTO question values($1, $2, $3, $4)`, [aid, num, max_grade, description])
     }, 
     async getAssignmentStats(req, res, aid, max_grade) {
-        await query(req, res, `SELECT COUNT(*) AS total_count, COUNT(grade) AS graded_count, AVG(grade*100.0/$2) AS avg, STDDEV_SAMP(grade*100.0/$2) AS std FROM AssignmentSubmission  WHERE assignment_id=$1;`, [aid, max_grade])
+        await query(req, res, `SELECT COUNT(*) AS total_count, COUNT(grade) AS graded_count, AVG(grade*100.0/$2) AS avg, STDDEV_SAMP(grade*100.0/$2) AS std FROM AssignmentSubmission WHERE assignment_id=$1;`, [aid, max_grade])
     },
     async getAssignmentDistribution(req, res, aid, max_grade) {
         await query(req, res, `SELECT COUNT(grade) AS count, FLOOR(grade*10.0/$2)*10 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NOT NULL GROUP BY grade_range ORDER BY grade_range ASC;`, [aid, max_grade])
+        // await query(req, res, `(SELECT COUNT(grade) AS count, FLOOR(grade*10.0/$2)*10 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NOT NULL GROUP BY grade_range) UNION ALL (SELECT COUNT(*) AS count, 0 AS grade_range FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NULL);`, [aid, max_grade])
     },
     async getAssignmentNotGraded(req, res, aid) {
         await query(req, res, `SELECT * FROM AssignmentSubmission WHERE assignment_id=$1 AND grade IS NULL AND is_submitted;`, [aid])
