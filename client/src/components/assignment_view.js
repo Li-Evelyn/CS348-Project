@@ -154,7 +154,7 @@ function AssignmentView(props) {
 
             data.rows.forEach(row => {
                 if (row.grade_range/bin_distance < 100/bin_distance) {
-                    distribution[row.grade_range/bin_distance].students = parseInt(row.count)
+                    distribution[row.grade_range/bin_distance].students += parseInt(row.count)
                 }
                 else {
                     console.log(row.grade_range)
