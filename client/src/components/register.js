@@ -44,7 +44,7 @@ function RegisterPage(props) {
   useEffect(() => {
     if (authenticated) {
       localStorage.setItem("authenticated", true)
-      fetch(`http://localhost:8080/login?email=${email}&pw=${password}`)
+      fetch(`http://localhost:8080/login?email=${email}&pw=${shajs('sha256').update(password).digest('hex')}`)
         .then((response) => response.json())
         .then((data) => {
           localStorage.setItem("user_id", data.rows["0"].id)
